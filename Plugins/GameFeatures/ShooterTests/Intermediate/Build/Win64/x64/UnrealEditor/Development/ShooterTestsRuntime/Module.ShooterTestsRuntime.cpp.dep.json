@@ -1,0 +1,35 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "f:\\unreal projects\\lyrastartergameex1\\plugins\\gamefeatures\\shootertests\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\shootertestsruntime\\module.shootertestsruntime.cpp",
+        "ProvidedModule": "",
+        "PCH": "f:\\unreal projects\\lyrastartergameex1\\intermediate\\build\\win64\\x64\\lyraeditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "f:\\unreal projects\\lyrastartergameex1\\plugins\\gamefeatures\\shootertests\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\shootertestsruntime\\definitions.shootertestsruntime.h",
+            "f:\\unreal projects\\lyrastartergameex1\\plugins\\gamefeatures\\shootertests\\intermediate\\build\\win64\\unrealeditor\\inc\\shootertestsruntime\\uht\\shootertestsdevicepropertytester.gen.cpp",
+            "f:\\unreal projects\\lyrastartergameex1\\plugins\\gamefeatures\\shootertests\\source\\shootertestsruntime\\private\\shootertestsdevicepropertytester.h",
+            "f:\\unreal projects\\lyrastartergameex1\\plugins\\gamefeatures\\shootertests\\intermediate\\build\\win64\\unrealeditor\\inc\\shootertestsruntime\\uht\\shootertestsdevicepropertytester.generated.h",
+            "f:\\unreal projects\\lyrastartergameex1\\plugins\\gamefeatures\\shootertests\\intermediate\\build\\win64\\unrealeditor\\inc\\shootertestsruntime\\uht\\shootertestsruntime.init.gen.cpp",
+            "f:\\unreal projects\\lyrastartergameex1\\plugins\\gamefeatures\\shootertests\\source\\shootertestsruntime\\private\\shootertestsdevicepropertytester.cpp",
+            "f:\\unreal\\ue_5.2\\engine\\source\\runtime\\engine\\classes\\gameframework\\inputdevicesubsystem.h",
+            "f:\\unreal\\ue_5.2\\engine\\source\\runtime\\engine\\classes\\gameframework\\inputsettings.h",
+            "f:\\unreal\\ue_5.2\\engine\\source\\runtime\\engine\\classes\\gameframework\\playerinput.h",
+            "f:\\unreal\\ue_5.2\\engine\\source\\runtime\\engine\\public\\gesturerecognizer.h",
+            "f:\\unreal\\ue_5.2\\engine\\source\\runtime\\engine\\public\\keystate.h",
+            "f:\\unreal\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\playerinput.generated.h",
+            "f:\\unreal\\ue_5.2\\engine\\source\\runtime\\developersettings\\public\\engine\\platformsettings.h",
+            "f:\\unreal\\ue_5.2\\engine\\source\\runtime\\developersettings\\public\\engine\\platformsettingsmanager.h",
+            "f:\\unreal\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\developersettings\\uht\\platformsettingsmanager.generated.h",
+            "f:\\unreal\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\developersettings\\uht\\platformsettings.generated.h",
+            "f:\\unreal\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\inputsettings.generated.h",
+            "f:\\unreal\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\inputdevicesubsystem.generated.h",
+            "f:\\unreal\\ue_5.2\\engine\\source\\runtime\\engine\\classes\\components\\capsulecomponent.h",
+            "f:\\unreal\\ue_5.2\\engine\\source\\runtime\\engine\\classes\\components\\shapecomponent.h",
+            "f:\\unreal\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\shapecomponent.generated.h",
+            "f:\\unreal\\ue_5.2\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\capsulecomponent.generated.h",
+            "f:\\unreal projects\\lyrastartergameex1\\plugins\\gamefeatures\\shootertests\\source\\shootertestsruntime\\private\\shootertestsruntimemodule.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
