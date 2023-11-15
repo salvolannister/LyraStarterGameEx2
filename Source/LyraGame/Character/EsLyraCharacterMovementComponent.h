@@ -6,6 +6,18 @@
 #include "Character/LyraCharacterMovementComponent.h"
 #include "EsLyraCharacterMovementComponent.generated.h"
 
+
+class ALyraCharacter;
+
+UENUM(BlueprintType)
+enum ECustomMovementMode
+{
+	CMOVE_None			UMETA(Hidden),
+	CMOVE_WallRun		UMETA(DisplayName = "Wall Run"),
+	CMOVE_MAX			UMETA(Hidden),
+};
+
+
 /**
  * 
  */
@@ -17,11 +29,23 @@ class LYRAGAME_API UEsLyraCharacterMovementComponent : public ULyraCharacterMove
 public:
 	UEsLyraCharacterMovementComponent(const FObjectInitializer& ObjectInitializer);
 
+	virtual void InitializeComponent() override;
 	virtual FNetworkPredictionData_Client* GetPredictionData_Client() const override;
+	
+	virtual bool CanAttemptJump() const override;
+	virtual bool DoJump(bool bReplayingMoves) override;
+
+
+	/*
+	 *  Parameters
+	 */
+
+	UPROPERTY(Transient) 
+	TObjectPtr<ALyraCharacter> ESCharacterOwner;
 	
 	// Teleport
 	UPROPERTY(EditDefaultsOnly)
-	float TeleportImpulse = 4000.f;
+	float TeleportImpulse = 1000.f;
 
 	UPROPERTY(EditDefaultsOnly)
 	float TeleportCooldownDuration = 5.f;
@@ -29,11 +53,33 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float AuthTeleportCooldownDuration = 4.f;
 
+	// Wall Run
+	UPROPERTY(EditDefaultsOnly)
+	float WallRunMaxDuration = 30.f;
+
+	UPROPERTY(EditDefaultsOnly) 
+	float WallRunSpeedFactor= 50.f;
+	
+	UPROPERTY(EditDefaultsOnly) 
+	float WallAttractionForce = 200.f;
+	
+	UPROPERTY(EditDefaultsOnly) 
+	float MinWallRunHeight = 50.f;
+	
+	UPROPERTY(EditDefaultsOnly) 
+	float WallJumpOffForce = 300.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float CapsuleScaleFactor = 3.f;
+	
 	/*
 	 *  Flags (Transient)
 	 */
 	
 	bool Safe_bWantsToTeleport;
+	mutable bool Safe_bWantsToWallRun;
+	bool Safe_bWallRunIsRight;
+	
 
 	float TeleportStartTime;
 	FTimerHandle TimerHandle_TeleportCooldown;
@@ -49,7 +95,11 @@ public:
 protected:
 	// Movement Pipeline
 	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
-
+	//virtual void UpdateCharacterStateAfterMovement(float DeltaSeconds) override;
+	//virtual void OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity) override;
+	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
+	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
+	
 private:
 	/*
 	 *  Teleport
@@ -57,6 +107,16 @@ private:
 	
 	void PerformTeleport();
 	void OnTeleportCooldownFinished();
+
+	/*
+	 *  WallRun
+	 */
+
+	bool TryWallRun();
+	void PhysWallRun(float deltaTime, int32 Iterations);
+
+	float WallRunDuration;
+	bool bWallRunForward;
 
 protected:
 	/*
@@ -70,6 +130,9 @@ public:
 	 *  Interface
 	 */
 
+	UFUNCTION(BlueprintPure)
+	bool IsCustomMovementMode(const ECustomMovementMode InCustomMovementMode) const;
+
 	UFUNCTION(BlueprintCallable)
 	bool CanTeleport() const;
 
@@ -78,13 +141,31 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void TeleportReleased();
+		
+	UFUNCTION(BlueprintCallable)
+	void SetJumpEnd();
+	
+	UFUNCTION(BlueprintPure)
+	bool IsWallRunning() const { return IsCustomMovementMode(CMOVE_WallRun); }
+	
+	UFUNCTION(BlueprintPure)
+	bool WallRunningIsRight() const { return Safe_bWallRunIsRight; }
 
-/*
- *  Proxy Replication
- */
+	/*
+	 *  Proxy Replication
+	 */
 	
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	/*
+	 *  Getter/Setters
+	 */
+
+	float CapsuleR() const;
+	float CapsuleRScaled() const;
+	float CapsuleHH() const;
+	
 private:
 	
 };
@@ -114,6 +195,7 @@ public:
 	 */
 	
 	uint8 Saved_bWantsToTeleport:1;
+	uint8 Saved_bWallRunIsRight:1;
 	
 	/** Clear saved move properties, so it can be re-used. */
 	virtual void Clear() override;

@@ -545,6 +545,18 @@ bool ALyraCharacter::UpdateSharedReplication()
 	return false;
 }
 
+FCollisionQueryParams ALyraCharacter::GetIgnoreCharacterParams() const
+{
+	FCollisionQueryParams Params;
+
+	TArray<AActor*> CharacterChildren;
+	GetAllChildActors(CharacterChildren);
+	Params.AddIgnoredActors(CharacterChildren);
+	Params.AddIgnoredActor(this);
+
+	return Params;
+}
+
 void ALyraCharacter::FastSharedReplication_Implementation(const FSharedRepMovement& SharedRepMovement)
 {
 	if (GetWorld()->IsPlayingReplay())

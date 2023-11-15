@@ -146,6 +146,8 @@ public:
 
 	virtual bool UpdateSharedReplication();
 
+	FCollisionQueryParams GetIgnoreCharacterParams() const; 
+
 protected:
 
 	virtual void OnAbilitySystemInitialized();
