@@ -61,7 +61,7 @@ public:
 	float WallRunSpeedFactor= 50.f;
 	
 	UPROPERTY(EditDefaultsOnly) 
-	float WallAttractionForce = 200.f;
+	float WallAttractionForce = 300.f;
 	
 	UPROPERTY(EditDefaultsOnly) 
 	float MinWallRunHeight = 50.f;
@@ -81,10 +81,7 @@ public:
 	
 	bool Safe_bWantsToTeleport;
 	mutable bool Safe_bWantsToWallRun;
-	bool Safe_bWallRunIsRight;
-	bool Safe_bWantsToWallJump;
-
-	
+	bool Safe_bWallRunIsRight;	
 
 	float TeleportStartTime;
 	FTimerHandle TimerHandle_TeleportCooldown;

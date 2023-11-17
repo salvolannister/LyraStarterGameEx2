@@ -241,9 +241,7 @@ bool UEsLyraCharacterMovementComponent::TryWallRun()
 }
 
 void UEsLyraCharacterMovementComponent::PhysWallRun(float deltaTime, int32 Iterations)
-{		
-	bool bSweep = true;
-
+{	
 	if (deltaTime < MIN_TICK_TIME)
 	{
 		return;
@@ -284,12 +282,10 @@ void UEsLyraCharacterMovementComponent::PhysWallRun(float deltaTime, int32 Itera
 		GetWorld()->LineTraceSingleByProfile(WallHit, Start, Start + VWallCheck,  "BlockAll", Params);
 
 		if(!WallHit.IsValidBlockingHit())
-		{
-			// Detect round trajectory wall ride
+		{			
 			VWallCheck = SideVector;
 			VWallCheck *= CapsuleRScaled();
-			GetWorld()->LineTraceSingleByProfile(WallHit, Start, Start + VWallCheck,  "BlockAll", Params);
-			bSweep = false;
+			GetWorld()->LineTraceSingleByProfile(WallHit, Start, Start + VWallCheck,  "BlockAll", Params);			
 		}	
 
 		// Clamp Acceleration
@@ -322,7 +318,7 @@ DrawDebugLine(GetWorld(), Start, Start + FVector::DownVector * (CapsuleHH() + Mi
 		else
 		{
 			FHitResult Hit;
-			SafeMoveUpdatedComponent(Delta, UpdatedComponent->GetComponentQuat(), bSweep, Hit);			
+			SafeMoveUpdatedComponent(Delta, UpdatedComponent->GetComponentQuat(), false, Hit);			
 			FVector WallAttractionDelta = -WallHit.Normal * WallAttractionForce * timeTick;
 			SafeMoveUpdatedComponent(WallAttractionDelta, UpdatedComponent->GetComponentQuat(), true, Hit);
 		}
