@@ -34,7 +34,7 @@ public:
 	
 	virtual bool CanAttemptJump() const override;
 	virtual bool DoJump(bool bReplayingMoves) override;
-
+	
 
 	/*
 	 *  Parameters
@@ -55,7 +55,7 @@ public:
 
 	// Wall Run
 	UPROPERTY(EditDefaultsOnly)
-	float WallRunMaxDuration = 30.f;
+	float WallRunMaxDuration = 3.f;
 
 	UPROPERTY(EditDefaultsOnly) 
 	float WallRunSpeedFactor= 50.f;
@@ -71,7 +71,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	float CapsuleScaleFactor = 3.f;
-	
+
+	UPROPERTY(EditDefaultsOnly)
+	float LateJumpDuration = 1.f;
+
 	/*
 	 *  Flags (Transient)
 	 */
@@ -79,11 +82,14 @@ public:
 	bool Safe_bWantsToTeleport;
 	mutable bool Safe_bWantsToWallRun;
 	bool Safe_bWallRunIsRight;
+	bool Safe_bWantsToWallJump;
+
 	
 
 	float TeleportStartTime;
 	FTimerHandle TimerHandle_TeleportCooldown;
 
+	FTimerHandle TimerHandle_LateJumpCooldown;
 	/*
 	 *  Replication
 	 */
@@ -114,9 +120,11 @@ private:
 
 	bool TryWallRun();
 	void PhysWallRun(float deltaTime, int32 Iterations);
+	void OnLateJumpFinished();
 
 	float WallRunDuration;
 	bool bWallRunForward;
+	bool bCanLateJump;
 
 protected:
 	/*
@@ -150,6 +158,10 @@ public:
 	
 	UFUNCTION(BlueprintPure)
 	bool WallRunningIsRight() const { return Safe_bWallRunIsRight; }
+
+	bool CanWallJump() const {return IsWallRunning(); };
+
+	bool CanLateJump() const { return bCanLateJump; };
 
 	/*
 	 *  Proxy Replication

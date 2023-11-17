@@ -22,64 +22,6 @@ FNetworkPredictionData_Client* UEsLyraCharacterMovementComponent::GetPredictionD
 	return ClientPredictionData;
 }
 
-bool UEsLyraCharacterMovementComponent::CanAttemptJump() const
-{
-	Safe_bWantsToWallRun = true;
-	return Super::CanAttemptJump() || IsWallRunning();
-}
-
-bool UEsLyraCharacterMovementComponent::DoJump(bool bReplayingMoves)
-{
-	bool bWasWallRunning = IsWallRunning();
-	
-	if (Super::DoJump(bReplayingMoves))
-	{
-		if (bWasWallRunning)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Wall jump22!!!"));
-			//Wall Jump
-			/*
-			FVector Start = UpdatedComponent->GetComponentLocation();
-			FVector CastDelta = UpdatedComponent->GetRightVector() * CapR() * 2;
-			FVector End = Safe_bWallRunIsRight ? Start + CastDelta : Start - CastDelta;
-			auto Params = ZippyCharacterOwner->GetIgnoreCharacterParams();
-			FHitResult WallHit;
-			GetWorld()->LineTraceSingleByProfile(WallHit, Start, End, "BlockAll", Params);
-			Velocity += WallHit.Normal * WallJumpOffForce;*/
-		}	
-		return true;
-	}
-	return false;
-}
-
-void UEsLyraCharacterMovementComponent::SetJumpEnd()
-{
-	Safe_bWantsToWallRun = false;
-	if(IsWallRunning())
-	{		
-		UE_LOG(LogTemp, Warning, TEXT("Wall jump!!!"));
-		//Wall Jump
-
-		FVector Start = UpdatedComponent->GetComponentLocation();
-
-		//Build Vector
-		const FVector SideVector = FVector::CrossProduct(Velocity.GetSafeNormal(), FVector::DownVector) *
-			((Safe_bWallRunIsRight) ? 1.f : -1.f) *
-				((bWallRunForward) ? 1.f : -1.f);;
-
-		FCollisionQueryParams Params = ESCharacterOwner->GetIgnoreCharacterParams();
-		FHitResult WallHit;
-
-		FVector VWallCheck = SideVector + Velocity.GetSafeNormal();
-		VWallCheck *= CapsuleRScaled();
-		
-		GetWorld()->LineTraceSingleByProfile(WallHit, Start, Start + VWallCheck,  "BlockAll", Params);
-		Velocity = (CharacterOwner->GetActorForwardVector() + WallHit.Normal + FVector::UpVector * 2) * WallJumpOffForce;
-		DrawDebugLine(GetWorld(), Start, Start + Velocity, FColor::Silver, true, 1, 0, 4);
-		
-	}	
-}
-
 #pragma region Teleport
 
 UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObjectInitializer& ObjectInitializer)
@@ -87,7 +29,6 @@ UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObje
 {
 	Safe_bWantsToTeleport = false;
 	TeleportStartTime = 0.f;
-	//CharacterOwner->JumpMaxHoldTime = 20.f;
 }
 
 void UEsLyraCharacterMovementComponent::InitializeComponent()
@@ -199,82 +140,35 @@ void UEsLyraCharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)
 
 #pragma region WallRun
 
-bool UEsLyraCharacterMovementComponent::TryWallRun()
+bool UEsLyraCharacterMovementComponent::CanAttemptJump() const
 {
-	if (!Safe_bWantsToWallRun)
-		return false;
-	
-	if (!IsFalling())
-		return false;
-
-	FVector Start = UpdatedComponent->GetComponentLocation();
-	FVector LeftEnd = Start - UpdatedComponent->GetRightVector() * CapsuleRScaled();
-	FVector RightEnd = Start + UpdatedComponent->GetRightVector() * CapsuleRScaled();
-
-	FCollisionQueryParams Params = ESCharacterOwner->GetIgnoreCharacterParams();	
-	
-	FHitResult FloorHit, WallHit;
-	// Check Player Height
-	if (GetWorld()->LineTraceSingleByProfile(FloorHit, Start, Start + FVector::DownVector * (CapsuleHH() + MinWallRunHeight), "BlockAll", Params))
-	{
-		return false;
-	}
-	
-	// Left Cast
-	GetWorld()->LineTraceSingleByProfile(WallHit, Start, LeftEnd, "BlockAll", Params);
-	if (WallHit.IsValidBlockingHit() && (Velocity | WallHit.Normal) < 0)
-	{
-		Safe_bWallRunIsRight = false;
-	}
-	// Right Cast
-	else
-	{
-		GetWorld()->LineTraceSingleByProfile(WallHit, Start, RightEnd, "BlockAll", Params);
-		if (WallHit.IsValidBlockingHit() && (Velocity | WallHit.Normal) < 0)
-		{
-			Safe_bWallRunIsRight = true;
-		}
-		else
-		{
-			return false;
-		}
-	}	
-
-	SetMovementMode(MOVE_Custom, CMOVE_WallRun);
-	WallRunDuration = WallRunMaxDuration;
-	UE_LOG(LogTemp, Warning, TEXT("Starting WallRun"));
-	bWallRunForward = FVector::DotProduct(CharacterOwner->GetActorForwardVector(), Velocity) > 0;
-	
-	return true;
+	Safe_bWantsToWallRun = true;
+	return Super::CanAttemptJump() || CanWallJump() || bCanLateJump;
 }
 
-void UEsLyraCharacterMovementComponent::PhysWallRun(float deltaTime, int32 Iterations)
-{
-	bool bSweep = false;
-	//UE_LOG(LogTemp, Warning, TEXT("%f"), WallRunDuration);
-	if (deltaTime < MIN_TICK_TIME)
+bool UEsLyraCharacterMovementComponent::DoJump(bool bReplayingMoves)
+{	
+	if(CanWallJump())
+		return false;
+	
+	if (Super::DoJump(bReplayingMoves))
 	{
-		return;
-	}
-	if (!CharacterOwner || (!CharacterOwner->Controller && !bRunPhysicsWithNoController && !HasAnimRootMotion() && !CurrentRootMotion.HasOverrideVelocity() && (CharacterOwner->GetLocalRole() != ROLE_SimulatedProxy)))
-	{
-		Acceleration = FVector::ZeroVector;
-		Velocity = FVector::ZeroVector;
-		return;
+		bCanLateJump = false;
+		return true;
 	}
 	
-	bJustTeleported = false;
-	float remainingTime = deltaTime;
-	WallRunDuration -= deltaTime;
-	// Perform the move
-	
-	while (WallRunDuration > 0.f && (remainingTime >= MIN_TICK_TIME) && (Iterations < MaxSimulationIterations) && CharacterOwner && (CharacterOwner->Controller || bRunPhysicsWithNoController || (CharacterOwner->GetLocalRole() == ROLE_SimulatedProxy)) )
-	{
-		Iterations++;
-		bJustTeleported = false;
-		const float timeTick = GetSimulationTimeStep(remainingTime, Iterations);
-		remainingTime -= timeTick;
-		const FVector OldLocation = UpdatedComponent->GetComponentLocation();		
+	return false;
+}
+
+void UEsLyraCharacterMovementComponent::SetJumpEnd()
+{	
+	Safe_bWantsToWallRun = false;
+
+	//Wall Jump
+	if(CanWallJump())
+	{			
+		SetMovementMode(MOVE_Falling);		
+
 		FVector Start = UpdatedComponent->GetComponentLocation();
 
 		//Build Vector
@@ -289,35 +183,134 @@ void UEsLyraCharacterMovementComponent::PhysWallRun(float deltaTime, int32 Itera
 		VWallCheck *= CapsuleRScaled();
 		
 		GetWorld()->LineTraceSingleByProfile(WallHit, Start, Start + VWallCheck,  "BlockAll", Params);
+		Velocity = (CharacterOwner->GetActorForwardVector() + WallHit.Normal + FVector::UpVector * 2) * WallJumpOffForce;
+		DrawDebugLine(GetWorld(), Start, Start + Velocity, FColor::Silver, true, 1, 0, 4);	
+	}
+}
+
+bool UEsLyraCharacterMovementComponent::TryWallRun()
+{	
+	if(!Safe_bWantsToWallRun)
+		return false;
+	
+	if (!IsFalling())
+		return false;
+
+	if(CanLateJump())
+		return false;
+
+	FVector Start = UpdatedComponent->GetComponentLocation();
+	FVector LeftEnd = Start - UpdatedComponent->GetRightVector() * CapsuleRScaled();
+	FVector RightEnd = Start + UpdatedComponent->GetRightVector() * CapsuleRScaled();
+
+	FCollisionQueryParams Params = ESCharacterOwner->GetIgnoreCharacterParams();	
+	
+	FHitResult FloorHit, WallHit;
+	// Check Player Height
+	if (GetWorld()->LineTraceSingleByProfile(FloorHit, Start, Start + FVector::DownVector * (CapsuleHH() + MinWallRunHeight), "BlockAll", Params))
+	{		
+		return false;
+	}
+	
+	// Left Cast
+	GetWorld()->LineTraceSingleByProfile(WallHit, Start, LeftEnd, "BlockAll", Params);
+
+	if (WallHit.IsValidBlockingHit() && (Velocity | WallHit.Normal) < 30)
+	{
+		Safe_bWallRunIsRight = false;
+	}
+	// Right Cast
+	else
+	{		
+		GetWorld()->LineTraceSingleByProfile(WallHit, Start, RightEnd, "BlockAll", Params);
+	
+		if (WallHit.IsValidBlockingHit() && (Velocity | WallHit.Normal) < 30)
+		{
+			Safe_bWallRunIsRight = true;
+		}
+		else
+		{	
+			return false;
+		}
+	}
+
+	SetMovementMode(MOVE_Custom, CMOVE_WallRun);
+	WallRunDuration = WallRunMaxDuration;
+	bWallRunForward = FVector::DotProduct(CharacterOwner->GetActorForwardVector(), Velocity) > 0;
+	return true;
+}
+
+void UEsLyraCharacterMovementComponent::PhysWallRun(float deltaTime, int32 Iterations)
+{		
+	bool bSweep = true;
+
+	if (deltaTime < MIN_TICK_TIME)
+	{
+		return;
+	}
+	if (!CharacterOwner || (!CharacterOwner->Controller && !bRunPhysicsWithNoController && !HasAnimRootMotion() && !CurrentRootMotion.HasOverrideVelocity() && (CharacterOwner->GetLocalRole() != ROLE_SimulatedProxy)))
+	{
+		Acceleration = FVector::ZeroVector;
+		Velocity = FVector::ZeroVector;
+		return;
+	}
+	
+	bJustTeleported = false;
+	float remainingTime = deltaTime;
+	WallRunDuration -= deltaTime;
+	
+	// Perform the move	
+	while ((remainingTime >= MIN_TICK_TIME) && (Iterations < MaxSimulationIterations) && CharacterOwner && (CharacterOwner->Controller || bRunPhysicsWithNoController || (CharacterOwner->GetLocalRole() == ROLE_SimulatedProxy)) )
+	{
+		Iterations++;
+		bJustTeleported = false;
+		const float timeTick = GetSimulationTimeStep(remainingTime, Iterations);
+		remainingTime -= timeTick;
+		const FVector OldLocation = UpdatedComponent->GetComponentLocation();		
+		FVector Start = UpdatedComponent->GetComponentLocation();
+
+		//Build Vector
+		const FVector SideVector = FVector::CrossProduct(Velocity.GetSafeNormal(), FVector::DownVector) *
+			((Safe_bWallRunIsRight) ? 1.f : -1.f) *
+				((bWallRunForward) ? 1.f : -1.f);
+
+		FCollisionQueryParams Params = ESCharacterOwner->GetIgnoreCharacterParams();
+		FHitResult WallHit;
+
+		FVector VWallCheck = SideVector + Velocity.GetSafeNormal();
+		VWallCheck *= CapsuleRScaled();
+
+		// Check wall on forward and if not, on lateral
+		GetWorld()->LineTraceSingleByProfile(WallHit, Start, Start + VWallCheck,  "BlockAll", Params);
 
 		if(!WallHit.IsValidBlockingHit())
 		{
+			// Detect round trajectory wall ride
 			VWallCheck = SideVector;
 			VWallCheck *= CapsuleRScaled();
 			GetWorld()->LineTraceSingleByProfile(WallHit, Start, Start + VWallCheck,  "BlockAll", Params);
-			bSweep = true;
-		}			
-
-		DrawDebugLine(GetWorld(), Start, Start + SideVector  * 100.f, FColor::Blue, true, .5f, 0, 2.f);		
-		DrawDebugLine(GetWorld(), Start, Start + VWallCheck, FColor::Red, true, .5f, 0, 3.f);
-		DrawDebugLine(GetWorld(), Start, Start + FVector::DownVector * (CapsuleHH() + MinWallRunHeight), FColor::Green);
-		
+			bSweep = false;
+		}	
 
 		// Clamp Acceleration
 		Acceleration = FVector::VectorPlaneProject(Acceleration, WallHit.Normal);
 		Acceleration.Z = 0.f;
+		
 		// Apply acceleration
 		CalcVelocity(timeTick, 0.f, false, GetMaxBrakingDeceleration());
 		Velocity = FVector::VectorPlaneProject(Velocity, WallHit.Normal);
 
-		FVector Tangent = FVector::CrossProduct(WallHit.Normal, FVector::UpVector);	
-		
+		// Apply wall tangential velocity
+		FVector Tangent = FVector::CrossProduct(WallHit.Normal, FVector::UpVector);			
 		if (FVector::DotProduct(Tangent, Velocity) < 0)
 		{
 			Tangent *= -1.f;
 		}
 		Velocity += Tangent * WallRunSpeedFactor;
 
+		DrawDebugLine(GetWorld(), Start, Start + SideVector  * 100.f, FColor::Blue, true, .5f, 0, 2.f);		
+DrawDebugLine(GetWorld(), Start, Start + VWallCheck, FColor::Red, true, .5f, 0, 3.f);
+DrawDebugLine(GetWorld(), Start, Start + FVector::DownVector * (CapsuleHH() + MinWallRunHeight), FColor::Green);
 		DrawDebugLine(GetWorld(), Start, Start + Velocity.GetSafeNormal() * 100.f, FColor::Black, true, .5f, 0, 2.f);
 		
 		// Compute move parameters
@@ -329,16 +322,24 @@ void UEsLyraCharacterMovementComponent::PhysWallRun(float deltaTime, int32 Itera
 		else
 		{
 			FHitResult Hit;
-			SafeMoveUpdatedComponent(Delta, UpdatedComponent->GetComponentQuat(), bSweep, Hit);
+			SafeMoveUpdatedComponent(Delta, UpdatedComponent->GetComponentQuat(), bSweep, Hit);			
 			FVector WallAttractionDelta = -WallHit.Normal * WallAttractionForce * timeTick;
 			SafeMoveUpdatedComponent(WallAttractionDelta, UpdatedComponent->GetComponentQuat(), true, Hit);
 		}
 
-		if (!WallHit.IsValidBlockingHit() || !Safe_bWantsToWallRun ||  WallRunDuration < 0.f)
-		{
+		if (!WallHit.IsValidBlockingHit() ||  WallRunDuration < 0.f)
+		{			
 			SetMovementMode(MOVE_Falling);
 			StartNewPhysics(remainingTime, Iterations);
-			//Safe_bWantsToWallRun = false;
+			Safe_bWantsToWallRun = false;
+			
+			GetWorld()->GetTimerManager().SetTimer(
+			TimerHandle_LateJumpCooldown,
+			this,
+			&UEsLyraCharacterMovementComponent::OnLateJumpFinished,
+			LateJumpDuration);
+			bCanLateJump = true;
+		
 			return;
 		}
 		
@@ -349,6 +350,12 @@ void UEsLyraCharacterMovementComponent::PhysWallRun(float deltaTime, int32 Itera
 		}
 		Velocity = (UpdatedComponent->GetComponentLocation() - OldLocation) / timeTick; // v = dx / dt		
 	}
+}
+
+void UEsLyraCharacterMovementComponent::OnLateJumpFinished()
+{
+	GetWorld()->GetTimerManager().ClearTimer(TimerHandle_LateJumpCooldown);
+	bCanLateJump = false;
 }
 
 #pragma endregion 
@@ -477,11 +484,6 @@ uint8 FSavedMove_Es::GetCompressedFlags() const
 	{
 		Result |= FLAG_Teleport;
 	}
-
-	//if(Saved_bPressedZippyJump)
-	//{
-	//	Result |= FLAG_JumpPressed;
-	//}
 	
 	return Result;
 }
