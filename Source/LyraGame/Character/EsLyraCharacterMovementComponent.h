@@ -156,6 +156,12 @@ public:
 	UFUNCTION(BlueprintPure)
 	bool WallRunningIsRight() const { return Safe_bWallRunIsRight; }
 
+	UFUNCTION(BlueprintPure)
+	float GetLookingAtAngle() const;
+	
+	UFUNCTION(BlueprintPure) FORCEINLINE
+	bool GetIsGoingForward() const {return bWallRunForward; };
+
 	bool CanWallJump() const {return IsWallRunning(); };
 
 	bool CanLateJump() const { return bCanLateJump; };

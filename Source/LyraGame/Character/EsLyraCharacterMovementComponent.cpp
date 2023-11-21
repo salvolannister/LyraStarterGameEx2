@@ -188,6 +188,11 @@ void UEsLyraCharacterMovementComponent::SetJumpEnd()
 	}
 }
 
+float UEsLyraCharacterMovementComponent::GetLookingAtAngle() const
+{
+	return FMath::RadiansToDegrees(acosf(FVector::DotProduct(Velocity.GetSafeNormal(), CharacterOwner->GetActorForwardVector())));
+}
+
 bool UEsLyraCharacterMovementComponent::TryWallRun()
 {	
 	if(!Safe_bWantsToWallRun)
@@ -236,7 +241,8 @@ bool UEsLyraCharacterMovementComponent::TryWallRun()
 
 	SetMovementMode(MOVE_Custom, CMOVE_WallRun);
 	WallRunDuration = WallRunMaxDuration;
-	bWallRunForward = FVector::DotProduct(CharacterOwner->GetActorForwardVector(), Velocity) > 0;
+	bWallRunForward = FVector::DotProduct(CharacterOwner->GetActorForwardVector(), Velocity.GetSafeNormal()) > 0;	
+	
 	return true;
 }
 
