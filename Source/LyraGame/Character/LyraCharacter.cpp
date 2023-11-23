@@ -84,6 +84,9 @@ ALyraCharacter::ALyraCharacter(const FObjectInitializer& ObjectInitializer)
 void ALyraCharacter::PreInitializeComponents()
 {
 	Super::PreInitializeComponents();
+
+	UEsLyraCharacterMovementComponent* EsMoveComp = Cast<UEsLyraCharacterMovementComponent>(GetCharacterMovement());
+	EsMoveComp->SetIsReplicated(true);
 }
 
 void ALyraCharacter::BeginPlay()

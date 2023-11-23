@@ -6,6 +6,7 @@
 #include "LyraCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
+#include "Net/UnrealNetwork.h"
 
 FNetworkPredictionData_Client* UEsLyraCharacterMovementComponent::GetPredictionData_Client() const
 {
@@ -28,6 +29,7 @@ UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObje
 : Super(ObjectInitializer)
 {
 	Safe_bWantsToTeleport = false;
+	Safe_bWantsToWallRun = false;
 	TeleportStartTime = 0.f;
 }
 
@@ -53,7 +55,7 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
 			UE_LOG(LogTemp, Warning, TEXT("Error with the client values (Cheating)"));
 		}
 	}
-
+	
 	// Wall Run	
 	TryWallRun();
 	
@@ -98,6 +100,12 @@ void UEsLyraCharacterMovementComponent::OnMovementModeChanged(EMovementMode Prev
 		FHitResult WallHit;
 		Safe_bWallRunIsRight = GetWorld()->LineTraceSingleByProfile(WallHit, Start, End, "BlockAll", Params);
 	}*/
+
+	if (IsWallRunning() && GetOwnerRole() == ROLE_SimulatedProxy)
+	{
+		Safe_bWantsToWallRun = true;
+	}
+	
 }
 
 void UEsLyraCharacterMovementComponent::PerformTeleport()
@@ -134,6 +142,7 @@ void UEsLyraCharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)
 	Super::UpdateFromCompressedFlags(Flags);
 
 	Safe_bWantsToTeleport = (Flags & FSavedMove_Es::FLAG_Teleport) != 0;
+	Safe_bWantsToWallRun = (Flags & FSavedMove_Es::FLAG_WallRun) != 0;
 }
 
 #pragma endregion
@@ -143,6 +152,7 @@ void UEsLyraCharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)
 bool UEsLyraCharacterMovementComponent::CanAttemptJump() const
 {
 	Safe_bWantsToWallRun = true;
+	Proxy_bWantsToWallRun = true;
 	return Super::CanAttemptJump() || CanWallJump() || bCanLateJump;
 }
 
@@ -162,7 +172,7 @@ bool UEsLyraCharacterMovementComponent::DoJump(bool bReplayingMoves)
 
 void UEsLyraCharacterMovementComponent::SetJumpEnd()
 {	
-	Safe_bWantsToWallRun = false;
+	Safe_bWantsToWallRun = false;	
 
 	//Wall Jump
 	if(CanWallJump())
@@ -400,11 +410,18 @@ void UEsLyraCharacterMovementComponent::TeleportReleased()
 void UEsLyraCharacterMovementComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME_CONDITION(UEsLyraCharacterMovementComponent, Proxy_bWantsToWallRun, COND_SkipOwner);
 }
 
 #pragma endregion
 
 #pragma region GettersSetters
+
+void UEsLyraCharacterMovementComponent::OnRep_WallRun()
+{
+	Safe_bWantsToWallRun = Proxy_bWantsToWallRun;
+}
 
 float UEsLyraCharacterMovementComponent::CapsuleR() const
 {
@@ -430,6 +447,7 @@ FSavedMove_Es::FSavedMove_Es()
 {
 	Saved_bWantsToTeleport = 0;
 	Saved_bWallRunIsRight = 0;
+	Saved_bWantsToWallRun = 0;
 }
 
 void FSavedMove_Es::Clear()
@@ -438,6 +456,7 @@ void FSavedMove_Es::Clear()
 
 	Saved_bWantsToTeleport = 0;
 	Saved_bWallRunIsRight = 0;
+	Saved_bWantsToWallRun = 0;
 }
 
 void FSavedMove_Es::SetMoveFor(ACharacter* C, float InDeltaTime, FVector const& NewAccel,
@@ -447,6 +466,7 @@ void FSavedMove_Es::SetMoveFor(ACharacter* C, float InDeltaTime, FVector const& 
 
 	const UEsLyraCharacterMovementComponent* CharacterMovement = Cast<UEsLyraCharacterMovementComponent>(C->GetCharacterMovement());
 
+	Saved_bWantsToWallRun = CharacterMovement->Safe_bWantsToWallRun;
 	Saved_bWantsToTeleport = CharacterMovement->Safe_bWantsToTeleport;
 	Saved_bWallRunIsRight = CharacterMovement->Safe_bWallRunIsRight;
 }
@@ -456,6 +476,11 @@ bool FSavedMove_Es::CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* InC
 	const FSavedMove_Es* NewEsMove = static_cast<FSavedMove_Es*>(NewMove.Get());
 
 	if(Saved_bWantsToTeleport != NewEsMove->Saved_bWantsToTeleport)
+	{
+		return false;
+	}
+
+	if(Saved_bWantsToWallRun != NewEsMove->Saved_bWantsToWallRun)
 	{
 		return false;
 	}
@@ -475,6 +500,8 @@ void FSavedMove_Es::PrepMoveFor(ACharacter* C)
 	UEsLyraCharacterMovementComponent* CharacterMovement = Cast<UEsLyraCharacterMovementComponent>(C->GetCharacterMovement());
 
 	CharacterMovement->Safe_bWantsToTeleport = Saved_bWantsToTeleport;
+	
+	CharacterMovement->Safe_bWantsToWallRun = Saved_bWantsToWallRun;
 	CharacterMovement->Safe_bWallRunIsRight = Saved_bWallRunIsRight;
 }
 
@@ -485,6 +512,11 @@ uint8 FSavedMove_Es::GetCompressedFlags() const
 	if(Saved_bWantsToTeleport)
 	{
 		Result |= FLAG_Teleport;
+	}
+
+	if(Saved_bWantsToWallRun)
+	{
+		Result |= FLAG_WallRun;
 	}
 	
 	return Result;

@@ -90,6 +90,9 @@ public:
 	/*
 	 *  Replication
 	 */
+
+	UPROPERTY(ReplicatedUsing=OnRep_WallRun)
+	mutable bool Proxy_bWantsToWallRun;
 	
 	/*
 	 *  Delegates
@@ -173,6 +176,10 @@ public:
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+private:
+	UFUNCTION()
+	void OnRep_WallRun();
+
 	/*
 	 *  Getter/Setters
 	 */
@@ -200,7 +207,7 @@ public:
 	{
 		// Remaining bit masks are available for custom flags.
 		FLAG_Teleport		= 0x10, // Teleport pressed
-		FLAG_Custom_1		= 0x20,
+		FLAG_WallRun		= 0x20,
 		FLAG_Custom_2		= 0x40,
 		FLAG_Custom_3		= 0x80,
 	};
@@ -210,6 +217,8 @@ public:
 	 */
 	
 	uint8 Saved_bWantsToTeleport:1;
+
+	uint8 Saved_bWantsToWallRun:1;
 	uint8 Saved_bWallRunIsRight:1;
 	
 	/** Clear saved move properties, so it can be re-used. */
