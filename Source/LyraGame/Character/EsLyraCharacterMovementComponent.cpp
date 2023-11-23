@@ -23,8 +23,6 @@ FNetworkPredictionData_Client* UEsLyraCharacterMovementComponent::GetPredictionD
 	return ClientPredictionData;
 }
 
-#pragma region Teleport
-
 UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
 {
@@ -39,6 +37,9 @@ void UEsLyraCharacterMovementComponent::InitializeComponent()
 	ESCharacterOwner = Cast<ALyraCharacter>(GetOwner());
 }
 
+/**
+ *  Update the character state in PerformMovement right before doing the actual position change
+ **********************************************************************************************************/
 void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float DeltaSeconds)
 {
 	//Teleport
@@ -57,17 +58,14 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
 	}
 	
 	// Wall Run	
-	TryWallRun();
-	
+	TryWallRun();	
 	
 	Super::UpdateCharacterStateBeforeMovement(DeltaSeconds);
 }
 
-bool UEsLyraCharacterMovementComponent::CanTeleport() const
-{
-	return IsWalking() || IsFalling();
-}
-
+/**
+ *  PhysCustom including Phys functions for each CustomMovementMode
+ **********************************************************************************************************/
 void UEsLyraCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterations)
 {
 	Super::PhysCustom(deltaTime, Iterations);
@@ -82,35 +80,54 @@ void UEsLyraCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterat
 	}
 }
 
+/**
+ *  
+ **********************************************************************************************************/
 void UEsLyraCharacterMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode,
 	uint8 PreviousCustomMode)
 {
-	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
-
-	/*if (IsFalling())
-	{
-		bOrientRotationToMovement = true;
-	}
-
-	if (IsWallRunning() && GetOwnerRole() == ROLE_SimulatedProxy)
-	{
-		FVector Start = UpdatedComponent->GetComponentLocation();
-		FVector End = Start + UpdatedComponent->GetRightVector() * CapsuleR() * 2;
-		auto Params = ESCharacterOwner->GetIgnoreCharacterParams();
-		FHitResult WallHit;
-		Safe_bWallRunIsRight = GetWorld()->LineTraceSingleByProfile(WallHit, Start, End, "BlockAll", Params);
-	}*/
-
-	if (IsWallRunning() && GetOwnerRole() == ROLE_SimulatedProxy)
-	{
-		Safe_bWantsToWallRun = true;
-	}
-	
+	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);	
 }
 
-void UEsLyraCharacterMovementComponent::PerformTeleport()
+/**
+ *  Event notification when client receives correction data from the server, before applying the data
+ **********************************************************************************************************/
+void UEsLyraCharacterMovementComponent::OnClientCorrectionReceived(FNetworkPredictionData_Client_Character& ClientData,
+																   float TimeStamp, FVector NewLocation, FVector NewVelocity, UPrimitiveComponent* NewBase, FName NewBaseBoneName,
+																   bool bHasBase, bool bBaseRelativePosition, uint8 ServerMovementMode)
 {
-	//Use velocity if want to avoid sweep
+	Super::OnClientCorrectionReceived(ClientData, TimeStamp, NewLocation, NewVelocity, NewBase, NewBaseBoneName,
+									  bHasBase, bBaseRelativePosition,
+									  ServerMovementMode);
+
+	UE_LOG(LogTemp, Warning, TEXT("On Client Correction Received"));
+}
+
+/**
+ *  Unpack compressed flags from a saved move and set state accordingly
+ ****************************************************************************************/
+void UEsLyraCharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)
+{
+	Super::UpdateFromCompressedFlags(Flags);
+
+	Safe_bWantsToTeleport = (Flags & FSavedMove_Es::FLAG_Teleport) != 0;
+	Safe_bWantsToWallRun = (Flags & FSavedMove_Es::FLAG_WallRun) != 0;
+}
+
+#pragma region Teleport
+/**
+ *  Player canTeleport while walking or midair
+ **********************************************************************************************************/
+bool UEsLyraCharacterMovementComponent::CanTeleport() const
+{
+	return IsWalking() || IsFalling();
+}
+
+/**
+ *  Teleport the character by TeleportImpulse. Use velocity if want to avoid sweep
+ **********************************************************************************************************/
+void UEsLyraCharacterMovementComponent::PerformTeleport()
+{	
 	TeleportStartTime = GetWorld()->GetTimeSeconds();	
 	
 	const FVector ForwardVector = UpdatedComponent->GetForwardVector();
@@ -121,34 +138,21 @@ void UEsLyraCharacterMovementComponent::PerformTeleport()
 	SetMovementMode(MOVE_Falling);
 }
 
+/**
+ *  Reset teleport flag at the end of the timer
+ **********************************************************************************************************/
 void UEsLyraCharacterMovementComponent::OnTeleportCooldownFinished()
 {
 	Safe_bWantsToTeleport = true;
-}
-
-void UEsLyraCharacterMovementComponent::OnClientCorrectionReceived(FNetworkPredictionData_Client_Character& ClientData,
-                                                                   float TimeStamp, FVector NewLocation, FVector NewVelocity, UPrimitiveComponent* NewBase, FName NewBaseBoneName,
-                                                                   bool bHasBase, bool bBaseRelativePosition, uint8 ServerMovementMode)
-{
-	Super::OnClientCorrectionReceived(ClientData, TimeStamp, NewLocation, NewVelocity, NewBase, NewBaseBoneName,
-	                                  bHasBase, bBaseRelativePosition,
-	                                  ServerMovementMode);
-
-	UE_LOG(LogTemp, Warning, TEXT("On Client Correction Received"));
-}
-
-void UEsLyraCharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)
-{
-	Super::UpdateFromCompressedFlags(Flags);
-
-	Safe_bWantsToTeleport = (Flags & FSavedMove_Es::FLAG_Teleport) != 0;
-	Safe_bWantsToWallRun = (Flags & FSavedMove_Es::FLAG_WallRun) != 0;
 }
 
 #pragma endregion
 
 #pragma region WallRun
 
+/**
+ *  Overwrite CanAttemptJump to read Jump press in air to WallJump or LateJump
+ ****************************************************************************************/
 bool UEsLyraCharacterMovementComponent::CanAttemptJump() const
 {
 	Safe_bWantsToWallRun = true;
@@ -156,6 +160,9 @@ bool UEsLyraCharacterMovementComponent::CanAttemptJump() const
 	return Super::CanAttemptJump() || CanWallJump() || bCanLateJump;
 }
 
+/**
+ *  Overwrite DoJump excluding the wallJump and including LateJump
+ ****************************************************************************************/
 bool UEsLyraCharacterMovementComponent::DoJump(bool bReplayingMoves)
 {	
 	if(CanWallJump())
@@ -170,39 +177,35 @@ bool UEsLyraCharacterMovementComponent::DoJump(bool bReplayingMoves)
 	return false;
 }
 
+/**
+ *  Called on Jump Released, activates WallJump if in WallRun
+ ****************************************************************************************/
 void UEsLyraCharacterMovementComponent::SetJumpEnd()
 {	
 	Safe_bWantsToWallRun = false;	
 
 	//Wall Jump
-	if(CanWallJump())
+	if(CanWallJump() && WallHit.bBlockingHit)
 	{			
 		SetMovementMode(MOVE_Falling);		
-
-		FVector Start = UpdatedComponent->GetComponentLocation();
-
-		//Build Vector
-		const FVector SideVector = FVector::CrossProduct(Velocity.GetSafeNormal(), FVector::DownVector) *
-			((Safe_bWallRunIsRight) ? 1.f : -1.f) *
-				((bWallRunForward) ? 1.f : -1.f);;
-
-		FCollisionQueryParams Params = ESCharacterOwner->GetIgnoreCharacterParams();
-		FHitResult WallHit;
-
-		FVector VWallCheck = SideVector + Velocity.GetSafeNormal();
-		VWallCheck *= CapsuleRScaled();
-		
-		GetWorld()->LineTraceSingleByProfile(WallHit, Start, Start + VWallCheck,  "BlockAll", Params);
 		Velocity = (CharacterOwner->GetActorForwardVector() + WallHit.Normal + FVector::UpVector * 2) * WallJumpOffForce;
-		DrawDebugLine(GetWorld(), Start, Start + Velocity, FColor::Silver, true, 1, 0, 4);	
+#ifdef ENABLE_DEBUG_LINES
+		DrawDebugLine(GetWorld(), Start, Start + Velocity, FColor::Silver, true, 1, 0, 4);
+#endif
 	}
 }
 
+/**
+ *  Returns angle between OnGoing direction and Player looking direction
+ ****************************************************************************************/
 float UEsLyraCharacterMovementComponent::GetLookingAtAngle() const
 {
 	return FMath::RadiansToDegrees(acosf(FVector::DotProduct(Velocity.GetSafeNormal(), CharacterOwner->GetActorForwardVector())));
 }
 
+/**
+ *  If JumpKey is pressed, search for a wall-runnable wall
+ ****************************************************************************************/
 bool UEsLyraCharacterMovementComponent::TryWallRun()
 {	
 	if(!Safe_bWantsToWallRun)
@@ -220,7 +223,7 @@ bool UEsLyraCharacterMovementComponent::TryWallRun()
 
 	FCollisionQueryParams Params = ESCharacterOwner->GetIgnoreCharacterParams();	
 	
-	FHitResult FloorHit, WallHit;
+	FHitResult FloorHit;
 	// Check Player Height
 	if (GetWorld()->LineTraceSingleByProfile(FloorHit, Start, Start + FVector::DownVector * (CapsuleHH() + MinWallRunHeight), "BlockAll", Params))
 	{		
@@ -256,6 +259,9 @@ bool UEsLyraCharacterMovementComponent::TryWallRun()
 	return true;
 }
 
+/**
+ *  CustomPhys, allows the player to WallRun and LateJump
+ ****************************************************************************************/
 void UEsLyraCharacterMovementComponent::PhysWallRun(float deltaTime, int32 Iterations)
 {	
 	if (deltaTime < MIN_TICK_TIME)
@@ -288,8 +294,7 @@ void UEsLyraCharacterMovementComponent::PhysWallRun(float deltaTime, int32 Itera
 			((Safe_bWallRunIsRight) ? 1.f : -1.f) *
 				((bWallRunForward) ? 1.f : -1.f);
 
-		FCollisionQueryParams Params = ESCharacterOwner->GetIgnoreCharacterParams();
-		FHitResult WallHit;
+		FCollisionQueryParams Params = ESCharacterOwner->GetIgnoreCharacterParams();		
 
 		FVector VWallCheck = SideVector + Velocity.GetSafeNormal();
 		VWallCheck *= CapsuleRScaled();
@@ -319,11 +324,13 @@ void UEsLyraCharacterMovementComponent::PhysWallRun(float deltaTime, int32 Itera
 			Tangent *= -1.f;
 		}
 		Velocity += Tangent * WallRunSpeedFactor;
-
+		
+#ifdef ENABLE_DEBUG_LINES
 		DrawDebugLine(GetWorld(), Start, Start + SideVector  * 100.f, FColor::Blue, true, .5f, 0, 2.f);		
-DrawDebugLine(GetWorld(), Start, Start + VWallCheck, FColor::Red, true, .5f, 0, 3.f);
-DrawDebugLine(GetWorld(), Start, Start + FVector::DownVector * (CapsuleHH() + MinWallRunHeight), FColor::Green);
+		DrawDebugLine(GetWorld(), Start, Start + VWallCheck, FColor::Red, true, .5f, 0, 3.f);
+		DrawDebugLine(GetWorld(), Start, Start + FVector::DownVector * (CapsuleHH() + MinWallRunHeight), FColor::Green);
 		DrawDebugLine(GetWorld(), Start, Start + Velocity.GetSafeNormal() * 100.f, FColor::Black, true, .5f, 0, 2.f);
+#endif
 		
 		// Compute move parameters
 		const FVector Delta = timeTick * Velocity; // dx = v * dt		
@@ -339,6 +346,7 @@ DrawDebugLine(GetWorld(), Start, Start + FVector::DownVector * (CapsuleHH() + Mi
 			SafeMoveUpdatedComponent(WallAttractionDelta, UpdatedComponent->GetComponentQuat(), true, Hit);
 		}
 
+		//LateJump
 		if (!WallHit.IsValidBlockingHit() ||  WallRunDuration < 0.f)
 		{			
 			SetMovementMode(MOVE_Falling);
@@ -364,6 +372,9 @@ DrawDebugLine(GetWorld(), Start, Start + FVector::DownVector * (CapsuleHH() + Mi
 	}
 }
 
+/**
+ *  Reset the LateJump timer
+ ****************************************************************************************/
 void UEsLyraCharacterMovementComponent::OnLateJumpFinished()
 {
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle_LateJumpCooldown);
@@ -375,11 +386,17 @@ void UEsLyraCharacterMovementComponent::OnLateJumpFinished()
 
 #pragma region Interface
 
+/**
+ *  Returns the CustomMovementMode
+ ****************************************************************************************/
 bool UEsLyraCharacterMovementComponent::IsCustomMovementMode(const ECustomMovementMode InCustomMovementMode) const
 {
 	return MovementMode == MOVE_Custom && CustomMovementMode == InCustomMovementMode;
 }
 
+/**
+ *  Starts the teleportation. Called by Teleport GA
+ ****************************************************************************************/
 void UEsLyraCharacterMovementComponent::TeleportPressed()
 {
 	const float CurrentTime = GetWorld()->GetTimeSeconds();
@@ -397,16 +414,13 @@ void UEsLyraCharacterMovementComponent::TeleportPressed()
 	}
 }
 
-void UEsLyraCharacterMovementComponent::TeleportReleased()
-{
-	GetWorld()->GetTimerManager().ClearTimer(TimerHandle_TeleportCooldown);
-	Safe_bWantsToTeleport = false;
-}
-
 #pragma endregion
 
 #pragma region Replication
 
+/**
+ *  Returns the properties used for network replication
+ ****************************************************************************************/
 void UEsLyraCharacterMovementComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -418,21 +432,33 @@ void UEsLyraCharacterMovementComponent::GetLifetimeReplicatedProps(TArray<FLifet
 
 #pragma region GettersSetters
 
+/**
+ *  OnRep notify for simulated proxy
+ ****************************************************************************************/
 void UEsLyraCharacterMovementComponent::OnRep_WallRun()
 {
 	Safe_bWantsToWallRun = Proxy_bWantsToWallRun;
 }
 
+/**
+ *  Returns Scaled Capsule Component radius of the character
+ ****************************************************************************************/
 float UEsLyraCharacterMovementComponent::CapsuleR() const
 {
 	return CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleRadius();
 }
 
+/**
+ *  Returns Scaled Capsule Component radius of the character, scaled by a factor
+ ****************************************************************************************/
 float UEsLyraCharacterMovementComponent::CapsuleRScaled() const
 {
 	return CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleRadius() * CapsuleScaleFactor;
 }
 
+/**
+ *  Returns Scaled Capsule Component half height of the character
+ ****************************************************************************************/
 float UEsLyraCharacterMovementComponent::CapsuleHH() const
 {
 	return CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
@@ -459,6 +485,9 @@ void FSavedMove_Es::Clear()
 	Saved_bWantsToWallRun = 0;
 }
 
+/**
+ *  Called to set up this saved move to make a predictive correction.
+ ****************************************************************************************/
 void FSavedMove_Es::SetMoveFor(ACharacter* C, float InDeltaTime, FVector const& NewAccel,
 	FNetworkPredictionData_Client_Character& ClientData)
 {
@@ -471,6 +500,9 @@ void FSavedMove_Es::SetMoveFor(ACharacter* C, float InDeltaTime, FVector const& 
 	Saved_bWallRunIsRight = CharacterMovement->Safe_bWallRunIsRight;
 }
 
+/**
+ *  Returns true if this move can be combined with NewMove for replication without changing any behavior
+ ****************************************************************************************/
 bool FSavedMove_Es::CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* InCharacter, float MaxDelta) const
 {
 	const FSavedMove_Es* NewEsMove = static_cast<FSavedMove_Es*>(NewMove.Get());
@@ -493,6 +525,9 @@ bool FSavedMove_Es::CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* InC
 	return Super::CanCombineWith(NewMove, InCharacter, MaxDelta);
 }
 
+/**
+ *  Called before ClientUpdatePosition uses this SavedMove to make a predictive correction
+ ****************************************************************************************/
 void FSavedMove_Es::PrepMoveFor(ACharacter* C)
 {
 	Super::PrepMoveFor(C);
@@ -505,6 +540,9 @@ void FSavedMove_Es::PrepMoveFor(ACharacter* C)
 	CharacterMovement->Safe_bWallRunIsRight = Saved_bWallRunIsRight;
 }
 
+/**
+ *  Returns a byte containing encoded special movement information, plus custom ones
+ ****************************************************************************************/
 uint8 FSavedMove_Es::GetCompressedFlags() const
 {
 	uint8 Result = Super::GetCompressedFlags();

@@ -19,7 +19,8 @@ enum ECustomMovementMode
 
 
 /**
- * 
+ *  Custom character movement component class for the Lyra game.
+ *  This class extends ULyraCharacterMovementComponent to add new movement abilities
  */
 UCLASS()
 class LYRAGAME_API UEsLyraCharacterMovementComponent : public ULyraCharacterMovementComponent
@@ -29,12 +30,15 @@ class LYRAGAME_API UEsLyraCharacterMovementComponent : public ULyraCharacterMove
 public:
 	UEsLyraCharacterMovementComponent(const FObjectInitializer& ObjectInitializer);
 
-	virtual void InitializeComponent() override;
+	/** <UCharacterMovementComponent> */
 	virtual FNetworkPredictionData_Client* GetPredictionData_Client() const override;
+	/** </UCharacterMovementComponent> */
 	
+	/** <ULyraCharacterMovementComponent> */
+	virtual void InitializeComponent() override;
 	virtual bool CanAttemptJump() const override;
 	virtual bool DoJump(bool bReplayingMoves) override;
-	
+	/** </ULyraCharacterMovementComponent> */
 
 	/*
 	 *  Parameters
@@ -87,6 +91,7 @@ public:
 	FTimerHandle TimerHandle_TeleportCooldown;
 
 	FTimerHandle TimerHandle_LateJumpCooldown;
+	
 	/*
 	 *  Replication
 	 */
@@ -100,11 +105,11 @@ public:
 	
 protected:
 	// Movement Pipeline
+	/** <UCharacterMovementComponent> */
 	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
-	//virtual void UpdateCharacterStateAfterMovement(float DeltaSeconds) override;
-	//virtual void OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity) override;
 	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
+	/** </UCharacterMovementComponent> */
 	
 private:
 	/*
@@ -125,14 +130,18 @@ private:
 	float WallRunDuration;
 	bool bWallRunForward;
 	bool bCanLateJump;
+	FHitResult WallHit;
 
 protected:
 	/*
 	 *  Network
 	 */
+	
+	/** <UCharacterMovementComponent> */
 	virtual void OnClientCorrectionReceived(FNetworkPredictionData_Client_Character& ClientData, float TimeStamp, FVector NewLocation, FVector NewVelocity, UPrimitiveComponent* NewBase, FName NewBaseBoneName, bool bHasBase, bool bBaseRelativePosition, uint8 ServerMovementMode) override;
 	virtual void UpdateFromCompressedFlags(uint8 Flags) override;
-
+	/** </UCharacterMovementComponent> */
+	
 public:
 	/*
 	 *  Interface
@@ -146,17 +155,14 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void TeleportPressed();
-
-	UFUNCTION(BlueprintCallable)
-	void TeleportReleased();
 		
 	UFUNCTION(BlueprintCallable)
 	void SetJumpEnd();
 	
-	UFUNCTION(BlueprintPure)
+	UFUNCTION(BlueprintPure) FORCEINLINE
 	bool IsWallRunning() const { return IsCustomMovementMode(CMOVE_WallRun); }
 	
-	UFUNCTION(BlueprintPure)
+	UFUNCTION(BlueprintPure) FORCEINLINE
 	bool WallRunningIsRight() const { return Safe_bWallRunIsRight; }
 
 	UFUNCTION(BlueprintPure)
@@ -165,16 +171,17 @@ public:
 	UFUNCTION(BlueprintPure) FORCEINLINE
 	bool GetIsGoingForward() const {return bWallRunForward; };
 
-	bool CanWallJump() const {return IsWallRunning(); };
+	FORCEINLINE bool CanWallJump() const {return IsWallRunning(); };
 
-	bool CanLateJump() const { return bCanLateJump; };
+	FORCEINLINE bool CanLateJump() const { return bCanLateJump; };
 
 	/*
 	 *  Proxy Replication
 	 */
-	
-public:
+
+	/** </UActorComponent> */
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	/** </UActorComponent> */
 
 private:
 	UFUNCTION()
@@ -188,11 +195,7 @@ private:
 	float CapsuleRScaled() const;
 	float CapsuleHH() const;
 	
-private:
-	
 };
-
-
 
 /** FSavedMove_Character represents a saved move on the client that has been sent to the server and might need to be played back. */
 class LYRAGAME_API FSavedMove_Es : public FSavedMove_Character
@@ -207,7 +210,7 @@ public:
 	{
 		// Remaining bit masks are available for custom flags.
 		FLAG_Teleport		= 0x10, // Teleport pressed
-		FLAG_WallRun		= 0x20,
+		FLAG_WallRun		= 0x20, // Wallrun pressed
 		FLAG_Custom_2		= 0x40,
 		FLAG_Custom_3		= 0x80,
 	};
@@ -220,6 +223,8 @@ public:
 
 	uint8 Saved_bWantsToWallRun:1;
 	uint8 Saved_bWallRunIsRight:1;
+
+	/** <FSavedMove_Es> */
 	
 	/** Clear saved move properties, so it can be re-used. */
 	virtual void Clear() override;
@@ -235,6 +240,8 @@ public:
 
 	/** Returns a byte containing encoded special movement information (jumping, crouching, etc.)	 */
 	virtual uint8 GetCompressedFlags() const override;
+	
+	/** </FSavedMove_Es> */
 };
 
 
@@ -244,7 +251,9 @@ public:
 	typedef FNetworkPredictionData_Client_Character Super;
 	
 	FNetworkPredictionData_Client_Es(const UCharacterMovementComponent& ClientMovement);
-
+	
+	/** <FNetworkPredictionData_Client_Es> */
 	virtual FSavedMovePtr AllocateNewMove() override;
+	/** </FNetworkPredictionData_Client_Es> */
 };
 
