@@ -10,6 +10,7 @@
 
 #include "LyraCharacter.generated.h"
 
+class UEsLyraCharacterMovementComponent;
 class AActor;
 class AController;
 class ALyraPlayerController;
@@ -100,7 +101,7 @@ class LYRAGAME_API ALyraCharacter : public AModularCharacter, public IAbilitySys
 public:
 
 	ALyraCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
-
+	
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
 	ALyraPlayerController* GetLyraPlayerController() const;
 
@@ -146,6 +147,8 @@ public:
 
 	virtual bool UpdateSharedReplication();
 
+	FCollisionQueryParams GetIgnoreCharacterParams() const; 
+
 protected:
 
 	virtual void OnAbilitySystemInitialized();
@@ -185,7 +188,8 @@ protected:
 	virtual void OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
 	virtual void OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
 
-	virtual bool CanJumpInternal_Implementation() const;
+	virtual void PostInitializeComponents() override;
+	virtual bool CanJumpInternal_Implementation() const override;
 
 private:
 
@@ -206,6 +210,9 @@ private:
 
 	UPROPERTY()
 	FOnLyraTeamIndexChangedDelegate OnTeamChangedDelegate;
+
+	UPROPERTY(Category="Lyra|Character", VisibleAnywhere, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UEsLyraCharacterMovementComponent> ESCharacterMovement;
 
 protected:
 	// Called to determine what happens to the team ID when possession ends

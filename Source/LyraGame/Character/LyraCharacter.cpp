@@ -9,6 +9,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "LyraCharacterMovementComponent.h"
+#include "EsLyraCharacterMovementComponent.h"
 #include "LyraGameplayTags.h"
 #include "LyraLogChannels.h"
 #include "Net/UnrealNetwork.h"
@@ -83,6 +84,9 @@ ALyraCharacter::ALyraCharacter(const FObjectInitializer& ObjectInitializer)
 void ALyraCharacter::PreInitializeComponents()
 {
 	Super::PreInitializeComponents();
+
+	UEsLyraCharacterMovementComponent* EsMoveComp = Cast<UEsLyraCharacterMovementComponent>(GetCharacterMovement());
+	EsMoveComp->SetIsReplicated(true);
 }
 
 void ALyraCharacter::BeginPlay()
@@ -98,7 +102,7 @@ void ALyraCharacter::BeginPlay()
 		{
 //@TODO: SignificanceManager->RegisterObject(this, (EFortSignificanceType)SignificanceType);
 		}
-	}
+	}	
 }
 
 void ALyraCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -453,10 +457,16 @@ void ALyraCharacter::OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightA
 	Super::OnEndCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
 }
 
-bool ALyraCharacter::CanJumpInternal_Implementation() const
+void ALyraCharacter::PostInitializeComponents()
 {
-	// same as ACharacter's implementation but without the crouch check
-	return JumpIsAllowedInternal();
+	Super::PostInitializeComponents();
+
+	ESCharacterMovement = CastChecked<UEsLyraCharacterMovementComponent>(GetCharacterMovement());
+}
+
+bool ALyraCharacter::CanJumpInternal_Implementation() const
+{	
+	return Super::CanJumpInternal_Implementation() || ESCharacterMovement->CanLateJump();
 }
 
 void ALyraCharacter::OnRep_ReplicatedAcceleration()
@@ -543,6 +553,18 @@ bool ALyraCharacter::UpdateSharedReplication()
 
 	// We cannot fastrep right now. Don't send anything.
 	return false;
+}
+
+FCollisionQueryParams ALyraCharacter::GetIgnoreCharacterParams() const
+{
+	FCollisionQueryParams Params;
+
+	TArray<AActor*> CharacterChildren;
+	GetAllChildActors(CharacterChildren);
+	Params.AddIgnoredActors(CharacterChildren);
+	Params.AddIgnoredActor(this);
+
+	return Params;
 }
 
 void ALyraCharacter::FastSharedReplication_Implementation(const FSharedRepMovement& SharedRepMovement)
