@@ -85,7 +85,6 @@ public:
 	
 	bool Safe_bWantsToTeleport;
 	mutable bool Safe_bWantsToWallRun;
-	bool Safe_bWallRunIsRight;	
 
 	float TeleportStartTime;
 	FTimerHandle TimerHandle_TeleportCooldown;
@@ -96,8 +95,8 @@ public:
 	 *  Replication
 	 */
 
-	UPROPERTY(ReplicatedUsing=OnRep_WallRun)
-	mutable bool Proxy_bWantsToWallRun;
+	UPROPERTY(Replicated)
+	float WallRunDuration;
 	
 	/*
 	 *  Delegates
@@ -127,9 +126,13 @@ private:
 	void PhysWallRun(float deltaTime, int32 Iterations);
 	void OnLateJumpFinished();
 
-	float WallRunDuration;
+	UPROPERTY(Replicated)
+	bool bWallRunIsRight;
+	
+	UPROPERTY(Replicated)
 	bool bWallRunForward;
-	bool bCanLateJump;
+	
+	bool bCanLateJump;	
 	FHitResult WallHit;
 
 protected:
@@ -163,7 +166,7 @@ public:
 	bool IsWallRunning() const { return IsCustomMovementMode(CMOVE_WallRun); }
 	
 	UFUNCTION(BlueprintPure) FORCEINLINE
-	bool WallRunningIsRight() const { return Safe_bWallRunIsRight; }
+	bool WallRunningIsRight() const { return bWallRunIsRight; }
 
 	UFUNCTION(BlueprintPure)
 	float GetLookingAtAngle() const;
@@ -184,9 +187,7 @@ public:
 	/** </UActorComponent> */
 
 private:
-	UFUNCTION()
-	void OnRep_WallRun();
-
+	
 	/*
 	 *  Getter/Setters
 	 */
@@ -222,7 +223,6 @@ public:
 	uint8 Saved_bWantsToTeleport:1;
 
 	uint8 Saved_bWantsToWallRun:1;
-	uint8 Saved_bWallRunIsRight:1;
 
 	/** <FSavedMove_Es> */
 	

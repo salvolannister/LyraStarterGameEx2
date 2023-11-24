@@ -86,7 +86,8 @@ void UEsLyraCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterat
 void UEsLyraCharacterMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode,
 	uint8 PreviousCustomMode)
 {
-	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);	
+	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
+
 }
 
 /**
@@ -156,7 +157,6 @@ void UEsLyraCharacterMovementComponent::OnTeleportCooldownFinished()
 bool UEsLyraCharacterMovementComponent::CanAttemptJump() const
 {
 	Safe_bWantsToWallRun = true;
-	Proxy_bWantsToWallRun = true;
 	return Super::CanAttemptJump() || CanWallJump() || bCanLateJump;
 }
 
@@ -235,7 +235,7 @@ bool UEsLyraCharacterMovementComponent::TryWallRun()
 
 	if (WallHit.IsValidBlockingHit() && (Velocity | WallHit.Normal) < 30)
 	{
-		Safe_bWallRunIsRight = false;
+		bWallRunIsRight = false;
 	}
 	// Right Cast
 	else
@@ -244,7 +244,7 @@ bool UEsLyraCharacterMovementComponent::TryWallRun()
 	
 		if (WallHit.IsValidBlockingHit() && (Velocity | WallHit.Normal) < 30)
 		{
-			Safe_bWallRunIsRight = true;
+			bWallRunIsRight = true;
 		}
 		else
 		{	
@@ -291,7 +291,7 @@ void UEsLyraCharacterMovementComponent::PhysWallRun(float deltaTime, int32 Itera
 
 		//Build Vector
 		const FVector SideVector = FVector::CrossProduct(Velocity.GetSafeNormal(), FVector::DownVector) *
-			((Safe_bWallRunIsRight) ? 1.f : -1.f) *
+			((bWallRunIsRight) ? 1.f : -1.f) *
 				((bWallRunForward) ? 1.f : -1.f);
 
 		FCollisionQueryParams Params = ESCharacterOwner->GetIgnoreCharacterParams();		
@@ -424,21 +424,15 @@ void UEsLyraCharacterMovementComponent::TeleportPressed()
 void UEsLyraCharacterMovementComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME_CONDITION(UEsLyraCharacterMovementComponent, Proxy_bWantsToWallRun, COND_SkipOwner);
+	
+	DOREPLIFETIME_CONDITION(UEsLyraCharacterMovementComponent, WallRunDuration, COND_SkipOwner);
+	DOREPLIFETIME_CONDITION(UEsLyraCharacterMovementComponent, bWallRunForward, COND_SkipOwner);
+	DOREPLIFETIME_CONDITION(UEsLyraCharacterMovementComponent, bWallRunIsRight, COND_SkipOwner);
 }
 
 #pragma endregion
 
 #pragma region GettersSetters
-
-/**
- *  OnRep notify for simulated proxy
- ****************************************************************************************/
-void UEsLyraCharacterMovementComponent::OnRep_WallRun()
-{
-	Safe_bWantsToWallRun = Proxy_bWantsToWallRun;
-}
 
 /**
  *  Returns Scaled Capsule Component radius of the character
@@ -472,7 +466,6 @@ float UEsLyraCharacterMovementComponent::CapsuleHH() const
 FSavedMove_Es::FSavedMove_Es()
 {
 	Saved_bWantsToTeleport = 0;
-	Saved_bWallRunIsRight = 0;
 	Saved_bWantsToWallRun = 0;
 }
 
@@ -481,7 +474,6 @@ void FSavedMove_Es::Clear()
 	Super::Clear();
 
 	Saved_bWantsToTeleport = 0;
-	Saved_bWallRunIsRight = 0;
 	Saved_bWantsToWallRun = 0;
 }
 
@@ -497,7 +489,6 @@ void FSavedMove_Es::SetMoveFor(ACharacter* C, float InDeltaTime, FVector const& 
 
 	Saved_bWantsToWallRun = CharacterMovement->Safe_bWantsToWallRun;
 	Saved_bWantsToTeleport = CharacterMovement->Safe_bWantsToTeleport;
-	Saved_bWallRunIsRight = CharacterMovement->Safe_bWallRunIsRight;
 }
 
 /**
@@ -517,11 +508,6 @@ bool FSavedMove_Es::CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* InC
 		return false;
 	}
 
-	if(Saved_bWallRunIsRight != NewEsMove->Saved_bWallRunIsRight)
-	{
-		return false;
-	}
-		
 	return Super::CanCombineWith(NewMove, InCharacter, MaxDelta);
 }
 
@@ -537,7 +523,6 @@ void FSavedMove_Es::PrepMoveFor(ACharacter* C)
 	CharacterMovement->Safe_bWantsToTeleport = Saved_bWantsToTeleport;
 	
 	CharacterMovement->Safe_bWantsToWallRun = Saved_bWantsToWallRun;
-	CharacterMovement->Safe_bWallRunIsRight = Saved_bWallRunIsRight;
 }
 
 /**
