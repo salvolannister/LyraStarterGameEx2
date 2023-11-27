@@ -14,7 +14,25 @@ enum ECustomMovementMode
 {
 	CMOVE_None			UMETA(Hidden),
 	CMOVE_WallRun		UMETA(DisplayName = "Wall Run"),
+	CMOVE_RewindTime	UMETA(DisplayName = "Rewind Time"),
 	CMOVE_MAX			UMETA(Hidden),
+};
+
+USTRUCT(BlueprintType)
+struct FSavedPlayerStatus
+{
+    GENERATED_BODY()
+
+public:    
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector_NetQuantize SavedTransform;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FRotator SavedRotator;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float SavedMaxLife;
 };
 
 
@@ -79,6 +97,16 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float LateJumpDuration = 1.f;
 
+	//Rewind Time
+	UPROPERTY(EditDefaultsOnly)
+	float RewindTimeWindowDuration = 3.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float RewindTimeSampleFrequencyTime = .1f; 
+
+	UPROPERTY(EditDefaultsOnly)
+	float RewindingDuration = 3.f;
+	
 	/*
 	 *  Flags (Transient)
 	 */
@@ -90,6 +118,8 @@ public:
 	FTimerHandle TimerHandle_TeleportCooldown;
 
 	FTimerHandle TimerHandle_LateJumpCooldown;
+
+	bool Safe_bIsRewinding;
 	
 	/*
 	 *  Replication
@@ -105,6 +135,7 @@ public:
 protected:
 	// Movement Pipeline
 	/** <UCharacterMovementComponent> */
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
 	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
@@ -135,6 +166,24 @@ private:
 	bool bCanLateJump;	
 	FHitResult WallHit;
 
+	/*
+	 *  RewindTime
+	 */
+
+	bool TryRewindTime(float deltaTime);
+	void PhysRewindTime(float deltaTime, int32 Iterations);
+
+	TArray<FSavedPlayerStatus> SavedPlayerStatusBuffer;
+	
+	int32 BufferSampleMaxSize;
+	float CurrentSampleTime = 0.f;
+	float RewindSampleTime;
+	float CurrentRewindSampleTime;		
+
+	FVector OldPosition;
+	FVector NewPosition;
+	float InterpolationSpeed;	
+	
 protected:
 	/*
 	 *  Network
@@ -177,6 +226,12 @@ public:
 	FORCEINLINE bool CanWallJump() const {return IsWallRunning(); };
 
 	FORCEINLINE bool CanLateJump() const { return bCanLateJump; };
+	
+	UFUNCTION(BlueprintPure) FORCEINLINE
+	bool IsRewindingTime() const {return Safe_bIsRewinding; };
+
+	UFUNCTION(BlueprintCallable)
+	void RewindTimePressed();
 
 	/*
 	 *  Proxy Replication
@@ -212,7 +267,7 @@ public:
 		// Remaining bit masks are available for custom flags.
 		FLAG_Teleport		= 0x10, // Teleport pressed
 		FLAG_WallRun		= 0x20, // Wallrun pressed
-		FLAG_Custom_2		= 0x40,
+		FLAG_RewindTime		= 0x40, // RewindTime pressed
 		FLAG_Custom_3		= 0x80,
 	};
 	
@@ -221,8 +276,8 @@ public:
 	 */
 	
 	uint8 Saved_bWantsToTeleport:1;
-
 	uint8 Saved_bWantsToWallRun:1;
+	uint8 Saved_bIsRewinding:1;
 
 	/** <FSavedMove_Es> */
 	

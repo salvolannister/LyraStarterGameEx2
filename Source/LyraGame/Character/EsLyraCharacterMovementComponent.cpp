@@ -6,6 +6,8 @@
 #include "LyraCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 
 FNetworkPredictionData_Client* UEsLyraCharacterMovementComponent::GetPredictionData_Client() const
@@ -28,13 +30,25 @@ UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObje
 {
 	Safe_bWantsToTeleport = false;
 	Safe_bWantsToWallRun = false;
+	Safe_bIsRewinding = false;
 	TeleportStartTime = 0.f;
+
+	BufferSampleMaxSize = RewindTimeWindowDuration / RewindTimeSampleFrequencyTime;
 }
 
 void UEsLyraCharacterMovementComponent::InitializeComponent()
 {
 	Super::InitializeComponent();
 	ESCharacterOwner = Cast<ALyraCharacter>(GetOwner());
+}
+
+void UEsLyraCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+	FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	//if(LocationsBuffer.Num() > 0)
+		//DrawDebugSphere(GetWorld(), LocationsBuffer.Last(), 5.f, 2, FColor::Green, false, 3.f, 0, 1); //LocationsBuffer.Last()
 }
 
 /**
@@ -58,8 +72,10 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
 	}
 	
 	// Wall Run	
-	TryWallRun();	
-	
+	TryWallRun();
+
+	//RewindTime
+	TryRewindTime(DeltaSeconds);
 	Super::UpdateCharacterStateBeforeMovement(DeltaSeconds);
 }
 
@@ -74,7 +90,10 @@ void UEsLyraCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterat
 	{	
 	case CMOVE_WallRun:
 		PhysWallRun(deltaTime, Iterations);
-		break;	
+		break;
+	case CMOVE_RewindTime:
+		PhysRewindTime(deltaTime, Iterations);
+		break;
 	default:
 		UE_LOG(LogTemp, Fatal, TEXT("Invalid Movement Mode"))
 	}
@@ -113,6 +132,7 @@ void UEsLyraCharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)
 
 	Safe_bWantsToTeleport = (Flags & FSavedMove_Es::FLAG_Teleport) != 0;
 	Safe_bWantsToWallRun = (Flags & FSavedMove_Es::FLAG_WallRun) != 0;
+	Safe_bIsRewinding = (Flags & FSavedMove_Es::FLAG_RewindTime) != 0;
 }
 
 #pragma region Teleport
@@ -200,6 +220,8 @@ void UEsLyraCharacterMovementComponent::SetJumpEnd()
  ****************************************************************************************/
 float UEsLyraCharacterMovementComponent::GetLookingAtAngle() const
 {
+	if(!CharacterOwner) return 0.f;
+	
 	return FMath::RadiansToDegrees(acosf(FVector::DotProduct(Velocity.GetSafeNormal(), CharacterOwner->GetActorForwardVector())));
 }
 
@@ -381,6 +403,92 @@ void UEsLyraCharacterMovementComponent::OnLateJumpFinished()
 	bCanLateJump = false;
 }
 
+#pragma endregion
+
+#pragma region RewindTime
+
+bool UEsLyraCharacterMovementComponent::TryRewindTime(float deltaTime)
+{
+	if(Safe_bIsRewinding)
+	{
+		SetMovementMode(MOVE_Custom, CMOVE_RewindTime);
+		CurrentSampleTime = RewindTimeSampleFrequencyTime;
+		return false;
+	}
+
+	CurrentSampleTime -= deltaTime;
+	if(CurrentSampleTime <= 0.f)
+	{
+		FSavedPlayerStatus SavedPlayerStatus;
+		SavedPlayerStatus.SavedTransform = UpdatedComponent->GetComponentLocation();
+		SavedPlayerStatus.SavedRotator = UpdatedComponent->GetComponentRotation();
+		SavedPlayerStatusBuffer.Add(SavedPlayerStatus);
+
+		CurrentSampleTime = RewindTimeSampleFrequencyTime;
+	}	
+
+	if(SavedPlayerStatusBuffer.Num() >= BufferSampleMaxSize)
+	{		
+		SavedPlayerStatusBuffer.RemoveAt(0);		
+	}
+
+	return true;
+}
+
+void UEsLyraCharacterMovementComponent::PhysRewindTime(float deltaTime, int32 Iterations)
+{	
+	if (deltaTime < MIN_TICK_TIME)
+	{
+		return;
+	}
+	if (!CharacterOwner || (!CharacterOwner->Controller && !bRunPhysicsWithNoController && !HasAnimRootMotion() && !CurrentRootMotion.HasOverrideVelocity() && (CharacterOwner->GetLocalRole() != ROLE_SimulatedProxy)))
+	{
+		Acceleration = FVector::ZeroVector;
+		Velocity = FVector::ZeroVector;
+		return;
+	}
+
+	if (SavedPlayerStatusBuffer.Num() == 0)
+	{
+		SetMovementMode(MOVE_Falling);
+		StartNewPhysics(deltaTime, Iterations);
+		Safe_bIsRewinding = false;
+		const float CurrentTimestamp = UGameplayStatics::GetRealTimeSeconds(GetWorld());
+		UE_LOG(LogTemp, Warning, TEXT("End: %f"), CurrentTimestamp);
+		Velocity = FVector::ZeroVector;
+		return;
+	}	
+	
+	// Perform the move
+	bJustTeleported = false;
+	Iterations++;
+
+	CurrentRewindSampleTime -= deltaTime;
+
+	const FVector TargetPos = UKismetMathLibrary::VInterpTo(UpdatedComponent->GetComponentLocation(), NewPosition, deltaTime, InterpolationSpeed);
+	
+	DrawDebugSphere(GetWorld(), NewPosition, 5.f, 2, FColor::Red, false, .1f, 0, 2);
+	DrawDebugSphere(GetWorld(), TargetPos, 3.f, 2, FColor::Black, false, .1f, 0, 2);
+
+	// Compute move parameters
+	const FVector Delta = TargetPos - UpdatedComponent->GetComponentLocation(); // dx = v * dt
+	if (!Delta.IsNearlyZero())
+	{
+		FHitResult Hit;
+		SafeMoveUpdatedComponent(Delta, UpdatedComponent->GetComponentQuat(), false, Hit);		
+	}
+	
+	if(CurrentRewindSampleTime <= 0.f)
+	{
+		SavedPlayerStatusBuffer.RemoveAt(SavedPlayerStatusBuffer.Num() - 1);
+		CurrentRewindSampleTime = RewindSampleTime;
+		if(SavedPlayerStatusBuffer.Num() > 0)
+		{
+			NewPosition = SavedPlayerStatusBuffer.Last().SavedTransform;
+		}				
+	}
+}
+
 #pragma endregion 
 
 
@@ -412,6 +520,25 @@ void UEsLyraCharacterMovementComponent::TeleportPressed()
 			&UEsLyraCharacterMovementComponent::OnTeleportCooldownFinished,
 			TeleportCooldownDuration - (CurrentTime - TeleportStartTime));
 	}
+}
+
+void UEsLyraCharacterMovementComponent::RewindTimePressed()
+{
+	Safe_bIsRewinding = true;
+
+	for (auto Element : SavedPlayerStatusBuffer)
+	{
+		DrawDebugSphere(GetWorld(), Element.SavedTransform, 5.f, 2, FColor::Green, true, -1.f, 0, 1);
+	}	
+	
+	RewindSampleTime = RewindingDuration / BufferSampleMaxSize;
+	CurrentRewindSampleTime = RewindSampleTime;
+	InterpolationSpeed = 1.f / CurrentRewindSampleTime;
+	SavedPlayerStatusBuffer.RemoveAt(0);
+	NewPosition = SavedPlayerStatusBuffer.Last().SavedTransform;
+
+	const float CurrentTimestamp = UGameplayStatics::GetRealTimeSeconds(GetWorld());
+	UE_LOG(LogTemp, Warning, TEXT("Start: %f - SampleTime %f"), CurrentTimestamp, RewindSampleTime);
 }
 
 #pragma endregion
@@ -467,6 +594,7 @@ FSavedMove_Es::FSavedMove_Es()
 {
 	Saved_bWantsToTeleport = 0;
 	Saved_bWantsToWallRun = 0;
+	Saved_bIsRewinding = 0;
 }
 
 void FSavedMove_Es::Clear()
@@ -475,6 +603,7 @@ void FSavedMove_Es::Clear()
 
 	Saved_bWantsToTeleport = 0;
 	Saved_bWantsToWallRun = 0;
+	Saved_bIsRewinding = 0;
 }
 
 /**
@@ -489,6 +618,7 @@ void FSavedMove_Es::SetMoveFor(ACharacter* C, float InDeltaTime, FVector const& 
 
 	Saved_bWantsToWallRun = CharacterMovement->Safe_bWantsToWallRun;
 	Saved_bWantsToTeleport = CharacterMovement->Safe_bWantsToTeleport;
+	Saved_bIsRewinding = CharacterMovement->Safe_bIsRewinding;
 }
 
 /**
@@ -504,6 +634,11 @@ bool FSavedMove_Es::CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* InC
 	}
 
 	if(Saved_bWantsToWallRun != NewEsMove->Saved_bWantsToWallRun)
+	{
+		return false;
+	}
+	
+	if(Saved_bIsRewinding != NewEsMove->Saved_bIsRewinding)
 	{
 		return false;
 	}
@@ -523,6 +658,8 @@ void FSavedMove_Es::PrepMoveFor(ACharacter* C)
 	CharacterMovement->Safe_bWantsToTeleport = Saved_bWantsToTeleport;
 	
 	CharacterMovement->Safe_bWantsToWallRun = Saved_bWantsToWallRun;
+
+	CharacterMovement->Safe_bIsRewinding = Saved_bIsRewinding;
 }
 
 /**
@@ -540,6 +677,11 @@ uint8 FSavedMove_Es::GetCompressedFlags() const
 	if(Saved_bWantsToWallRun)
 	{
 		Result |= FLAG_WallRun;
+	}
+	
+	if(Saved_bIsRewinding)
+	{
+		Result |= FLAG_RewindTime;
 	}
 	
 	return Result;
