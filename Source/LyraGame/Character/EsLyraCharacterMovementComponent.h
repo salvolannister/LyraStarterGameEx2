@@ -26,7 +26,7 @@ struct FSavedPlayerStatus
 public:    
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector_NetQuantize SavedTransform;
+	FVector_NetQuantize SavedLocation;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FRotator SavedRotator;
@@ -102,7 +102,7 @@ public:
 	float RewindTimeWindowDuration = 3.f;
 
 	UPROPERTY(EditDefaultsOnly)
-	float RewindTimeSampleFrequencyTime = .1f; 
+	float RewindTimeSampleFrequencyTime = .3f; 
 
 	UPROPERTY(EditDefaultsOnly)
 	float RewindingDuration = 3.f;
@@ -118,8 +118,9 @@ public:
 	FTimerHandle TimerHandle_TeleportCooldown;
 
 	FTimerHandle TimerHandle_LateJumpCooldown;
-
+	
 	bool Safe_bIsRewinding;
+	uint8 Safe_RewindingIndex;
 	
 	/*
 	 *  Replication
@@ -137,6 +138,7 @@ protected:
 	/** <UCharacterMovementComponent> */
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
+	virtual void UpdateCharacterStateAfterMovement(float DeltaSeconds) override;
 	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 	/** </UCharacterMovementComponent> */
@@ -171,7 +173,6 @@ private:
 	 */
 
 	bool TryRewindTime(float deltaTime);
-	void PhysRewindTime(float deltaTime, int32 Iterations);
 
 	TArray<FSavedPlayerStatus> SavedPlayerStatusBuffer;
 	
@@ -278,6 +279,8 @@ public:
 	uint8 Saved_bWantsToTeleport:1;
 	uint8 Saved_bWantsToWallRun:1;
 	uint8 Saved_bIsRewinding:1;
+	
+	uint8 Saved_RewindingIndex;
 
 	/** <FSavedMove_Es> */
 	
