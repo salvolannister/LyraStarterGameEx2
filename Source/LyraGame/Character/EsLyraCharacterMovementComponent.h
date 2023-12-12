@@ -6,8 +6,37 @@
 #include "Character/LyraCharacterMovementComponent.h"
 #include "EsLyraCharacterMovementComponent.generated.h"
 
-
 class ALyraCharacter;
+
+
+struct FEsNetworkMoveData : public FCharacterNetworkMoveData
+{
+	uint8 MoreCompressedFlags;
+	int32 Saved_RewindingIndex;
+        
+	FEsNetworkMoveData() : FCharacterNetworkMoveData(), MoreCompressedFlags(0), Saved_RewindingIndex(0)
+	{
+		Saved_RewindingIndex = 0;
+	};
+  
+	virtual bool Serialize(UCharacterMovementComponent& CharacterMovement, FArchive& Ar, UPackageMap* PackageMap, FCharacterNetworkMoveData::ENetworkMoveType MoveType) override;
+	virtual void ClientFillNetworkMoveData(const FSavedMove_Character& ClientMove, FCharacterNetworkMoveData::ENetworkMoveType MoveType) override;
+};
+
+struct FEsNetworkMoveDataContainer: public FCharacterNetworkMoveDataContainer
+{
+	FEsNetworkMoveData CustomMoves[3];
+
+	FEsNetworkMoveDataContainer() {
+		NewMoveData = &CustomMoves[0];
+		PendingMoveData = &CustomMoves[1];
+		OldMoveData = &CustomMoves[2];
+	}
+};
+
+
+
+
 
 UENUM(BlueprintType)
 enum ECustomMovementMode
@@ -24,15 +53,17 @@ struct FSavedPlayerStatus
     GENERATED_BODY()
 
 public:    
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Timestamp;
+	
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector_NetQuantize SavedLocation = FVector::ZeroVector;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector_NetQuantize SavedLocation;
+    FRotator SavedRotator = FRotator::ZeroRotator;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FRotator SavedRotator;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float SavedMaxLife;
+    float SavedMaxLife = 0.f;
 };
 
 
@@ -102,10 +133,16 @@ public:
 	float RewindTimeWindowDuration = 3.f;
 
 	UPROPERTY(EditDefaultsOnly)
-	float RewindTimeSampleFrequencyTime = .3f; 
+	float RewindTimeSampleFrequencyTime = .1f; 
 
 	UPROPERTY(EditDefaultsOnly)
-	float RewindingDuration = 3.f;
+	float RewindingDuration = 1.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float RewindTimeCooldownDuration = 5.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float AuthRewindTimeCooldownDuration = 4.f;
 	
 	/*
 	 *  Flags (Transient)
@@ -118,9 +155,12 @@ public:
 	FTimerHandle TimerHandle_TeleportCooldown;
 
 	FTimerHandle TimerHandle_LateJumpCooldown;
+
+	float RewindTimeStartTime;
+	FTimerHandle TimerHandle_RewindTimeCooldown;
 	
 	bool Safe_bIsRewinding;
-	uint8 Safe_RewindingIndex;
+	int32 Safe_RewindingIndex;
 	
 	/*
 	 *  Replication
@@ -134,9 +174,10 @@ public:
 	 */
 	
 protected:
+	
 	// Movement Pipeline
 	/** <UCharacterMovementComponent> */
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void BeginPlay() override;
 	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
 	virtual void UpdateCharacterStateAfterMovement(float DeltaSeconds) override;
 	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
@@ -144,6 +185,9 @@ protected:
 	/** </UCharacterMovementComponent> */
 	
 private:
+
+	FEsNetworkMoveDataContainer EsNetworkMoveDataContainer;
+	
 	/*
 	 *  Teleport
 	 */
@@ -158,6 +202,8 @@ private:
 	bool TryWallRun();
 	void PhysWallRun(float deltaTime, int32 Iterations);
 	void OnLateJumpFinished();
+	void CollectRewindData(float deltaTime);
+	void PerformRewindingTime(float deltaTime);
 
 	UPROPERTY(Replicated)
 	bool bWallRunIsRight;
@@ -183,7 +229,9 @@ private:
 
 	FVector OldPosition;
 	FVector NewPosition;
-	float InterpolationSpeed;	
+	float InterpolationSpeed;
+
+	bool bStartRewinding = false;
 	
 protected:
 	/*
@@ -193,6 +241,8 @@ protected:
 	/** <UCharacterMovementComponent> */
 	virtual void OnClientCorrectionReceived(FNetworkPredictionData_Client_Character& ClientData, float TimeStamp, FVector NewLocation, FVector NewVelocity, UPrimitiveComponent* NewBase, FName NewBaseBoneName, bool bHasBase, bool bBaseRelativePosition, uint8 ServerMovementMode) override;
 	virtual void UpdateFromCompressedFlags(uint8 Flags) override;
+	virtual void MoveAutonomous(float ClientTimeStamp, float DeltaTime, uint8 CompressedFlags, const FVector& NewAccel) override;
+	//virtual void ClientAdjustPosition_Implementation(float TimeStamp, FVector NewLoc, FVector NewVel, UPrimitiveComponent* NewBase, FName NewBaseBoneName, bool bHasBase, bool bBaseRelativePosition, uint8 ServerMovementMode, TOptional<FRotator> OptionalRotation) override;
 	/** </UCharacterMovementComponent> */
 	
 public:
@@ -269,7 +319,7 @@ public:
 		FLAG_Teleport		= 0x10, // Teleport pressed
 		FLAG_WallRun		= 0x20, // Wallrun pressed
 		FLAG_RewindTime		= 0x40, // RewindTime pressed
-		FLAG_Custom_3		= 0x80,
+		FLAG_Custom			= 0x80,
 	};
 	
 	/*
@@ -280,7 +330,7 @@ public:
 	uint8 Saved_bWantsToWallRun:1;
 	uint8 Saved_bIsRewinding:1;
 	
-	uint8 Saved_RewindingIndex;
+	int32 Saved_RewindingIndex;
 
 	/** <FSavedMove_Es> */
 	
@@ -314,4 +364,3 @@ public:
 	virtual FSavedMovePtr AllocateNewMove() override;
 	/** </FNetworkPredictionData_Client_Es> */
 };
-
