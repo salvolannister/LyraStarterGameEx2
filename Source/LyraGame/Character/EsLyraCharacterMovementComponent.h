@@ -8,7 +8,7 @@
 
 class ALyraCharacter;
 
-
+/* Encapsulates a client move that is sent to the server for CMC networking */
 struct FEsNetworkMoveData : public FCharacterNetworkMoveData
 {
 	uint8 MoreCompressedFlags;
@@ -23,6 +23,7 @@ struct FEsNetworkMoveData : public FCharacterNetworkMoveData
 	virtual void ClientFillNetworkMoveData(const FSavedMove_Character& ClientMove, FCharacterNetworkMoveData::ENetworkMoveType MoveType) override;
 };
 
+/* Used for network RPC parameters between client/serve*/
 struct FEsNetworkMoveDataContainer: public FCharacterNetworkMoveDataContainer
 {
 	FEsNetworkMoveData CustomMoves[3];
@@ -33,10 +34,6 @@ struct FEsNetworkMoveDataContainer: public FCharacterNetworkMoveDataContainer
 		OldMoveData = &CustomMoves[2];
 	}
 };
-
-
-
-
 
 UENUM(BlueprintType)
 enum ECustomMovementMode
@@ -52,15 +49,9 @@ struct FSavedPlayerStatus
 {
     GENERATED_BODY()
 
-public:    
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Timestamp;
-	
+public:   	
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector_NetQuantize SavedLocation = FVector::ZeroVector;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FRotator SavedRotator = FRotator::ZeroRotator;
+	FVector SavedLocation = FVector::ZeroVector;  
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float SavedMaxLife = 0.f;
@@ -181,7 +172,6 @@ protected:
 	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
 	virtual void UpdateCharacterStateAfterMovement(float DeltaSeconds) override;
 	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
-	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 	/** </UCharacterMovementComponent> */
 	
 private:
@@ -201,9 +191,7 @@ private:
 
 	bool TryWallRun();
 	void PhysWallRun(float deltaTime, int32 Iterations);
-	void OnLateJumpFinished();
-	void CollectRewindData(float deltaTime);
-	void PerformRewindingTime(float deltaTime);
+	void OnLateJumpFinished();	
 
 	UPROPERTY(Replicated)
 	bool bWallRunIsRight;
@@ -218,8 +206,9 @@ private:
 	 *  RewindTime
 	 */
 
-	bool TryRewindTime(float deltaTime);
-
+	void CollectRewindData(float deltaTime);
+	void PerformRewindingTime(float deltaTime);
+	
 	TArray<FSavedPlayerStatus> SavedPlayerStatusBuffer;
 	
 	int32 BufferSampleMaxSize;
@@ -242,7 +231,6 @@ protected:
 	virtual void OnClientCorrectionReceived(FNetworkPredictionData_Client_Character& ClientData, float TimeStamp, FVector NewLocation, FVector NewVelocity, UPrimitiveComponent* NewBase, FName NewBaseBoneName, bool bHasBase, bool bBaseRelativePosition, uint8 ServerMovementMode) override;
 	virtual void UpdateFromCompressedFlags(uint8 Flags) override;
 	virtual void MoveAutonomous(float ClientTimeStamp, float DeltaTime, uint8 CompressedFlags, const FVector& NewAccel) override;
-	//virtual void ClientAdjustPosition_Implementation(float TimeStamp, FVector NewLoc, FVector NewVel, UPrimitiveComponent* NewBase, FName NewBaseBoneName, bool bHasBase, bool bBaseRelativePosition, uint8 ServerMovementMode, TOptional<FRotator> OptionalRotation) override;
 	/** </UCharacterMovementComponent> */
 	
 public:
@@ -277,9 +265,6 @@ public:
 	FORCEINLINE bool CanWallJump() const {return IsWallRunning(); };
 
 	FORCEINLINE bool CanLateJump() const { return bCanLateJump; };
-	
-	UFUNCTION(BlueprintPure) FORCEINLINE
-	bool IsRewindingTime() const {return Safe_bIsRewinding; };
 
 	UFUNCTION(BlueprintCallable)
 	void RewindTimePressed();

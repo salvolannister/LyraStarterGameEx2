@@ -10,6 +10,9 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 
+/**
+ *  Get prediction data for a client game
+ ****************************************************************************************/
 FNetworkPredictionData_Client* UEsLyraCharacterMovementComponent::GetPredictionData_Client() const
 {
 	check(PawnOwner != nullptr)
@@ -114,16 +117,6 @@ void UEsLyraCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterat
 	default:
 		UE_LOG(LogTemp, Fatal, TEXT("Invalid Movement Mode"));
 	}
-}
-
-/**
- *  
- **********************************************************************************************************/
-void UEsLyraCharacterMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode,
-	uint8 PreviousCustomMode)
-{
-	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
-
 }
 
 /**
@@ -434,13 +427,15 @@ void UEsLyraCharacterMovementComponent::OnLateJumpFinished()
 
 #pragma region RewindTime
 
+/**
+ *  Fills the SavedPlayerStatusBuffer with player locations sampled in time
+ ****************************************************************************************/
 void UEsLyraCharacterMovementComponent::CollectRewindData(float deltaTime)
 {
 	CurrentSampleTime -= deltaTime;
 	if(CurrentSampleTime <= 0.f)
 	{
-		FSavedPlayerStatus SavedPlayerStatus;
-		SavedPlayerStatus.Timestamp = UGameplayStatics::GetRealTimeSeconds(GetWorld());
+		FSavedPlayerStatus SavedPlayerStatus;		
 		SavedPlayerStatus.SavedLocation = UpdatedComponent->GetComponentLocation();
 		SavedPlayerStatusBuffer.Add(SavedPlayerStatus);
 
@@ -453,6 +448,9 @@ void UEsLyraCharacterMovementComponent::CollectRewindData(float deltaTime)
 	}
 }
 
+/**
+ *  Move the character back to past locations with an Interpolation speed
+ ****************************************************************************************/
 void UEsLyraCharacterMovementComponent::PerformRewindingTime(float deltaTime)
 {
 	if(!bStartRewinding)
@@ -471,8 +469,7 @@ void UEsLyraCharacterMovementComponent::PerformRewindingTime(float deltaTime)
 	if (Safe_RewindingIndex <= 0)
 	{
 		Safe_bIsRewinding = false;
-		bStartRewinding = false;
-		UE_LOG(LogTemp, Warning, TEXT("End: %f | %d"), UGameplayStatics::GetRealTimeSeconds(GetWorld()), CharacterOwner->HasAuthority());
+		bStartRewinding = false;		
 		SavedPlayerStatusBuffer.Empty();					
 		Velocity = FVector::ZeroVector;		
 		SetMovementMode(MOVE_Falling);
@@ -485,10 +482,6 @@ void UEsLyraCharacterMovementComponent::PerformRewindingTime(float deltaTime)
 
 	CurrentRewindSampleTime -= deltaTime;
 	const FVector TargetPos = UKismetMathLibrary::VInterpTo(UpdatedComponent->GetComponentLocation(), NewPosition, deltaTime, InterpolationSpeed);
-
-	DrawDebugSphere(GetWorld(), NewPosition, 5.f, 2, FColor::Red, false, .1f, 0, 2);
-	DrawDebugSphere(GetWorld(), TargetPos, 3.f, 2, FColor::Black, false, .1f, 0, 2);
-
 			
 	// Compute move parameters
 	const FVector Delta = TargetPos - UpdatedComponent->GetComponentLocation();	
@@ -501,27 +494,12 @@ void UEsLyraCharacterMovementComponent::PerformRewindingTime(float deltaTime)
 		if(SavedPlayerStatusBuffer.Num() > Safe_RewindingIndex)
 		{		
 			NewPosition = SavedPlayerStatusBuffer[Safe_RewindingIndex].SavedLocation;	
-		}
-			
+		}			
 		CurrentRewindSampleTime = RewindSampleTime;
 	}
 }
 
-bool UEsLyraCharacterMovementComponent::TryRewindTime(float deltaTime)
-{
-	if(!Safe_bIsRewinding)
-	{
-		CollectRewindData(deltaTime);			
-	}
-	else
-	{	
-		PerformRewindingTime(deltaTime);	
-	}
-	return true;
-}
-
 #pragma endregion 
-
 
 #pragma region Interface
 
@@ -554,19 +532,23 @@ void UEsLyraCharacterMovementComponent::TeleportPressed()
 	}
 }
 
+/**
+ *  Starts the Time Rewinding. Called by RewindTime GA
+ ****************************************************************************************/
 void UEsLyraCharacterMovementComponent::RewindTimePressed()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Start: %f | %d"), UGameplayStatics::GetRealTimeSeconds(GetWorld()), CharacterOwner->HasAuthority());
+{	
 	const float CurrentTime = GetWorld()->GetTimeSeconds();
 	if((CurrentTime < RewindTimeCooldownDuration) || (CurrentTime - RewindTimeEndTime >= RewindTimeCooldownDuration))
 	{
 		Safe_bIsRewinding = true;
+		SetMovementMode(MOVE_Flying);
+
+#ifdef ENABLE_DEBUG_LINES
 		for (auto Element : SavedPlayerStatusBuffer)
 		{
 			DrawDebugSphere(GetWorld(), Element.SavedLocation, 5.f, 2, FColor::Green, true, -1.f, 0, 1);
 		}	
-	
-		SetMovementMode(MOVE_Flying);
+#endif		
 	}
 }
 
@@ -745,6 +727,9 @@ FSavedMovePtr FNetworkPredictionData_Client_Es::AllocateNewMove()
 
 #pragma region Custom Move Data
 
+/**
+ *  Serialize the data in FEsNetworkMoveData struct
+ ****************************************************************************************/
 bool FEsNetworkMoveData::Serialize(UCharacterMovementComponent& CharacterMovement, FArchive& Ar,
 	UPackageMap* PackageMap, FCharacterNetworkMoveData::ENetworkMoveType MoveType)
 {
@@ -774,6 +759,9 @@ bool FEsNetworkMoveData::Serialize(UCharacterMovementComponent& CharacterMovemen
 	return !Ar.IsError();
 }
 
+/**
+ *  Fills in data in FEsNetworkMoveData struct with relevant movement data
+ ****************************************************************************************/
 void FEsNetworkMoveData::ClientFillNetworkMoveData(const FSavedMove_Character& ClientMove,
 	FCharacterNetworkMoveData::ENetworkMoveType MoveType)
 {
