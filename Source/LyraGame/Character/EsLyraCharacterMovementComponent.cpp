@@ -34,7 +34,7 @@ UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObje
 	Safe_bIsRewinding = false;
 	Safe_RewindingIndex = 0;
 	TeleportStartTime = 0.f;
-	RewindTimeStartTime = 0.f;
+	RewindTimeEndTime = 0.f;
 }
 
 void UEsLyraCharacterMovementComponent::InitializeComponent()
@@ -72,8 +72,7 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
 	//Rewind Time
 	if(Safe_bIsRewinding)
 	{
-		//!bAuthProxy || GetWorld()->GetTimeSeconds() - RewindTimeStartTime > AuthRewindTimeCooldownDuration
-		if(true)
+		if(!bAuthProxy || GetWorld()->GetTimeSeconds() - RewindTimeEndTime > AuthRewindTimeCooldownDuration)
 		{
 			PerformRewindingTime(DeltaSeconds);	
 		}
@@ -113,7 +112,7 @@ void UEsLyraCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterat
 	case CMOVE_RewindTime:	
 		break;
 	default:
-		UE_LOG(LogTemp, Fatal, TEXT("Invalid Movement Mode"))
+		UE_LOG(LogTemp, Fatal, TEXT("Invalid Movement Mode"));
 	}
 }
 
@@ -458,8 +457,7 @@ void UEsLyraCharacterMovementComponent::PerformRewindingTime(float deltaTime)
 {
 	if(!bStartRewinding)
 	{
-		bStartRewinding = true;
-		RewindTimeStartTime = GetWorld()->GetTimeSeconds();
+		bStartRewinding = true;		
 		RewindSampleTime = RewindingDuration / BufferSampleMaxSize;
 		InterpolationSpeed = 1.f / RewindSampleTime;
 		Safe_RewindingIndex = SavedPlayerStatusBuffer.Num() - 1;
@@ -478,6 +476,7 @@ void UEsLyraCharacterMovementComponent::PerformRewindingTime(float deltaTime)
 		SavedPlayerStatusBuffer.Empty();					
 		Velocity = FVector::ZeroVector;		
 		SetMovementMode(MOVE_Falling);
+		RewindTimeEndTime = GetWorld()->GetTimeSeconds();
 		return;
 	}
 	
@@ -559,7 +558,7 @@ void UEsLyraCharacterMovementComponent::RewindTimePressed()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Start: %f | %d"), UGameplayStatics::GetRealTimeSeconds(GetWorld()), CharacterOwner->HasAuthority());
 	const float CurrentTime = GetWorld()->GetTimeSeconds();
-	if((CurrentTime < RewindTimeCooldownDuration) || (CurrentTime - RewindTimeStartTime >= RewindTimeCooldownDuration))
+	if((CurrentTime < RewindTimeCooldownDuration) || (CurrentTime - RewindTimeEndTime >= RewindTimeCooldownDuration))
 	{
 		Safe_bIsRewinding = true;
 		for (auto Element : SavedPlayerStatusBuffer)

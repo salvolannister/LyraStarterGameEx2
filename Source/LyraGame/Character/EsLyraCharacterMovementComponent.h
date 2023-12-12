@@ -136,13 +136,13 @@ public:
 	float RewindTimeSampleFrequencyTime = .1f; 
 
 	UPROPERTY(EditDefaultsOnly)
-	float RewindingDuration = 1.f;
+	float RewindingDuration = 1.25f;
 
 	UPROPERTY(EditDefaultsOnly)
-	float RewindTimeCooldownDuration = 5.f;
+	float RewindTimeCooldownDuration = 12.f;
 
 	UPROPERTY(EditDefaultsOnly)
-	float AuthRewindTimeCooldownDuration = 4.f;
+	float AuthRewindTimeCooldownDuration = 11.f;
 	
 	/*
 	 *  Flags (Transient)
@@ -156,7 +156,7 @@ public:
 
 	FTimerHandle TimerHandle_LateJumpCooldown;
 
-	float RewindTimeStartTime;
+	float RewindTimeEndTime;
 	FTimerHandle TimerHandle_RewindTimeCooldown;
 	
 	bool Safe_bIsRewinding;
