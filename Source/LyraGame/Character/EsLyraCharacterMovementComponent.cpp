@@ -4,6 +4,7 @@
 #include "Character/EsLyraCharacterMovementComponent.h"
 
 #include "LyraCharacter.h"
+#include "LyraHealthComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
@@ -35,6 +36,7 @@ UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObje
 	Safe_bWantsToTeleport = false;
 	Safe_bWantsToWallRun = false;
 	Safe_bIsRewinding = false;
+	MaxHealthInRewindingWindow = 0.f;
 	Safe_RewindingIndex = 0;
 	TeleportStartTime = 0.f;
 	RewindTimeEndTime = 0.f;
@@ -44,6 +46,10 @@ void UEsLyraCharacterMovementComponent::InitializeComponent()
 {
 	Super::InitializeComponent();
 	ESCharacterOwner = Cast<ALyraCharacter>(GetOwner());
+	check(ESCharacterOwner);
+	
+	LyraHealthComponent = ESCharacterOwner->GetLyraHealthComponent();
+	check(LyraHealthComponent);
 }
 
 void UEsLyraCharacterMovementComponent::BeginPlay()
@@ -75,8 +81,8 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
 	//Rewind Time
 	if(Safe_bIsRewinding)
 	{
-		if(!bAuthProxy || GetWorld()->GetTimeSeconds() - RewindTimeEndTime > AuthRewindTimeCooldownDuration)
-		{
+		if(!bAuthProxy || GetWorld()->GetTimeSeconds() - RewindTimeEndTime > AuthRewindTimeCooldownDuration - RewindingDuration)
+		{		
 			PerformRewindingTime(DeltaSeconds);	
 		}
 		else
@@ -434,15 +440,17 @@ void UEsLyraCharacterMovementComponent::CollectRewindData(float deltaTime)
 {
 	CurrentSampleTime -= deltaTime;
 	if(CurrentSampleTime <= 0.f)
-	{
-		FSavedPlayerStatus SavedPlayerStatus;		
-		SavedPlayerStatus.SavedLocation = UpdatedComponent->GetComponentLocation();
-		SavedPlayerStatusBuffer.Add(SavedPlayerStatus);
+	{					
+		PlayerLocationBuffer.Add(UpdatedComponent->GetComponentLocation());		
 
-		if(SavedPlayerStatusBuffer.Num() >= BufferSampleMaxSize)
+		if(PlayerLocationBuffer.Num() >= BufferSampleMaxSize)
 		{		
-			SavedPlayerStatusBuffer.RemoveAt(0);		
+			PlayerLocationBuffer.RemoveAt(0);
+			MaxHealthInRewindingWindow = 0.f;
 		}
+
+		const float CurrentHealth = LyraHealthComponent->GetHealth();
+		if(CurrentHealth > MaxHealthInRewindingWindow) MaxHealthInRewindingWindow = CurrentHealth;	
 
 		CurrentSampleTime = RewindTimeSampleFrequencyTime;
 	}
@@ -458,10 +466,10 @@ void UEsLyraCharacterMovementComponent::PerformRewindingTime(float deltaTime)
 		bStartRewinding = true;		
 		RewindSampleTime = RewindingDuration / BufferSampleMaxSize;
 		InterpolationSpeed = 1.f / RewindSampleTime;
-		Safe_RewindingIndex = SavedPlayerStatusBuffer.Num() - 1;
+		Safe_RewindingIndex = PlayerLocationBuffer.Num() - 1;
 		if(Safe_RewindingIndex > 0)
-			NewPosition = SavedPlayerStatusBuffer[Safe_RewindingIndex].SavedLocation;
-		CurrentRewindSampleTime = RewindSampleTime;
+			NewPosition = PlayerLocationBuffer[Safe_RewindingIndex];
+		CurrentRewindSampleTime = RewindSampleTime;	
 	}		
 
 	CurrentSampleTime = RewindTimeSampleFrequencyTime;
@@ -470,10 +478,11 @@ void UEsLyraCharacterMovementComponent::PerformRewindingTime(float deltaTime)
 	{
 		Safe_bIsRewinding = false;
 		bStartRewinding = false;		
-		SavedPlayerStatusBuffer.Empty();					
+		PlayerLocationBuffer.Empty();					
 		Velocity = FVector::ZeroVector;		
 		SetMovementMode(MOVE_Falling);
 		RewindTimeEndTime = GetWorld()->GetTimeSeconds();
+		MaxHealthInRewindingWindow = 0.f;			
 		return;
 	}
 	
@@ -491,9 +500,9 @@ void UEsLyraCharacterMovementComponent::PerformRewindingTime(float deltaTime)
 	if(CurrentRewindSampleTime <= 0.f)
 	{
 		Safe_RewindingIndex--;	
-		if(SavedPlayerStatusBuffer.Num() > Safe_RewindingIndex)
+		if(PlayerLocationBuffer.Num() > Safe_RewindingIndex)
 		{		
-			NewPosition = SavedPlayerStatusBuffer[Safe_RewindingIndex].SavedLocation;	
+			NewPosition = PlayerLocationBuffer[Safe_RewindingIndex];	
 		}			
 		CurrentRewindSampleTime = RewindSampleTime;
 	}
@@ -538,8 +547,8 @@ void UEsLyraCharacterMovementComponent::TeleportPressed()
 void UEsLyraCharacterMovementComponent::RewindTimePressed()
 {	
 	const float CurrentTime = GetWorld()->GetTimeSeconds();
-	if((CurrentTime < RewindTimeCooldownDuration) || (CurrentTime - RewindTimeEndTime >= RewindTimeCooldownDuration))
-	{
+	if((CurrentTime < RewindTimeCooldownDuration) || (CurrentTime - RewindTimeEndTime >= RewindTimeCooldownDuration - RewindingDuration))
+	{	
 		Safe_bIsRewinding = true;
 		SetMovementMode(MOVE_Flying);
 
@@ -550,6 +559,12 @@ void UEsLyraCharacterMovementComponent::RewindTimePressed()
 		}	
 #endif		
 	}
+}
+
+float UEsLyraCharacterMovementComponent::GetRewindingTimeHealingMagnitude()
+{
+	UE_LOG(LogTemp, Warning, TEXT("MaxHealthInRewindingWindow: %f, Health: %f"), MaxHealthInRewindingWindow , LyraHealthComponent->GetHealth());
+	return  MaxHealthInRewindingWindow - LyraHealthComponent->GetHealth();
 }
 
 #pragma endregion

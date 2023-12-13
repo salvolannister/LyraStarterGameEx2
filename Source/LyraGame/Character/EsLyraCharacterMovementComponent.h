@@ -6,6 +6,7 @@
 #include "Character/LyraCharacterMovementComponent.h"
 #include "EsLyraCharacterMovementComponent.generated.h"
 
+class ULyraHealthComponent;
 class ALyraCharacter;
 
 /* Encapsulates a client move that is sent to the server for CMC networking */
@@ -44,20 +45,6 @@ enum ECustomMovementMode
 	CMOVE_MAX			UMETA(Hidden),
 };
 
-USTRUCT(BlueprintType)
-struct FSavedPlayerStatus
-{
-    GENERATED_BODY()
-
-public:   	
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector SavedLocation = FVector::ZeroVector;  
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float SavedMaxLife = 0.f;
-};
-
-
 /**
  *  Custom character movement component class for the Lyra game.
  *  This class extends ULyraCharacterMovementComponent to add new movement abilities
@@ -86,6 +73,9 @@ public:
 
 	UPROPERTY(Transient) 
 	TObjectPtr<ALyraCharacter> ESCharacterOwner;
+	
+	UPROPERTY(Transient) 
+	TObjectPtr<ULyraHealthComponent> LyraHealthComponent;
 	
 	// Teleport
 	UPROPERTY(EditDefaultsOnly)
@@ -209,7 +199,8 @@ private:
 	void CollectRewindData(float deltaTime);
 	void PerformRewindingTime(float deltaTime);
 	
-	TArray<FSavedPlayerStatus> SavedPlayerStatusBuffer;
+	TArray<FVector_NetQuantize> PlayerLocationBuffer;
+	float MaxHealthInRewindingWindow;
 	
 	int32 BufferSampleMaxSize;
 	float CurrentSampleTime = 0.f;
@@ -268,6 +259,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void RewindTimePressed();
+
+	UFUNCTION(BlueprintCallable)
+	float GetRewindingTimeHealingMagnitude();
 
 	/*
 	 *  Proxy Replication
