@@ -80,7 +80,7 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
 	//Rewind Time
 	if(Safe_bIsRewinding)
 	{
-		if(!bAuthProxy || GetWorld()->GetTimeSeconds() - RewindTimeEndTime > AuthRewindTimeCooldownDuration - RewindingDuration)
+		if(!bAuthProxy || GetWorld()->GetTimeSeconds() - RewindTimeEndTime > AuthRewindTimeCooldownDuration - RewindingDuration || GetWorld()->GetTimeSeconds() < AuthRewindTimeCooldownDuration)
 		{		
 			PerformRewindingTime(DeltaSeconds);	
 		}
@@ -558,8 +558,7 @@ void UEsLyraCharacterMovementComponent::RewindTimePressed()
 }
 
 float UEsLyraCharacterMovementComponent::GetRewindingTimeHealingMagnitude()
-{
-	//UE_LOG(LogTemp, Warning, TEXT("MaxHealthInRewindingWindow: %f, Health: %f"), MaxHealthInRewindingWindow , LyraHealthComponent->GetHealth());
+{	
 	float MaxHealthInRewindingWindow = 0.f;
 	for (const auto [SavedLocation, SavedLife] : PlayerStatusBuffer)
 	{
