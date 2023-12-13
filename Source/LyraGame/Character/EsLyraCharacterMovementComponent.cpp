@@ -36,7 +36,6 @@ UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObje
 	Safe_bWantsToTeleport = false;
 	Safe_bWantsToWallRun = false;
 	Safe_bIsRewinding = false;
-	MaxHealthInRewindingWindow = 0.f;
 	Safe_RewindingIndex = 0;
 	TeleportStartTime = 0.f;
 	RewindTimeEndTime = 0.f;
@@ -440,17 +439,16 @@ void UEsLyraCharacterMovementComponent::CollectRewindData(float deltaTime)
 {
 	CurrentSampleTime -= deltaTime;
 	if(CurrentSampleTime <= 0.f)
-	{					
-		PlayerLocationBuffer.Add(UpdatedComponent->GetComponentLocation());		
+	{
+		FSavedPlayerStatus SavedPlayerStatus;        
+		SavedPlayerStatus.SavedLocation = UpdatedComponent->GetComponentLocation();
+		SavedPlayerStatus.SavedLife = LyraHealthComponent->GetHealth();
+		PlayerStatusBuffer.Add(SavedPlayerStatus);		
 
-		if(PlayerLocationBuffer.Num() >= BufferSampleMaxSize)
+		if(PlayerStatusBuffer.Num() >= BufferSampleMaxSize)
 		{		
-			PlayerLocationBuffer.RemoveAt(0);
-			MaxHealthInRewindingWindow = 0.f;
-		}
-
-		const float CurrentHealth = LyraHealthComponent->GetHealth();
-		if(CurrentHealth > MaxHealthInRewindingWindow) MaxHealthInRewindingWindow = CurrentHealth;	
+			PlayerStatusBuffer.RemoveAt(0);			
+		}	
 
 		CurrentSampleTime = RewindTimeSampleFrequencyTime;
 	}
@@ -466,9 +464,9 @@ void UEsLyraCharacterMovementComponent::PerformRewindingTime(float deltaTime)
 		bStartRewinding = true;		
 		RewindSampleTime = RewindingDuration / BufferSampleMaxSize;
 		InterpolationSpeed = 1.f / RewindSampleTime;
-		Safe_RewindingIndex = PlayerLocationBuffer.Num() - 1;
+		Safe_RewindingIndex = PlayerStatusBuffer.Num() - 1;
 		if(Safe_RewindingIndex > 0)
-			NewPosition = PlayerLocationBuffer[Safe_RewindingIndex];
+			NewPosition = PlayerStatusBuffer[Safe_RewindingIndex].SavedLocation;
 		CurrentRewindSampleTime = RewindSampleTime;	
 	}		
 
@@ -478,11 +476,10 @@ void UEsLyraCharacterMovementComponent::PerformRewindingTime(float deltaTime)
 	{
 		Safe_bIsRewinding = false;
 		bStartRewinding = false;		
-		PlayerLocationBuffer.Empty();					
+		PlayerStatusBuffer.Empty();					
 		Velocity = FVector::ZeroVector;		
 		SetMovementMode(MOVE_Falling);
-		RewindTimeEndTime = GetWorld()->GetTimeSeconds();
-		MaxHealthInRewindingWindow = 0.f;			
+		RewindTimeEndTime = GetWorld()->GetTimeSeconds();		
 		return;
 	}
 	
@@ -500,9 +497,9 @@ void UEsLyraCharacterMovementComponent::PerformRewindingTime(float deltaTime)
 	if(CurrentRewindSampleTime <= 0.f)
 	{
 		Safe_RewindingIndex--;	
-		if(PlayerLocationBuffer.Num() > Safe_RewindingIndex)
+		if(PlayerStatusBuffer.Num() > Safe_RewindingIndex)
 		{		
-			NewPosition = PlayerLocationBuffer[Safe_RewindingIndex];	
+			NewPosition = PlayerStatusBuffer[Safe_RewindingIndex].SavedLocation;	
 		}			
 		CurrentRewindSampleTime = RewindSampleTime;
 	}
@@ -524,8 +521,7 @@ bool UEsLyraCharacterMovementComponent::IsCustomMovementMode(const ECustomMoveme
  *  Starts the teleportation. Called by Teleport GA
  ****************************************************************************************/
 void UEsLyraCharacterMovementComponent::TeleportPressed()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Start: %f | %d"), UGameplayStatics::GetRealTimeSeconds(GetWorld()), CharacterOwner->HasAuthority());
+{	
 	const float CurrentTime = GetWorld()->GetTimeSeconds();
 	if((CurrentTime < TeleportCooldownDuration) || (CurrentTime - TeleportStartTime >= TeleportCooldownDuration))
 	{
@@ -563,7 +559,13 @@ void UEsLyraCharacterMovementComponent::RewindTimePressed()
 
 float UEsLyraCharacterMovementComponent::GetRewindingTimeHealingMagnitude()
 {
-	UE_LOG(LogTemp, Warning, TEXT("MaxHealthInRewindingWindow: %f, Health: %f"), MaxHealthInRewindingWindow , LyraHealthComponent->GetHealth());
+	//UE_LOG(LogTemp, Warning, TEXT("MaxHealthInRewindingWindow: %f, Health: %f"), MaxHealthInRewindingWindow , LyraHealthComponent->GetHealth());
+	float MaxHealthInRewindingWindow = 0.f;
+	for (const auto [SavedLocation, SavedLife] : PlayerStatusBuffer)
+	{
+		if(SavedLife > MaxHealthInRewindingWindow)
+			MaxHealthInRewindingWindow = SavedLife;
+	}
 	return  MaxHealthInRewindingWindow - LyraHealthComponent->GetHealth();
 }
 

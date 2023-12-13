@@ -45,6 +45,19 @@ enum ECustomMovementMode
 	CMOVE_MAX			UMETA(Hidden),
 };
 
+USTRUCT(BlueprintType)
+struct FSavedPlayerStatus
+{
+	GENERATED_BODY()
+
+public:       
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector SavedLocation = FVector::ZeroVector;  
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float SavedLife = 0.f;
+};
+
 /**
  *  Custom character movement component class for the Lyra game.
  *  This class extends ULyraCharacterMovementComponent to add new movement abilities
@@ -199,8 +212,7 @@ private:
 	void CollectRewindData(float deltaTime);
 	void PerformRewindingTime(float deltaTime);
 	
-	TArray<FVector_NetQuantize> PlayerLocationBuffer;
-	float MaxHealthInRewindingWindow;
+	TArray<FSavedPlayerStatus> PlayerStatusBuffer;
 	
 	int32 BufferSampleMaxSize;
 	float CurrentSampleTime = 0.f;
