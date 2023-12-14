@@ -4,10 +4,16 @@
 #include "Character/EsLyraCharacterMovementComponent.h"
 
 #include "LyraCharacter.h"
+#include "LyraHealthComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 
+/**
+ *  Get prediction data for a client game
+ ****************************************************************************************/
 FNetworkPredictionData_Client* UEsLyraCharacterMovementComponent::GetPredictionData_Client() const
 {
 	check(PawnOwner != nullptr)
@@ -26,15 +32,29 @@ FNetworkPredictionData_Client* UEsLyraCharacterMovementComponent::GetPredictionD
 UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
 {
+	SetNetworkMoveDataContainer(EsNetworkMoveDataContainer);
 	Safe_bWantsToTeleport = false;
 	Safe_bWantsToWallRun = false;
+	Safe_bIsRewinding = false;
+	Safe_RewindingIndex = 0;
 	TeleportStartTime = 0.f;
+	RewindTimeEndTime = 0.f;
 }
 
 void UEsLyraCharacterMovementComponent::InitializeComponent()
 {
 	Super::InitializeComponent();
 	ESCharacterOwner = Cast<ALyraCharacter>(GetOwner());
+	check(ESCharacterOwner);
+	
+	LyraHealthComponent = ESCharacterOwner->GetLyraHealthComponent();
+	check(LyraHealthComponent);
+}
+
+void UEsLyraCharacterMovementComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	BufferSampleMaxSize = RewindTimeWindowDuration / RewindTimeSampleFrequencyTime;
 }
 
 /**
@@ -57,10 +77,32 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
 		}
 	}
 	
-	// Wall Run	
-	TryWallRun();	
+	//Rewind Time
+	if(Safe_bIsRewinding)
+	{
+		if(!bAuthProxy || GetWorld()->GetTimeSeconds() - RewindTimeEndTime > AuthRewindTimeCooldownDuration - RewindingDuration || GetWorld()->GetTimeSeconds() < AuthRewindTimeCooldownDuration)
+		{		
+			PerformRewindingTime(DeltaSeconds);	
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Error with the client values (Cheating)"));
+		}
+	}
+	else
+	{
+		CollectRewindData(DeltaSeconds);		
+	}
 	
+	// Wall Run	
+	TryWallRun();
+
 	Super::UpdateCharacterStateBeforeMovement(DeltaSeconds);
+}
+
+void UEsLyraCharacterMovementComponent::UpdateCharacterStateAfterMovement(float DeltaSeconds)
+{
+	Super::UpdateCharacterStateAfterMovement(DeltaSeconds);
 }
 
 /**
@@ -74,20 +116,12 @@ void UEsLyraCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterat
 	{	
 	case CMOVE_WallRun:
 		PhysWallRun(deltaTime, Iterations);
-		break;	
+		break;
+	case CMOVE_RewindTime:	
+		break;
 	default:
-		UE_LOG(LogTemp, Fatal, TEXT("Invalid Movement Mode"))
+		UE_LOG(LogTemp, Fatal, TEXT("Invalid Movement Mode"));
 	}
-}
-
-/**
- *  
- **********************************************************************************************************/
-void UEsLyraCharacterMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode,
-	uint8 PreviousCustomMode)
-{
-	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
-
 }
 
 /**
@@ -113,6 +147,17 @@ void UEsLyraCharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)
 
 	Safe_bWantsToTeleport = (Flags & FSavedMove_Es::FLAG_Teleport) != 0;
 	Safe_bWantsToWallRun = (Flags & FSavedMove_Es::FLAG_WallRun) != 0;
+	Safe_bIsRewinding = (Flags & FSavedMove_Es::FLAG_RewindTime) != 0;
+}
+
+void UEsLyraCharacterMovementComponent::MoveAutonomous(float ClientTimeStamp, float DeltaTime, uint8 CompressedFlags,
+	const FVector& NewAccel)
+{
+	const FEsNetworkMoveData* CustomNetworkMoveData = static_cast<FEsNetworkMoveData*>(GetCurrentNetworkMoveData());
+
+	Safe_RewindingIndex = CustomNetworkMoveData->Saved_RewindingIndex;
+
+	Super::MoveAutonomous(ClientTimeStamp, DeltaTime, CompressedFlags, NewAccel);	
 }
 
 #pragma region Teleport
@@ -200,6 +245,8 @@ void UEsLyraCharacterMovementComponent::SetJumpEnd()
  ****************************************************************************************/
 float UEsLyraCharacterMovementComponent::GetLookingAtAngle() const
 {
+	if(!CharacterOwner) return 0.f;
+	
 	return FMath::RadiansToDegrees(acosf(FVector::DotProduct(Velocity.GetSafeNormal(), CharacterOwner->GetActorForwardVector())));
 }
 
@@ -381,8 +428,84 @@ void UEsLyraCharacterMovementComponent::OnLateJumpFinished()
 	bCanLateJump = false;
 }
 
-#pragma endregion 
+#pragma endregion
 
+#pragma region RewindTime
+
+/**
+ *  Fills the SavedPlayerStatusBuffer with player locations sampled in time
+ ****************************************************************************************/
+void UEsLyraCharacterMovementComponent::CollectRewindData(float deltaTime)
+{
+	CurrentSampleTime -= deltaTime;
+	if(CurrentSampleTime <= 0.f)
+	{
+		FSavedPlayerStatus SavedPlayerStatus;        
+		SavedPlayerStatus.SavedLocation = UpdatedComponent->GetComponentLocation();
+		SavedPlayerStatus.SavedLife = LyraHealthComponent->GetHealth();
+		PlayerStatusBuffer.Add(SavedPlayerStatus);		
+
+		if(PlayerStatusBuffer.Num() >= BufferSampleMaxSize)
+		{		
+			PlayerStatusBuffer.RemoveAt(0);			
+		}	
+
+		CurrentSampleTime = RewindTimeSampleFrequencyTime;
+	}
+}
+
+/**
+ *  Move the character back to past locations with an Interpolation speed
+ ****************************************************************************************/
+void UEsLyraCharacterMovementComponent::PerformRewindingTime(float deltaTime)
+{
+	if(!bStartRewinding)
+	{
+		bStartRewinding = true;		
+		RewindSampleTime = RewindingDuration / BufferSampleMaxSize;
+		InterpolationSpeed = 1.f / RewindSampleTime;
+		Safe_RewindingIndex = PlayerStatusBuffer.Num() - 1;
+		if(Safe_RewindingIndex > 0)
+			NewPosition = PlayerStatusBuffer[Safe_RewindingIndex].SavedLocation;
+		CurrentRewindSampleTime = RewindSampleTime;	
+	}		
+
+	CurrentSampleTime = RewindTimeSampleFrequencyTime;
+		
+	if (Safe_RewindingIndex <= 0)
+	{
+		Safe_bIsRewinding = false;
+		bStartRewinding = false;		
+		PlayerStatusBuffer.Empty();					
+		Velocity = FVector::ZeroVector;		
+		SetMovementMode(MOVE_Falling);
+		RewindTimeEndTime = GetWorld()->GetTimeSeconds();		
+		return;
+	}
+	
+	// Perform the move
+	bJustTeleported = false;
+
+	CurrentRewindSampleTime -= deltaTime;
+	const FVector TargetPos = UKismetMathLibrary::VInterpTo(UpdatedComponent->GetComponentLocation(), NewPosition, deltaTime, InterpolationSpeed);
+			
+	// Compute move parameters
+	const FVector Delta = TargetPos - UpdatedComponent->GetComponentLocation();	
+	FHitResult Hit;
+	SafeMoveUpdatedComponent(Delta, UpdatedComponent->GetComponentQuat(), false, Hit);		
+
+	if(CurrentRewindSampleTime <= 0.f)
+	{
+		Safe_RewindingIndex--;	
+		if(PlayerStatusBuffer.Num() > Safe_RewindingIndex)
+		{		
+			NewPosition = PlayerStatusBuffer[Safe_RewindingIndex].SavedLocation;	
+		}			
+		CurrentRewindSampleTime = RewindSampleTime;
+	}
+}
+
+#pragma endregion 
 
 #pragma region Interface
 
@@ -398,7 +521,7 @@ bool UEsLyraCharacterMovementComponent::IsCustomMovementMode(const ECustomMoveme
  *  Starts the teleportation. Called by Teleport GA
  ****************************************************************************************/
 void UEsLyraCharacterMovementComponent::TeleportPressed()
-{
+{	
 	const float CurrentTime = GetWorld()->GetTimeSeconds();
 	if((CurrentTime < TeleportCooldownDuration) || (CurrentTime - TeleportStartTime >= TeleportCooldownDuration))
 	{
@@ -412,6 +535,37 @@ void UEsLyraCharacterMovementComponent::TeleportPressed()
 			&UEsLyraCharacterMovementComponent::OnTeleportCooldownFinished,
 			TeleportCooldownDuration - (CurrentTime - TeleportStartTime));
 	}
+}
+
+/**
+ *  Starts the Time Rewinding. Called by RewindTime GA
+ ****************************************************************************************/
+void UEsLyraCharacterMovementComponent::RewindTimePressed()
+{	
+	const float CurrentTime = GetWorld()->GetTimeSeconds();
+	if((CurrentTime < RewindTimeCooldownDuration) || (CurrentTime - RewindTimeEndTime >= RewindTimeCooldownDuration - RewindingDuration))
+	{	
+		Safe_bIsRewinding = true;
+		SetMovementMode(MOVE_Flying);
+
+#ifdef ENABLE_DEBUG_LINES
+		for (auto Element : SavedPlayerStatusBuffer)
+		{
+			DrawDebugSphere(GetWorld(), Element.SavedLocation, 5.f, 2, FColor::Green, true, -1.f, 0, 1);
+		}	
+#endif		
+	}
+}
+
+float UEsLyraCharacterMovementComponent::GetRewindingTimeHealingMagnitude()
+{	
+	float MaxHealthInRewindingWindow = 0.f;
+	for (const auto [SavedLocation, SavedLife] : PlayerStatusBuffer)
+	{
+		if(SavedLife > MaxHealthInRewindingWindow)
+			MaxHealthInRewindingWindow = SavedLife;
+	}
+	return  MaxHealthInRewindingWindow - LyraHealthComponent->GetHealth();
 }
 
 #pragma endregion
@@ -467,6 +621,8 @@ FSavedMove_Es::FSavedMove_Es()
 {
 	Saved_bWantsToTeleport = 0;
 	Saved_bWantsToWallRun = 0;
+	Saved_bIsRewinding = 0;
+	Saved_RewindingIndex = 0;
 }
 
 void FSavedMove_Es::Clear()
@@ -475,6 +631,8 @@ void FSavedMove_Es::Clear()
 
 	Saved_bWantsToTeleport = 0;
 	Saved_bWantsToWallRun = 0;
+	Saved_bIsRewinding = 0;
+	Saved_RewindingIndex = 0;
 }
 
 /**
@@ -489,6 +647,8 @@ void FSavedMove_Es::SetMoveFor(ACharacter* C, float InDeltaTime, FVector const& 
 
 	Saved_bWantsToWallRun = CharacterMovement->Safe_bWantsToWallRun;
 	Saved_bWantsToTeleport = CharacterMovement->Safe_bWantsToTeleport;
+	Saved_bIsRewinding = CharacterMovement->Safe_bIsRewinding;
+	Saved_RewindingIndex = CharacterMovement->Safe_RewindingIndex;
 }
 
 /**
@@ -504,6 +664,16 @@ bool FSavedMove_Es::CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* InC
 	}
 
 	if(Saved_bWantsToWallRun != NewEsMove->Saved_bWantsToWallRun)
+	{
+		return false;
+	}
+	
+	if(Saved_bIsRewinding != NewEsMove->Saved_bIsRewinding)
+	{
+		return false;
+	}
+
+	if(Saved_RewindingIndex != NewEsMove->Saved_RewindingIndex)
 	{
 		return false;
 	}
@@ -523,6 +693,10 @@ void FSavedMove_Es::PrepMoveFor(ACharacter* C)
 	CharacterMovement->Safe_bWantsToTeleport = Saved_bWantsToTeleport;
 	
 	CharacterMovement->Safe_bWantsToWallRun = Saved_bWantsToWallRun;
+
+	CharacterMovement->Safe_bIsRewinding = Saved_bIsRewinding;
+	CharacterMovement->Safe_RewindingIndex = Saved_RewindingIndex;
+	//CharacterMovement->Safe_RewindingIndex = Saved_RewindingIndex;
 }
 
 /**
@@ -540,6 +714,11 @@ uint8 FSavedMove_Es::GetCompressedFlags() const
 	if(Saved_bWantsToWallRun)
 	{
 		Result |= FLAG_WallRun;
+	}
+	
+	if(Saved_bIsRewinding)
+	{
+		Result |= FLAG_RewindTime;
 	}
 	
 	return Result;
@@ -560,3 +739,53 @@ FSavedMovePtr FNetworkPredictionData_Client_Es::AllocateNewMove()
 }
 
 #pragma endregion
+
+
+#pragma region Custom Move Data
+
+/**
+ *  Serialize the data in FEsNetworkMoveData struct
+ ****************************************************************************************/
+bool FEsNetworkMoveData::Serialize(UCharacterMovementComponent& CharacterMovement, FArchive& Ar,
+	UPackageMap* PackageMap, FCharacterNetworkMoveData::ENetworkMoveType MoveType)
+{
+	NetworkMoveType = MoveType;
+
+	bool bLocalSuccess = true;
+	const bool bIsSaving = Ar.IsSaving();
+
+	Ar << TimeStamp;
+
+	// TODO: better packing with single bit per component indicating zero/non-zero
+	Acceleration.NetSerialize(Ar, PackageMap, bLocalSuccess);
+
+	Location.NetSerialize(Ar, PackageMap, bLocalSuccess);
+
+	// ControlRotation : FRotator handles each component zero/non-zero test; it uses a single signal bit for zero/non-zero, and uses 16 bits per component if non-zero.
+	ControlRotation.NetSerialize(Ar, PackageMap, bLocalSuccess);
+
+	SerializeOptionalValue<uint8>(bIsSaving, Ar, CompressedMoveFlags, 0);
+
+	SerializeOptionalValue<UPrimitiveComponent*>(bIsSaving, Ar, MovementBase, nullptr);
+	SerializeOptionalValue<FName>(bIsSaving, Ar, MovementBaseBoneName, NAME_None);
+	SerializeOptionalValue<uint8>(bIsSaving, Ar, MovementMode, MOVE_Walking);
+	
+	Ar << Saved_RewindingIndex;
+	
+	return !Ar.IsError();
+}
+
+/**
+ *  Fills in data in FEsNetworkMoveData struct with relevant movement data
+ ****************************************************************************************/
+void FEsNetworkMoveData::ClientFillNetworkMoveData(const FSavedMove_Character& ClientMove,
+	FCharacterNetworkMoveData::ENetworkMoveType MoveType)
+{
+	FCharacterNetworkMoveData::ClientFillNetworkMoveData(ClientMove, MoveType);
+
+	const FSavedMove_Es* CustomMove = static_cast<const FSavedMove_Es*>(&ClientMove);
+
+	Saved_RewindingIndex = CustomMove->Saved_RewindingIndex;
+}
+
+#pragma region Custom Move Data

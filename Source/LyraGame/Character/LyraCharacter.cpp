@@ -193,6 +193,11 @@ UAbilitySystemComponent* ALyraCharacter::GetAbilitySystemComponent() const
 	return PawnExtComponent->GetLyraAbilitySystemComponent();
 }
 
+ULyraHealthComponent* ALyraCharacter::GetLyraHealthComponent() const
+{
+	return HealthComponent;
+}
+
 void ALyraCharacter::OnAbilitySystemInitialized()
 {
 	ULyraAbilitySystemComponent* LyraASC = GetLyraAbilitySystemComponent();

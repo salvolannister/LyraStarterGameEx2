@@ -112,6 +112,9 @@ public:
 	ULyraAbilitySystemComponent* GetLyraAbilitySystemComponent() const;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
+	UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
+	ULyraHealthComponent* GetLyraHealthComponent() const;
+	
 	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
 	virtual bool HasMatchingGameplayTag(FGameplayTag TagToCheck) const override;
 	virtual bool HasAllMatchingGameplayTags(const FGameplayTagContainer& TagContainer) const override;
