@@ -7,7 +7,6 @@
 #include "LyraHealthComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
-#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 
@@ -100,11 +99,6 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
 	Super::UpdateCharacterStateBeforeMovement(DeltaSeconds);
 }
 
-void UEsLyraCharacterMovementComponent::UpdateCharacterStateAfterMovement(float DeltaSeconds)
-{
-	Super::UpdateCharacterStateAfterMovement(DeltaSeconds);
-}
-
 /**
  *  PhysCustom including Phys functions for each CustomMovementMode
  **********************************************************************************************************/
@@ -116,8 +110,6 @@ void UEsLyraCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterat
 	{	
 	case CMOVE_WallRun:
 		PhysWallRun(deltaTime, Iterations);
-		break;
-	case CMOVE_RewindTime:	
 		break;
 	default:
 		UE_LOG(LogTemp, Fatal, TEXT("Invalid Movement Mode"));
@@ -182,14 +174,6 @@ void UEsLyraCharacterMovementComponent::PerformTeleport()
 	SafeMoveUpdatedComponent(ForwardVector * TeleportImpulse, UpdatedComponent->GetComponentRotation(), true, Hit, ETeleportType::None);
 
 	SetMovementMode(MOVE_Falling);
-}
-
-/**
- *  Reset teleport flag at the end of the timer
- **********************************************************************************************************/
-void UEsLyraCharacterMovementComponent::OnTeleportCooldownFinished()
-{
-	Safe_bWantsToTeleport = true;
 }
 
 #pragma endregion
@@ -526,15 +510,7 @@ void UEsLyraCharacterMovementComponent::TeleportPressed()
 	if((CurrentTime < TeleportCooldownDuration) || (CurrentTime - TeleportStartTime >= TeleportCooldownDuration))
 	{
 		Safe_bWantsToTeleport = true;
-	}
-	else
-	{
-		GetWorld()->GetTimerManager().SetTimer(
-			TimerHandle_TeleportCooldown,
-			this,
-			&UEsLyraCharacterMovementComponent::OnTeleportCooldownFinished,
-			TeleportCooldownDuration - (CurrentTime - TeleportStartTime));
-	}
+	}	
 }
 
 /**
@@ -695,8 +671,7 @@ void FSavedMove_Es::PrepMoveFor(ACharacter* C)
 	CharacterMovement->Safe_bWantsToWallRun = Saved_bWantsToWallRun;
 
 	CharacterMovement->Safe_bIsRewinding = Saved_bIsRewinding;
-	CharacterMovement->Safe_RewindingIndex = Saved_RewindingIndex;
-	//CharacterMovement->Safe_RewindingIndex = Saved_RewindingIndex;
+	CharacterMovement->Safe_RewindingIndex = Saved_RewindingIndex;	
 }
 
 /**

@@ -41,7 +41,6 @@ enum ECustomMovementMode
 {
 	CMOVE_None			UMETA(Hidden),
 	CMOVE_WallRun		UMETA(DisplayName = "Wall Run"),
-	CMOVE_RewindTime	UMETA(DisplayName = "Rewind Time"),
 	CMOVE_MAX			UMETA(Hidden),
 };
 
@@ -117,9 +116,6 @@ public:
 	float WallJumpOffForce = 300.f;
 
 	UPROPERTY(EditDefaultsOnly)
-	float CapsuleScaleFactor = 3.f;
-
-	UPROPERTY(EditDefaultsOnly)
 	float LateJumpDuration = 1.f;
 
 	//Rewind Time
@@ -144,17 +140,12 @@ public:
 	
 	bool Safe_bWantsToTeleport;
 	mutable bool Safe_bWantsToWallRun;
-
-	float TeleportStartTime;
-	FTimerHandle TimerHandle_TeleportCooldown;
-
-	FTimerHandle TimerHandle_LateJumpCooldown;
-
-	float RewindTimeEndTime;
-	FTimerHandle TimerHandle_RewindTimeCooldown;
-	
 	bool Safe_bIsRewinding;
 	int32 Safe_RewindingIndex;
+
+	float TeleportStartTime;
+	FTimerHandle TimerHandle_LateJumpCooldown;
+	float RewindTimeEndTime;	
 	
 	/*
 	 *  Replication
@@ -173,7 +164,6 @@ protected:
 	/** <UCharacterMovementComponent> */
 	virtual void BeginPlay() override;
 	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
-	virtual void UpdateCharacterStateAfterMovement(float DeltaSeconds) override;
 	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
 	/** </UCharacterMovementComponent> */
 	
@@ -186,7 +176,6 @@ private:
 	 */
 	
 	void PerformTeleport();
-	void OnTeleportCooldownFinished();
 
 	/*
 	 *  WallRun
@@ -204,6 +193,7 @@ private:
 	
 	bool bCanLateJump;	
 	FHitResult WallHit;
+	float CapsuleScaleFactor = 3.f;
 
 	/*
 	 *  RewindTime
