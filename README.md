@@ -6,7 +6,7 @@ Responsive implementation, using client prediction and server-reconciliation of 
 - Wall Run 
 - Wall Jump
 
-These have been implemented f as special moves inside the CharacterMovementComponent (CMC)
+These have been implemented as special moves inside the CharacterMovementComponent (CMC)
 
 ## General procedure
 
