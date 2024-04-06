@@ -101,7 +101,7 @@ void EmptyLinkFunctionForGeneratedCodeShooterTestsDevicePropertyTester() {}
 		{ "NativeConst", "" },
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::NewProp_UserId = { "UserId", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventApplyDeviceProperties_Parms, UserId), Z_Construct_UScriptStruct_FPlatformUserId, METADATA_PARAMS(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::NewProp_UserId_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::NewProp_UserId_MetaData)) };
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::NewProp_UserId = { "UserId", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventApplyDeviceProperties_Parms, UserId), Z_Construct_UScriptStruct_FPlatformUserId, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::NewProp_UserId_MetaData), Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::NewProp_UserId_MetaData) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::NewProp_UserId,
 	};
@@ -111,7 +111,9 @@ void EmptyLinkFunctionForGeneratedCodeShooterTestsDevicePropertyTester() {}
 		{ "ModuleRelativePath", "Private/ShooterTestsDevicePropertyTester.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AShooterTestsDevicePropertyTester, nullptr, "ApplyDeviceProperties", nullptr, nullptr, sizeof(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::ShooterTestsDevicePropertyTester_eventApplyDeviceProperties_Parms), Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AShooterTestsDevicePropertyTester, nullptr, "ApplyDeviceProperties", nullptr, nullptr, Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::PropPointers), sizeof(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::ShooterTestsDevicePropertyTester_eventApplyDeviceProperties_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::Function_MetaDataParams), Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::Function_MetaDataParams) };
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::PropPointers) < 2048);
+	static_assert(sizeof(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties_Statics::ShooterTestsDevicePropertyTester_eventApplyDeviceProperties_Parms) < MAX_uint16);
 	UFunction* Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -151,15 +153,15 @@ void EmptyLinkFunctionForGeneratedCodeShooterTestsDevicePropertyTester() {}
 		{ "EditInline", "true" },
 	};
 #endif
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OverlappedComponent = { "OverlappedComponent", nullptr, (EPropertyFlags)0x0010000000080080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnEndOverlap_Parms, OverlappedComponent), Z_Construct_UClass_UPrimitiveComponent_NoRegister, METADATA_PARAMS(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OverlappedComponent_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OverlappedComponent_MetaData)) };
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OtherActor = { "OtherActor", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnEndOverlap_Parms, OtherActor), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OverlappedComponent = { "OverlappedComponent", nullptr, (EPropertyFlags)0x0010000000080080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnEndOverlap_Parms, OverlappedComponent), Z_Construct_UClass_UPrimitiveComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OverlappedComponent_MetaData), Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OverlappedComponent_MetaData) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OtherActor = { "OtherActor", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnEndOverlap_Parms, OtherActor), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OtherComp_MetaData[] = {
 		{ "EditInline", "true" },
 	};
 #endif
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OtherComp = { "OtherComp", nullptr, (EPropertyFlags)0x0010000000080080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnEndOverlap_Parms, OtherComp), Z_Construct_UClass_UPrimitiveComponent_NoRegister, METADATA_PARAMS(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OtherComp_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OtherComp_MetaData)) };
-	const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OtherBodyIndex = { "OtherBodyIndex", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnEndOverlap_Parms, OtherBodyIndex), METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OtherComp = { "OtherComp", nullptr, (EPropertyFlags)0x0010000000080080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnEndOverlap_Parms, OtherComp), Z_Construct_UClass_UPrimitiveComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OtherComp_MetaData), Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OtherComp_MetaData) };
+	const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OtherBodyIndex = { "OtherBodyIndex", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnEndOverlap_Parms, OtherBodyIndex), METADATA_PARAMS(0, nullptr) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OverlappedComponent,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::NewProp_OtherActor,
@@ -171,7 +173,9 @@ void EmptyLinkFunctionForGeneratedCodeShooterTestsDevicePropertyTester() {}
 		{ "ModuleRelativePath", "Private/ShooterTestsDevicePropertyTester.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AShooterTestsDevicePropertyTester, nullptr, "OnEndOverlap", nullptr, nullptr, sizeof(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::ShooterTestsDevicePropertyTester_eventOnEndOverlap_Parms), Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AShooterTestsDevicePropertyTester, nullptr, "OnEndOverlap", nullptr, nullptr, Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::PropPointers), sizeof(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::ShooterTestsDevicePropertyTester_eventOnEndOverlap_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::Function_MetaDataParams), Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::Function_MetaDataParams) };
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::PropPointers) < 2048);
+	static_assert(sizeof(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap_Statics::ShooterTestsDevicePropertyTester_eventOnEndOverlap_Parms) < MAX_uint16);
 	UFunction* Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -219,26 +223,26 @@ void EmptyLinkFunctionForGeneratedCodeShooterTestsDevicePropertyTester() {}
 		{ "EditInline", "true" },
 	};
 #endif
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OverlappedComponent = { "OverlappedComponent", nullptr, (EPropertyFlags)0x0010000000080080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms, OverlappedComponent), Z_Construct_UClass_UPrimitiveComponent_NoRegister, METADATA_PARAMS(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OverlappedComponent_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OverlappedComponent_MetaData)) };
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OtherActor = { "OtherActor", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms, OtherActor), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OverlappedComponent = { "OverlappedComponent", nullptr, (EPropertyFlags)0x0010000000080080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms, OverlappedComponent), Z_Construct_UClass_UPrimitiveComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OverlappedComponent_MetaData), Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OverlappedComponent_MetaData) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OtherActor = { "OtherActor", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms, OtherActor), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OtherComp_MetaData[] = {
 		{ "EditInline", "true" },
 	};
 #endif
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OtherComp = { "OtherComp", nullptr, (EPropertyFlags)0x0010000000080080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms, OtherComp), Z_Construct_UClass_UPrimitiveComponent_NoRegister, METADATA_PARAMS(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OtherComp_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OtherComp_MetaData)) };
-	const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OtherBodyIndex = { "OtherBodyIndex", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms, OtherBodyIndex), METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OtherComp = { "OtherComp", nullptr, (EPropertyFlags)0x0010000000080080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms, OtherComp), Z_Construct_UClass_UPrimitiveComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OtherComp_MetaData), Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OtherComp_MetaData) };
+	const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OtherBodyIndex = { "OtherBodyIndex", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms, OtherBodyIndex), METADATA_PARAMS(0, nullptr) };
 	void Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_bFromSweep_SetBit(void* Obj)
 	{
 		((ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms*)Obj)->bFromSweep = 1;
 	}
-	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_bFromSweep = { "bFromSweep", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, sizeof(bool), sizeof(ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms), &Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_bFromSweep_SetBit, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_bFromSweep = { "bFromSweep", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms), &Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_bFromSweep_SetBit, METADATA_PARAMS(0, nullptr) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_SweepHitResult_MetaData[] = {
 		{ "NativeConst", "" },
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_SweepHitResult = { "SweepHitResult", nullptr, (EPropertyFlags)0x0010008008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms, SweepHitResult), Z_Construct_UScriptStruct_FHitResult, METADATA_PARAMS(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_SweepHitResult_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_SweepHitResult_MetaData)) }; // 1287526515
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_SweepHitResult = { "SweepHitResult", nullptr, (EPropertyFlags)0x0010008008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms, SweepHitResult), Z_Construct_UScriptStruct_FHitResult, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_SweepHitResult_MetaData), Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_SweepHitResult_MetaData) }; // 1891709922
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OverlappedComponent,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::NewProp_OtherActor,
@@ -252,7 +256,9 @@ void EmptyLinkFunctionForGeneratedCodeShooterTestsDevicePropertyTester() {}
 		{ "ModuleRelativePath", "Private/ShooterTestsDevicePropertyTester.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AShooterTestsDevicePropertyTester, nullptr, "OnOverlapBegin", nullptr, nullptr, sizeof(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms), Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00440401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AShooterTestsDevicePropertyTester, nullptr, "OnOverlapBegin", nullptr, nullptr, Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::PropPointers), sizeof(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00440401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::Function_MetaDataParams), Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::Function_MetaDataParams) };
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::PropPointers) < 2048);
+	static_assert(sizeof(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin_Statics::ShooterTestsDevicePropertyTester_eventOnOverlapBegin_Parms) < MAX_uint16);
 	UFunction* Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -275,7 +281,7 @@ void EmptyLinkFunctionForGeneratedCodeShooterTestsDevicePropertyTester() {}
 		{ "ModuleRelativePath", "Private/ShooterTestsDevicePropertyTester.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_RemoveDeviceProperties_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AShooterTestsDevicePropertyTester, nullptr, "RemoveDeviceProperties", nullptr, nullptr, 0, nullptr, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_RemoveDeviceProperties_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_RemoveDeviceProperties_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AShooterTestsDevicePropertyTester_RemoveDeviceProperties_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AShooterTestsDevicePropertyTester, nullptr, "RemoveDeviceProperties", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShooterTestsDevicePropertyTester_RemoveDeviceProperties_Statics::Function_MetaDataParams), Z_Construct_UFunction_AShooterTestsDevicePropertyTester_RemoveDeviceProperties_Statics::Function_MetaDataParams) };
 	UFunction* Z_Construct_UFunction_AShooterTestsDevicePropertyTester_RemoveDeviceProperties()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -323,60 +329,78 @@ void EmptyLinkFunctionForGeneratedCodeShooterTestsDevicePropertyTester() {}
 		(UObject* (*)())Z_Construct_UClass_AActor,
 		(UObject* (*)())Z_Construct_UPackage__Script_ShooterTestsRuntime,
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::DependentSingletons) < 16);
 	const FClassFunctionLinkInfo Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::FuncInfo[] = {
-		{ &Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties, "ApplyDeviceProperties" }, // 3718432134
-		{ &Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap, "OnEndOverlap" }, // 129900333
-		{ &Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin, "OnOverlapBegin" }, // 1213644529
-		{ &Z_Construct_UFunction_AShooterTestsDevicePropertyTester_RemoveDeviceProperties, "RemoveDeviceProperties" }, // 2287167935
+		{ &Z_Construct_UFunction_AShooterTestsDevicePropertyTester_ApplyDeviceProperties, "ApplyDeviceProperties" }, // 2868077926
+		{ &Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnEndOverlap, "OnEndOverlap" }, // 3532527388
+		{ &Z_Construct_UFunction_AShooterTestsDevicePropertyTester_OnOverlapBegin, "OnOverlapBegin" }, // 303664691
+		{ &Z_Construct_UFunction_AShooterTestsDevicePropertyTester_RemoveDeviceProperties, "RemoveDeviceProperties" }, // 2497271812
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::FuncInfo) < 2048);
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::Class_MetaDataParams[] = {
 		{ "BlueprintType", "true" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "/** This tester will apply device properties to a Player Controller on overlap, and remove them once overlap ends. */" },
+#endif
 		{ "IncludePath", "ShooterTestsDevicePropertyTester.h" },
 		{ "IsBlueprintBase", "true" },
 		{ "ModuleRelativePath", "Private/ShooterTestsDevicePropertyTester.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "This tester will apply device properties to a Player Controller on overlap, and remove them once overlap ends." },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_DeviceProperties_Inner = { "DeviceProperties", nullptr, (EPropertyFlags)0x0004000000000000, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, 0, Z_Construct_UClass_UClass, Z_Construct_UClass_UInputDeviceProperty_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_DeviceProperties_Inner = { "DeviceProperties", nullptr, (EPropertyFlags)0x0004000000000000, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_UClass, Z_Construct_UClass_UInputDeviceProperty_NoRegister, METADATA_PARAMS(0, nullptr) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_DeviceProperties_MetaData[] = {
 		{ "Category", "Device Property" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Device properties to apply on overlap with a player controller. */" },
+#endif
 		{ "ModuleRelativePath", "Private/ShooterTestsDevicePropertyTester.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Device properties to apply on overlap with a player controller." },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_DeviceProperties = { "DeviceProperties", nullptr, (EPropertyFlags)0x0014000000000001, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(AShooterTestsDevicePropertyTester, DeviceProperties), EArrayPropertyFlags::None, METADATA_PARAMS(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_DeviceProperties_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_DeviceProperties_MetaData)) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_DeviceProperties = { "DeviceProperties", nullptr, (EPropertyFlags)0x0014000000000001, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShooterTestsDevicePropertyTester, DeviceProperties), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_DeviceProperties_MetaData), Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_DeviceProperties_MetaData) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_CollisionVolume_MetaData[] = {
 		{ "Category", "Device Property" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "/** The volume that will trigger device properties to be added and removed on overlap */" },
+#endif
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Private/ShooterTestsDevicePropertyTester.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "The volume that will trigger device properties to be added and removed on overlap" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_CollisionVolume = { "CollisionVolume", nullptr, (EPropertyFlags)0x001400000009001d, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(AShooterTestsDevicePropertyTester, CollisionVolume), Z_Construct_UClass_UCapsuleComponent_NoRegister, METADATA_PARAMS(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_CollisionVolume_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_CollisionVolume_MetaData)) };
+	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_CollisionVolume = { "CollisionVolume", nullptr, (EPropertyFlags)0x001400000009001d, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShooterTestsDevicePropertyTester, CollisionVolume), Z_Construct_UClass_UCapsuleComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_CollisionVolume_MetaData), Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_CollisionVolume_MetaData) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_PlatformMesh_MetaData[] = {
 		{ "Category", "Device Property" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "/** A little mesh to make this collision volume visible */" },
+#endif
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Private/ShooterTestsDevicePropertyTester.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "A little mesh to make this collision volume visible" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_PlatformMesh = { "PlatformMesh", nullptr, (EPropertyFlags)0x001400000009001d, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(AShooterTestsDevicePropertyTester, PlatformMesh), Z_Construct_UClass_UStaticMeshComponent_NoRegister, METADATA_PARAMS(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_PlatformMesh_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_PlatformMesh_MetaData)) };
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_ActivePropertyHandles_ElementProp = { "ActivePropertyHandles", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, 0, Z_Construct_UScriptStruct_FInputDevicePropertyHandle, METADATA_PARAMS(nullptr, 0) }; // 1447277002
+	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_PlatformMesh = { "PlatformMesh", nullptr, (EPropertyFlags)0x001400000009001d, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShooterTestsDevicePropertyTester, PlatformMesh), Z_Construct_UClass_UStaticMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_PlatformMesh_MetaData), Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_PlatformMesh_MetaData) };
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_ActivePropertyHandles_ElementProp = { "ActivePropertyHandles", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FInputDevicePropertyHandle, METADATA_PARAMS(0, nullptr) }; // 859588714
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_ActivePropertyHandles_MetaData[] = {
 		{ "ModuleRelativePath", "Private/ShooterTestsDevicePropertyTester.h" },
 	};
 #endif
-	static_assert(TModels<CGetTypeHashable, FInputDevicePropertyHandle>::Value, "The structure 'FInputDevicePropertyHandle' is used in a TSet but does not have a GetValueTypeHash defined");
-	const UECodeGen_Private::FSetPropertyParams Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_ActivePropertyHandles = { "ActivePropertyHandles", nullptr, (EPropertyFlags)0x0040000000002000, UECodeGen_Private::EPropertyGenFlags::Set, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(AShooterTestsDevicePropertyTester, ActivePropertyHandles), METADATA_PARAMS(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_ActivePropertyHandles_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_ActivePropertyHandles_MetaData)) }; // 1447277002
+	static_assert(TModels_V<CGetTypeHashable, FInputDevicePropertyHandle>, "The structure 'FInputDevicePropertyHandle' is used in a TSet but does not have a GetValueTypeHash defined");
+	const UECodeGen_Private::FSetPropertyParams Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_ActivePropertyHandles = { "ActivePropertyHandles", nullptr, (EPropertyFlags)0x0040000000002000, UECodeGen_Private::EPropertyGenFlags::Set, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShooterTestsDevicePropertyTester, ActivePropertyHandles), METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_ActivePropertyHandles_MetaData), Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_ActivePropertyHandles_MetaData) }; // 859588714
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_DeviceProperties_Inner,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::NewProp_DeviceProperties,
@@ -401,8 +425,9 @@ void EmptyLinkFunctionForGeneratedCodeShooterTestsDevicePropertyTester() {}
 		UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::PropPointers),
 		0,
 		0x008000A4u,
-		METADATA_PARAMS(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::Class_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::Class_MetaDataParams))
+		METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::Class_MetaDataParams), Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::Class_MetaDataParams)
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AShooterTestsDevicePropertyTester_Statics::PropPointers) < 2048);
 	UClass* Z_Construct_UClass_AShooterTestsDevicePropertyTester()
 	{
 		if (!Z_Registration_Info_UClass_AShooterTestsDevicePropertyTester.OuterSingleton)
@@ -417,15 +442,15 @@ void EmptyLinkFunctionForGeneratedCodeShooterTestsDevicePropertyTester() {}
 	}
 	DEFINE_VTABLE_PTR_HELPER_CTOR(AShooterTestsDevicePropertyTester);
 	AShooterTestsDevicePropertyTester::~AShooterTestsDevicePropertyTester() {}
-	struct Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterTests_Source_ShooterTestsRuntime_Private_ShooterTestsDevicePropertyTester_h_Statics
+	struct Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterTests_Source_ShooterTestsRuntime_Private_ShooterTestsDevicePropertyTester_h_Statics
 	{
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
-	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterTests_Source_ShooterTestsRuntime_Private_ShooterTestsDevicePropertyTester_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_AShooterTestsDevicePropertyTester, AShooterTestsDevicePropertyTester::StaticClass, TEXT("AShooterTestsDevicePropertyTester"), &Z_Registration_Info_UClass_AShooterTestsDevicePropertyTester, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AShooterTestsDevicePropertyTester), 1217995105U) },
+	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterTests_Source_ShooterTestsRuntime_Private_ShooterTestsDevicePropertyTester_h_Statics::ClassInfo[] = {
+		{ Z_Construct_UClass_AShooterTestsDevicePropertyTester, AShooterTestsDevicePropertyTester::StaticClass, TEXT("AShooterTestsDevicePropertyTester"), &Z_Registration_Info_UClass_AShooterTestsDevicePropertyTester, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AShooterTestsDevicePropertyTester), 3012856876U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterTests_Source_ShooterTestsRuntime_Private_ShooterTestsDevicePropertyTester_h_3436054768(TEXT("/Script/ShooterTestsRuntime"),
-		Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterTests_Source_ShooterTestsRuntime_Private_ShooterTestsDevicePropertyTester_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterTests_Source_ShooterTestsRuntime_Private_ShooterTestsDevicePropertyTester_h_Statics::ClassInfo),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterTests_Source_ShooterTestsRuntime_Private_ShooterTestsDevicePropertyTester_h_654683394(TEXT("/Script/ShooterTestsRuntime"),
+		Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterTests_Source_ShooterTestsRuntime_Private_ShooterTestsDevicePropertyTester_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterTests_Source_ShooterTestsRuntime_Private_ShooterTestsDevicePropertyTester_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

@@ -35,15 +35,20 @@ void EmptyLinkFunctionForGeneratedCodeAimAssistTargetManagerComponent() {}
 		(UObject* (*)())Z_Construct_UClass_UGameStateComponent,
 		(UObject* (*)())Z_Construct_UPackage__Script_ShooterCoreRuntime,
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UAimAssistTargetManagerComponent_Statics::DependentSingletons) < 16);
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UAimAssistTargetManagerComponent_Statics::Class_MetaDataParams[] = {
 		{ "BlueprintType", "true" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * The Aim Assist Target Manager Component is used to gather all aim assist targets that are within\n * a given player's view. Targets must implement the IAimAssistTargetInterface and be on the\n * collision channel that is set in the ShooterCoreRuntimeSettings. \n */" },
+#endif
 		{ "HideCategories", "Trigger PhysicsVolume" },
 		{ "IncludePath", "Input/AimAssistTargetManagerComponent.h" },
 		{ "IsBlueprintBase", "true" },
 		{ "ModuleRelativePath", "Public/Input/AimAssistTargetManagerComponent.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "The Aim Assist Target Manager Component is used to gather all aim assist targets that are within\na given player's view. Targets must implement the IAimAssistTargetInterface and be on the\ncollision channel that is set in the ShooterCoreRuntimeSettings." },
+#endif
 	};
 #endif
 	const FCppClassTypeInfoStatic Z_Construct_UClass_UAimAssistTargetManagerComponent_Statics::StaticCppClassTypeInfo = {
@@ -62,7 +67,7 @@ void EmptyLinkFunctionForGeneratedCodeAimAssistTargetManagerComponent() {}
 		0,
 		0,
 		0x00B000A4u,
-		METADATA_PARAMS(Z_Construct_UClass_UAimAssistTargetManagerComponent_Statics::Class_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UClass_UAimAssistTargetManagerComponent_Statics::Class_MetaDataParams))
+		METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UAimAssistTargetManagerComponent_Statics::Class_MetaDataParams), Z_Construct_UClass_UAimAssistTargetManagerComponent_Statics::Class_MetaDataParams)
 	};
 	UClass* Z_Construct_UClass_UAimAssistTargetManagerComponent()
 	{
@@ -79,15 +84,15 @@ void EmptyLinkFunctionForGeneratedCodeAimAssistTargetManagerComponent() {}
 	UAimAssistTargetManagerComponent::UAimAssistTargetManagerComponent(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
 	DEFINE_VTABLE_PTR_HELPER_CTOR(UAimAssistTargetManagerComponent);
 	UAimAssistTargetManagerComponent::~UAimAssistTargetManagerComponent() {}
-	struct Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_AimAssistTargetManagerComponent_h_Statics
+	struct Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_AimAssistTargetManagerComponent_h_Statics
 	{
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
-	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_AimAssistTargetManagerComponent_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_UAimAssistTargetManagerComponent, UAimAssistTargetManagerComponent::StaticClass, TEXT("UAimAssistTargetManagerComponent"), &Z_Registration_Info_UClass_UAimAssistTargetManagerComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAimAssistTargetManagerComponent), 1078801754U) },
+	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_AimAssistTargetManagerComponent_h_Statics::ClassInfo[] = {
+		{ Z_Construct_UClass_UAimAssistTargetManagerComponent, UAimAssistTargetManagerComponent::StaticClass, TEXT("UAimAssistTargetManagerComponent"), &Z_Registration_Info_UClass_UAimAssistTargetManagerComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAimAssistTargetManagerComponent), 3266049883U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_AimAssistTargetManagerComponent_h_256155193(TEXT("/Script/ShooterCoreRuntime"),
-		Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_AimAssistTargetManagerComponent_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_AimAssistTargetManagerComponent_h_Statics::ClassInfo),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_AimAssistTargetManagerComponent_h_2561273605(TEXT("/Script/ShooterCoreRuntime"),
+		Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_AimAssistTargetManagerComponent_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_AimAssistTargetManagerComponent_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
