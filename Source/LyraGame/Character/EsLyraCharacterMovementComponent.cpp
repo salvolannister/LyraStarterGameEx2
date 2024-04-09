@@ -172,29 +172,34 @@ void UEsLyraCharacterMovementComponent::PerformTeleport()
 	
 	const FVector ForwardVector = UpdatedComponent->GetForwardVector();
 	FHitResult Hit;
-
-	float MidHeightInCm = GetActorLocation().Z / 2.f;
 	FVector ActorCenterLocation = GetActorLocation();
-	FVector TraceHeadStart(ActorCenterLocation.X, ActorCenterLocation.Y, ActorCenterLocation.Z + MidHeightInCm);
-	TraceHeadStart += ForwardVector / 10;
-	FVector TraceHeadEnd = TraceHeadStart + ForwardVector * TeleportImpulse;
-
-	//GetWorld()->LineTraceSingleByChannel(Hit, ActorCenterLocation, TraceHeadEnd, ECollisionChannel::ECC_GameTraceChannel2);
 
 	 SafeMoveUpdatedComponent(ForwardVector * TeleportImpulse, UpdatedComponent->GetComponentRotation(), true, Hit, ETeleportType::None);
 	
 	if (Hit.bBlockingHit)
 	{
-		// if the dot product won't be -1 or 1 it means the player is in front of a slope
-		float DotProduct = FVector::DotProduct(Hit.ImpactNormal, ForwardVector);
-		if (FMath::Abs(DotProduct) < 0.8f)
+		
+		float maxDistance = 1000;
+		FHitResult GroundHit;
+		bool bIsGrounded = GetWorld()->LineTraceSingleByChannel(GroundHit, ActorCenterLocation, ActorCenterLocation - FVector::UpVector * maxDistance, ECollisionChannel::ECC_GameTraceChannel1);
+		if (bIsGrounded)
 		{
-			FVector EndLocation = TraceHeadEnd - Hit.ImpactPoint;
-			EndLocation += Hit.ImpactNormal;
-			DrawDebugLine(GetWorld(), ActorCenterLocation, EndLocation, FColor::Green, true, 5.0f, 0, 10.0f);
+			float groundAngleInDegrees = FMath::Acos(FVector::DotProduct(GroundHit.Normal, FVector::UpVector)) * 180.0f / PI;
+			// If the angle is greater than zero it means the player is on a slope and sweep will prevent teleport from happening
+			if (groundAngleInDegrees > 0.f)
+			{
+				SafeMoveUpdatedComponent(ForwardVector * TeleportImpulse, UpdatedComponent->GetComponentRotation(), false, Hit, ETeleportType::None);
 
-			SafeMoveUpdatedComponent(ForwardVector * TeleportImpulse, UpdatedComponent->GetComponentRotation(), false, Hit, ETeleportType::None);
+			}
+
+			if (GEngine)
+			{
+				FString ActorName = GroundHit.GetActor()? GroundHit.GetActor()->GetName() : TEXT("No_Name_Found");
+				FString DebugMessage = FString::Printf(TEXT("TELEPORT DEBUG: floorAngle in degrees is %f and hit object is %s"), groundAngleInDegrees, *ActorName);
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, DebugMessage);
+			}
 		}
+		
 	}
 
 	SetMovementMode(MOVE_Falling);
