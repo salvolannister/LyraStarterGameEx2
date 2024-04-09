@@ -179,13 +179,11 @@ void UEsLyraCharacterMovementComponent::PerformTeleport()
 	if (Hit.bBlockingHit)
 	{
 		
-		float maxDistance = 1000;
-		FHitResult GroundHit;
-		bool bIsGrounded = GetWorld()->LineTraceSingleByChannel(GroundHit, ActorCenterLocation, ActorCenterLocation - FVector::UpVector * maxDistance, ECollisionChannel::ECC_GameTraceChannel1);
-		if (bIsGrounded)
+		const FLyraCharacterGroundInfo GroundInfo = GetGroundInfo();
+		if (GroundInfo.GroundDistance == 0.f)
 		{
-			float groundAngleInDegrees = FMath::Acos(FVector::DotProduct(GroundHit.Normal, FVector::UpVector)) * 180.0f / PI;
-			// If the angle is greater than zero it means the player is on a slope and sweep will prevent teleport from happening
+			float groundAngleInDegrees = FMath::Acos(FVector::DotProduct(GroundInfo.GroundHitResult.Normal, FVector::UpVector)) * 180.0f / PI;
+			 //If the angle is greater than zero it means the player is on a slope and sweep will prevent teleport from happening
 			if (groundAngleInDegrees > 0.f)
 			{
 				SafeMoveUpdatedComponent(ForwardVector * TeleportImpulse, UpdatedComponent->GetComponentRotation(), false, Hit, ETeleportType::None);
@@ -194,7 +192,7 @@ void UEsLyraCharacterMovementComponent::PerformTeleport()
 
 			if (GEngine)
 			{
-				FString ActorName = GroundHit.GetActor()? GroundHit.GetActor()->GetName() : TEXT("No_Name_Found");
+				FString ActorName = GroundInfo.GroundHitResult.GetActor()? GroundInfo.GroundHitResult.GetActor()->GetName() : TEXT("No_Name_Found");
 				FString DebugMessage = FString::Printf(TEXT("TELEPORT DEBUG: floorAngle in degrees is %f and hit object is %s"), groundAngleInDegrees, *ActorName);
 				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, DebugMessage);
 			}
