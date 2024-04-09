@@ -85,8 +85,16 @@ void ALyraCharacter::PreInitializeComponents()
 {
 	Super::PreInitializeComponents();
 
-	UEsLyraCharacterMovementComponent* EsMoveComp = Cast<UEsLyraCharacterMovementComponent>(GetCharacterMovement());
-	EsMoveComp->SetIsReplicated(true);
+	if (UEsLyraCharacterMovementComponent* EsMoveComp = Cast<UEsLyraCharacterMovementComponent>(GetCharacterMovement()))
+	{
+		EsMoveComp->SetIsReplicated(true);
+		
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Cast of CharacterMovementComponent failed since is not a UEsLyraCharacterMovementComponent"));
+	}
+	
 }
 
 void ALyraCharacter::BeginPlay()
