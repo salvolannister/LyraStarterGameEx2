@@ -89,7 +89,7 @@ public:
 	UPROPERTY(Transient) 
 	TObjectPtr<ULyraHealthComponent> LyraHealthComponent;
 	
-	// Teleport
+	// Distance the player will be teleported to in cm
 	UPROPERTY(EditDefaultsOnly)
 	float TeleportImpulse = 1000.f;
 
