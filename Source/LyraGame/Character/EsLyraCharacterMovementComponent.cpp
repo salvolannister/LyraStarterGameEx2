@@ -9,6 +9,8 @@
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "WorldCollision.h"
+
 
 /**
  *  Get prediction data for a client game
@@ -171,7 +173,29 @@ void UEsLyraCharacterMovementComponent::PerformTeleport()
 	const FVector ForwardVector = UpdatedComponent->GetForwardVector();
 	FHitResult Hit;
 
-	SafeMoveUpdatedComponent(ForwardVector * TeleportImpulse, UpdatedComponent->GetComponentRotation(), true, Hit, ETeleportType::None);
+	float MidHeightInCm = GetActorLocation().Z / 2.f;
+	FVector ActorCenterLocation = GetActorLocation();
+	FVector TraceHeadStart(ActorCenterLocation.X, ActorCenterLocation.Y, ActorCenterLocation.Z + MidHeightInCm);
+	TraceHeadStart += ForwardVector / 10;
+	FVector TraceHeadEnd = TraceHeadStart + ForwardVector * TeleportImpulse;
+
+	//GetWorld()->LineTraceSingleByChannel(Hit, ActorCenterLocation, TraceHeadEnd, ECollisionChannel::ECC_GameTraceChannel2);
+
+	 SafeMoveUpdatedComponent(ForwardVector * TeleportImpulse, UpdatedComponent->GetComponentRotation(), true, Hit, ETeleportType::None);
+	
+	if (Hit.bBlockingHit)
+	{
+		// if the dot product won't be -1 or 1 it means the player is in front of a slope
+		float DotProduct = FVector::DotProduct(Hit.ImpactNormal, ForwardVector);
+		if (FMath::Abs(DotProduct) < 0.8f)
+		{
+			FVector EndLocation = TraceHeadEnd - Hit.ImpactPoint;
+			EndLocation += Hit.ImpactNormal;
+			DrawDebugLine(GetWorld(), ActorCenterLocation, EndLocation, FColor::Green, true, 5.0f, 0, 10.0f);
+
+			SafeMoveUpdatedComponent(ForwardVector * TeleportImpulse, UpdatedComponent->GetComponentRotation(), false, Hit, ETeleportType::None);
+		}
+	}
 
 	SetMovementMode(MOVE_Falling);
 }
