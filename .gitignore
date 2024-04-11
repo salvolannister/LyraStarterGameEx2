@@ -163,16 +163,6 @@ Plugins/FMODStudio/Binaries/Win64/UE4Editor-FMODStudio.dll
 
 !Plugins/FMODStudio/Binaries/*/plugins.txt
 
-# ================
-# Scripts
-!Source/T4Core/Scripts/Build/
-Source/T4Core/Scripts/config.bat
-Source/T4Core/Scripts/Template/src/profiles/*
-Source/T4Core/Scripts/Template/*.bat
-!Source/T4Core/Scripts/Template/install-template.bat
-!Source/T4Core/Scripts/Template/src/profiles/__init__.py
-!Source/T4Core/Scripts/Template/src/profiles/profile.py.template
-Plugins/T4Core/Source/T4Core/Scripts/Versioning/GitProxy/SetupEnvironment/SetGitProxyEnv.bat
 
 # ================
 # Docs
@@ -299,8 +289,6 @@ Plugins/T4Discord/ThirdParty/**/bin/*
 !Plugins/HoudiniEngine/Resources
 !Plugins/HoudiniEngine/Resources/Icons
 
-
-
 # ================
 # VS-Chromium
 vs-chromium-project.txt
@@ -313,8 +301,6 @@ config.bat
 # GitHub Copilot
 JSON/
 CppProperties.json
-
-
 
 # ================
 # Compiler Score
