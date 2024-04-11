@@ -174,31 +174,42 @@ void UEsLyraCharacterMovementComponent::PerformTeleport()
 	FHitResult Hit;
 	FVector ActorCenterLocation = GetActorLocation();
 
-	 SafeMoveUpdatedComponent(ForwardVector * TeleportImpulse, UpdatedComponent->GetComponentRotation(), true, Hit, ETeleportType::None);
 	
-	if (Hit.bBlockingHit)
+	
+
+	const FLyraCharacterGroundInfo GroundInfo = GetGroundInfo();
+	if (GroundInfo.GroundDistance == 0.f)
 	{
-		
-		const FLyraCharacterGroundInfo GroundInfo = GetGroundInfo();
-		if (GroundInfo.GroundDistance == 0.f)
+		float groundAngleInDegrees = FMath::Acos(FVector::DotProduct(GroundInfo.GroundHitResult.Normal, FVector::UpVector)) * 180.0f / PI;
+		//If the angle is greater than zero it means the player is on a slope and sweep will prevent teleport from happening
+		if (groundAngleInDegrees > 0.f)
 		{
-			float groundAngleInDegrees = FMath::Acos(FVector::DotProduct(GroundInfo.GroundHitResult.Normal, FVector::UpVector)) * 180.0f / PI;
-			 //If the angle is greater than zero it means the player is on a slope and sweep will prevent teleport from happening
-			if (groundAngleInDegrees > 0.f)
-			{
-				SafeMoveUpdatedComponent(ForwardVector * TeleportImpulse, UpdatedComponent->GetComponentRotation(), false, Hit, ETeleportType::None);
+			const UCapsuleComponent* CapsuleComp = CharacterOwner->GetCapsuleComponent();
+			check(CapsuleComp);
 
-			}
+			FVector TeleportLocation = ForwardVector * TeleportImpulse + GroundInfo.GroundHitResult.Normal + CapsuleComp->GetUnscaledCapsuleHalfHeight();
+			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + TeleportLocation, FColor::Green, false, 50.0f, 0.0f, 30.0f);
 
-			if (GEngine)
-			{
-				FString ActorName = GroundInfo.GroundHitResult.GetActor()? GroundInfo.GroundHitResult.GetActor()->GetName() : TEXT("No_Name_Found");
-				FString DebugMessage = FString::Printf(TEXT("TELEPORT DEBUG: floorAngle in degrees is %f and hit object is %s"), groundAngleInDegrees, *ActorName);
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, DebugMessage);
-			}
+			FVector TeleportLocation2 = FVector::VectorPlaneProject(ForwardVector, GroundInfo.GroundHitResult.Normal);
+			TeleportLocation2 = TeleportLocation2 * TeleportImpulse;
+			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + TeleportLocation2, FColor::Red, false, 49.0f, 0.0f, 30.0f);
+
+			SafeMoveUpdatedComponent(TeleportLocation2, UpdatedComponent->GetComponentRotation(), false, Hit, ETeleportType::None);
 		}
-		
+		else
+		{
+			SafeMoveUpdatedComponent(ForwardVector * TeleportImpulse, UpdatedComponent->GetComponentRotation(), true, Hit, ETeleportType::None);
+		}
+
+		if (GEngine)
+		{
+			FString ActorName = GroundInfo.GroundHitResult.GetActor() ? GroundInfo.GroundHitResult.GetActor()->GetName() : TEXT("No_Name_Found");
+			FString DebugMessage = FString::Printf(TEXT("TELEPORT DEBUG: floorAngle in degrees is %f and hit object is %s"), groundAngleInDegrees, *ActorName);
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, DebugMessage);
+		}
+
 	}
+	
 
 	SetMovementMode(MOVE_Falling);
 }
