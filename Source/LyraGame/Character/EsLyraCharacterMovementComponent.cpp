@@ -9,6 +9,8 @@
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "WorldCollision.h"
+
 
 /**
  *  Get prediction data for a client game
@@ -121,11 +123,11 @@ void UEsLyraCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterat
  **********************************************************************************************************/
 void UEsLyraCharacterMovementComponent::OnClientCorrectionReceived(FNetworkPredictionData_Client_Character& ClientData,
 																   float TimeStamp, FVector NewLocation, FVector NewVelocity, UPrimitiveComponent* NewBase, FName NewBaseBoneName,
-																   bool bHasBase, bool bBaseRelativePosition, uint8 ServerMovementMode)
+																   bool bHasBase, bool bBaseRelativePosition, uint8 ServerMovementMode, FVector ServerGravityDirection)
 {
 	Super::OnClientCorrectionReceived(ClientData, TimeStamp, NewLocation, NewVelocity, NewBase, NewBaseBoneName,
 									  bHasBase, bBaseRelativePosition,
-									  ServerMovementMode);
+									  ServerMovementMode, ServerGravityDirection);
 
 	UE_LOG(LogTemp, Warning, TEXT("On Client Correction Received"));
 }
@@ -167,11 +169,29 @@ bool UEsLyraCharacterMovementComponent::CanTeleport() const
 void UEsLyraCharacterMovementComponent::PerformTeleport()
 {	
 	TeleportStartTime = GetWorld()->GetTimeSeconds();	
-	
+
 	const FVector ForwardVector = UpdatedComponent->GetForwardVector();
 	FHitResult Hit;
+	FVector ActorCenterLocation = GetActorLocation();
+	
+	const FLyraCharacterGroundInfo GroundInfo = GetGroundInfo();
+	if (GroundInfo.GroundDistance == 0.f)
+	{
+		float groundAngleInDegrees = FMath::Acos(FVector::DotProduct(GroundInfo.GroundHitResult.Normal, FVector::UpVector)) * 180.0f / PI;
+		//If the angle is greater than zero it means the player is on a slope and sweep will prevent teleport from happening
+		if (groundAngleInDegrees > 0.f)
+		{
+			// Projecting the forward vector will adjust the teleport location to a direction parallel to the slope
+			FVector AdjustedTeleportLocation = FVector::VectorPlaneProject(ForwardVector, GroundInfo.GroundHitResult.Normal);
 
-	SafeMoveUpdatedComponent(ForwardVector * TeleportImpulse, UpdatedComponent->GetComponentRotation(), true, Hit, ETeleportType::None);
+			SafeMoveUpdatedComponent(AdjustedTeleportLocation * TeleportImpulse, UpdatedComponent->GetComponentRotation(), false, Hit, ETeleportType::None);
+		}
+		else
+		{
+			SafeMoveUpdatedComponent(ForwardVector * TeleportImpulse, UpdatedComponent->GetComponentRotation(), true, Hit, ETeleportType::None);
+		}
+
+	}
 
 	SetMovementMode(MOVE_Falling);
 }

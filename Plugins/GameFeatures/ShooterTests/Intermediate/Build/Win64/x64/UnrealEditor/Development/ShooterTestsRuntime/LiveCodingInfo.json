@@ -2,10 +2,10 @@
 	"RemapUnityFiles": 
 	{
 		"Module.ShooterTestsRuntime.cpp.obj": [
-			"ShooterTestsDevicePropertyTester.gen.cpp.obj",
-			"ShooterTestsRuntime.init.gen.cpp.obj",
 			"ShooterTestsDevicePropertyTester.cpp.obj",
-			"ShooterTestsRuntimeModule.cpp.obj"
+			"ShooterTestsRuntimeModule.cpp.obj",
+			"ShooterTestsDevicePropertyTester.gen.cpp.obj",
+			"ShooterTestsRuntime.init.gen.cpp.obj"
 		]
 	}
 }

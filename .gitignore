@@ -72,3 +72,238 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+*.log
+
+# ==== NEW FILE TO IGNORE ADDED FROM SALVOLANNISTER ===== 
+_Assets_Apple/
+_AssetsUI/
+_Assets/
+_CarmaWwiseProject/
+Intermediate/
+Saved/
+DerivedDataCache/
+Binaries/
+Plugins/*/Binaries/
+enc_temp_folder/
+DocsDebug
+
+# ================
+# Nuget packages
+packages/
+
+# ================
+# C# projects
+bin/
+obj/
+
+# ================
+# Extensions
+*.pyc
+*.opensdf
+*.sdf
+*.sln
+*.suo
+*.psess
+*.log
+*.obj
+.DS_Store
+*.pdb
+*.pch
+*.VC.db
+*.VC.opendb
+*.lib
+.vs/
+.vsconfig
+
+# ================
+# Wwise
+!Plugins/Wwise/ThirdParty/**/*.lib
+!Plugins/Wwise/ThirdParty/**/bin
+Plugins/Wwise/ThirdParty/**/bin/*
+!Plugins/Wwise/ThirdParty/**/bin/*.dll
+
+# Playstation Release
+!Plugins/Wwise/ThirdParty/**/bin/*.a
+!Plugins/Wwise/ThirdParty/**/bin/*.prx
+!Plugins/Wwise/Content/WwiseTree/Icons
+
+
+Plugins/Wwise/ThirdParty/Win32_vc140
+Plugins/Wwise/ThirdParty/Win32_vc150
+Plugins/Wwise/ThirdParty/Win32_vc160
+
+# ================
+# FMOD
+!Plugins/FMODStudio/Binaries/
+Plugins/FMODStudio/Binaries/*
+
+!Plugins/FMODStudio/Binaries/Win32/
+Plugins/FMODStudio/Binaries/Win32/*
+!Plugins/FMODStudio/Binaries/Win32/*.lib
+!Plugins/FMODStudio/Binaries/Win64/*.dll
+Plugins/FMODStudio/Binaries/Win63/*DebugGame.dll
+
+!Plugins/FMODStudio/Binaries/Win64/
+Plugins/FMODStudio/Binaries/Win64/*
+!Plugins/FMODStudio/Binaries/Win64/*.lib
+!Plugins/FMODStudio/Binaries/Win64/*.dll
+Plugins/FMODStudio/Binaries/Win64/*DebugGame.dll
+
+Plugins/FMODStudio/Binaries/Win64/UE4Editor-FMODStudioEditor.dll
+Plugins/FMODStudio/Binaries/Win64/UE4Editor-FMODStudio.dll
+
+!Plugins/FMODStudio/Binaries/PS4/
+!Plugins/FMODStudio/Binaries/XboxOne/
+!Plugins/FMODStudio/Binaries/Switch/
+
+!Plugins/SCUE4/Source/ThirdParty/x64
+!Plugins/SCUE4/Source/ThirdParty/x64/*
+!Plugins/SCUE4/Source/ThirdParty/x86
+!Plugins/SCUE4/Source/ThirdParty/x86/*
+
+!Plugins/FMODStudio/Binaries/*/plugins.txt
+
+
+# ================
+# Docs
+!Source/T4Core/Docs/scripts/libs/*.exe
+!_Extras/Doxygen/doxygen.exe
+!_Extras/Doxygen/doxywizard.exe
+hashed_names_cache.txt
+
+# ================
+# Steam SDK
+_Extras/SteamSDK/sdk/client/
+_Extras/SteamSDK/sdk/glmgr/
+_Extras/SteamSDK/sdk/public/
+_Extras/SteamSDK/sdk/redistributable_bin/
+_Extras/SteamSDK/sdk/steamworksexample/
+_Extras/SteamSDK/sdk/readme.txt
+
+_Extras/SteamSDK/sdk/tools/contentserver/
+_Extras/SteamSDK/sdk/tools/drm/
+_Extras/SteamSDK/sdk/tools/goldmaster/
+_Extras/SteamSDK/sdk/tools/linux/
+_Extras/SteamSDK/sdk/tools/*.zip
+
+_Extras/SteamSDK/sdk/tools/ContentBuilder/builder/
+_Extras/SteamSDK/sdk/tools/ContentBuilder/builder_osx/
+_Extras/SteamSDK/sdk/tools/ContentBuilder/builder_linux/
+_Extras/SteamSDK/sdk/tools/ContentBuilder/content/
+_Extras/SteamSDK/sdk/tools/ContentBuilder/output/
+
+_Extras/SteamSDK/config.py
+_Extras/SteamSDK/sdk/tools/ContentBuilder/scripts/output/
+_Extras/SteamSDK/_steam_build/Windows/
+
+# ================
+# Gog SDK
+!Plugins/OnlineSubsystemGOG/Source/ThirdParty/GalaxySDK/*/*.dll
+!Plugins/OnlineSubsystemGOG/Source/ThirdParty/GalaxySDK/*/*.lib
+!Plugins/OnlineSubsystemGOG/Source/ThirdParty/GalaxySDK/*/*.pdb
+
+# ================
+# EOS SDK
+!Plugins/OnlineSubsystemRedpointEOS/Source/ThirdParty/**/Lib/*.lib
+!Plugins/OnlineSubsystemRedpointEOS/Source/ThirdParty/**/Bin
+
+# ================
+# OS generated 
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# ================
+# PS4
+!Build/PS4
+!Build/PS4/sce_sys
+Build/PS4/*
+
+# ================
+# PS5
+!Build/PS5
+!Build/PS5/sce_sys
+Build/PS5/*
+
+# ================
+# XboxOne
+!Build/XboxOne
+!Build/XboxOne/Resources
+Build/XboxOne/*
+
+# ================
+# XSX
+!Build/XSX
+!Build/XSX/Resources
+Build/XSX/*
+
+# ================
+# Switch
+!Build/Switch
+!Build/Switch/Resources
+!Build/Switch/Resources/Icons
+Build/Switch/*
+
+
+Build/ps4/symbols/
+
+# ===============
+# Allow use of PSO Caching
+!Build/IOS
+Build/IOS/*.*
+!Build/IOS/PakBlacklist-*.*
+!Build/IOS/PipelineCaches
+!Build/TVOS
+Build/TVOS/*.*
+!Build/TVOS/PakBlacklist-*.*
+!Build/TVOS/PipelineCaches
+
+# ===============
+# Save OSX signign tool
+!Build/Mac
+!Build/Mac/PakBlacklist-*.*
+!Build/Mac/MacSign
+Build/Mac/MacSign/*.pkg
+Build/Mac/MacSign/*.app
+
+# ================
+# Discord SDK Plugin
+!Plugins/T4Discord/ThirdParty/**/*.lib
+!Plugins/T4Discord/ThirdParty/**/bin
+Plugins/T4Discord/ThirdParty/**/bin/*
+!Plugins/T4Discord/ThirdParty/**/bin/*.dll
+
+# ================
+# Hydra SDK Plugin
+!Plugins/HydraInterface/HydraSDK/**/*.lib
+!Plugins/HydraInterface/HydraSDK/bin
+!Plugins/HydraInterface/HydraSDK/bin/Win64/*.dll
+
+# ================
+# Houdini Engine Plugin
+!Plugins/HoudiniEngine/Resources
+!Plugins/HoudiniEngine/Resources/Icons
+
+# ================
+# VS-Chromium
+vs-chromium-project.txt
+
+# ================
+# Build scripts
+config.bat
+
+# ================
+# GitHub Copilot
+JSON/
+CppProperties.json
+
+# ================
+# Compiler Score
+compileData.scor
+compileData.scor.*
+

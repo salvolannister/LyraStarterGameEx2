@@ -80,7 +80,7 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaAttributeSet() {}
 		{ "NativeConst", "" },
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::NewProp_OldValue = { "OldValue", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(TopDownArenaAttributeSet_eventOnRep_BombCapacity_Parms, OldValue), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::NewProp_OldValue_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::NewProp_OldValue_MetaData)) }; // 1256614452
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::NewProp_OldValue = { "OldValue", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TopDownArenaAttributeSet_eventOnRep_BombCapacity_Parms, OldValue), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::NewProp_OldValue_MetaData), Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::NewProp_OldValue_MetaData) }; // 2151517668
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::NewProp_OldValue,
 	};
@@ -89,7 +89,9 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaAttributeSet() {}
 		{ "ModuleRelativePath", "Private/TopDownArenaAttributeSet.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UTopDownArenaAttributeSet, nullptr, "OnRep_BombCapacity", nullptr, nullptr, sizeof(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::TopDownArenaAttributeSet_eventOnRep_BombCapacity_Parms), Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00480401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UTopDownArenaAttributeSet, nullptr, "OnRep_BombCapacity", nullptr, nullptr, Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::PropPointers), sizeof(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::TopDownArenaAttributeSet_eventOnRep_BombCapacity_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00480401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::Function_MetaDataParams), Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::Function_MetaDataParams) };
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::PropPointers) < 2048);
+	static_assert(sizeof(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity_Statics::TopDownArenaAttributeSet_eventOnRep_BombCapacity_Parms) < MAX_uint16);
 	UFunction* Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -120,7 +122,7 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaAttributeSet() {}
 		{ "NativeConst", "" },
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::NewProp_OldValue = { "OldValue", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(TopDownArenaAttributeSet_eventOnRep_BombRange_Parms, OldValue), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::NewProp_OldValue_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::NewProp_OldValue_MetaData)) }; // 1256614452
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::NewProp_OldValue = { "OldValue", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TopDownArenaAttributeSet_eventOnRep_BombRange_Parms, OldValue), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::NewProp_OldValue_MetaData), Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::NewProp_OldValue_MetaData) }; // 2151517668
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::NewProp_OldValue,
 	};
@@ -129,7 +131,9 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaAttributeSet() {}
 		{ "ModuleRelativePath", "Private/TopDownArenaAttributeSet.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UTopDownArenaAttributeSet, nullptr, "OnRep_BombRange", nullptr, nullptr, sizeof(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::TopDownArenaAttributeSet_eventOnRep_BombRange_Parms), Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00480401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UTopDownArenaAttributeSet, nullptr, "OnRep_BombRange", nullptr, nullptr, Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::PropPointers), sizeof(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::TopDownArenaAttributeSet_eventOnRep_BombRange_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00480401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::Function_MetaDataParams), Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::Function_MetaDataParams) };
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::PropPointers) < 2048);
+	static_assert(sizeof(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange_Statics::TopDownArenaAttributeSet_eventOnRep_BombRange_Parms) < MAX_uint16);
 	UFunction* Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -160,7 +164,7 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaAttributeSet() {}
 		{ "NativeConst", "" },
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::NewProp_OldValue = { "OldValue", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(TopDownArenaAttributeSet_eventOnRep_BombsRemaining_Parms, OldValue), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::NewProp_OldValue_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::NewProp_OldValue_MetaData)) }; // 1256614452
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::NewProp_OldValue = { "OldValue", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TopDownArenaAttributeSet_eventOnRep_BombsRemaining_Parms, OldValue), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::NewProp_OldValue_MetaData), Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::NewProp_OldValue_MetaData) }; // 2151517668
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::NewProp_OldValue,
 	};
@@ -169,7 +173,9 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaAttributeSet() {}
 		{ "ModuleRelativePath", "Private/TopDownArenaAttributeSet.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UTopDownArenaAttributeSet, nullptr, "OnRep_BombsRemaining", nullptr, nullptr, sizeof(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::TopDownArenaAttributeSet_eventOnRep_BombsRemaining_Parms), Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00480401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UTopDownArenaAttributeSet, nullptr, "OnRep_BombsRemaining", nullptr, nullptr, Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::PropPointers), sizeof(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::TopDownArenaAttributeSet_eventOnRep_BombsRemaining_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00480401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::Function_MetaDataParams), Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::Function_MetaDataParams) };
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::PropPointers) < 2048);
+	static_assert(sizeof(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining_Statics::TopDownArenaAttributeSet_eventOnRep_BombsRemaining_Parms) < MAX_uint16);
 	UFunction* Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -200,7 +206,7 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaAttributeSet() {}
 		{ "NativeConst", "" },
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::NewProp_OldValue = { "OldValue", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(TopDownArenaAttributeSet_eventOnRep_MovementSpeed_Parms, OldValue), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::NewProp_OldValue_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::NewProp_OldValue_MetaData)) }; // 1256614452
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::NewProp_OldValue = { "OldValue", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(TopDownArenaAttributeSet_eventOnRep_MovementSpeed_Parms, OldValue), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::NewProp_OldValue_MetaData), Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::NewProp_OldValue_MetaData) }; // 2151517668
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::NewProp_OldValue,
 	};
@@ -209,7 +215,9 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaAttributeSet() {}
 		{ "ModuleRelativePath", "Private/TopDownArenaAttributeSet.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UTopDownArenaAttributeSet, nullptr, "OnRep_MovementSpeed", nullptr, nullptr, sizeof(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::TopDownArenaAttributeSet_eventOnRep_MovementSpeed_Parms), Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00480401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UTopDownArenaAttributeSet, nullptr, "OnRep_MovementSpeed", nullptr, nullptr, Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::PropPointers), sizeof(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::TopDownArenaAttributeSet_eventOnRep_MovementSpeed_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00480401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::Function_MetaDataParams), Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::Function_MetaDataParams) };
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::PropPointers) < 2048);
+	static_assert(sizeof(Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed_Statics::TopDownArenaAttributeSet_eventOnRep_MovementSpeed_Parms) < MAX_uint16);
 	UFunction* Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -255,61 +263,83 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaAttributeSet() {}
 		(UObject* (*)())Z_Construct_UClass_ULyraAttributeSet,
 		(UObject* (*)())Z_Construct_UPackage__Script_TopDownArenaRuntime,
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::DependentSingletons) < 16);
 	const FClassFunctionLinkInfo Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::FuncInfo[] = {
-		{ &Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity, "OnRep_BombCapacity" }, // 2477462097
-		{ &Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange, "OnRep_BombRange" }, // 520255420
-		{ &Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining, "OnRep_BombsRemaining" }, // 1606003990
-		{ &Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed, "OnRep_MovementSpeed" }, // 17221990
+		{ &Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombCapacity, "OnRep_BombCapacity" }, // 4287036035
+		{ &Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombRange, "OnRep_BombRange" }, // 2718775485
+		{ &Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_BombsRemaining, "OnRep_BombsRemaining" }, // 894212901
+		{ &Z_Construct_UFunction_UTopDownArenaAttributeSet_OnRep_MovementSpeed, "OnRep_MovementSpeed" }, // 1208156093
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::FuncInfo) < 2048);
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::Class_MetaDataParams[] = {
 		{ "BlueprintType", "true" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UTopDownArenaAttributeSet\n *\n *\x09""Class that defines attributes specific to the top-down arena gameplay mode.\n */" },
+#endif
 		{ "IncludePath", "TopDownArenaAttributeSet.h" },
 		{ "ModuleRelativePath", "Private/TopDownArenaAttributeSet.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UTopDownArenaAttributeSet\n\n    Class that defines attributes specific to the top-down arena gameplay mode." },
+#endif
 	};
 #endif
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombsRemaining_MetaData[] = {
 		{ "AllowPrivateAccess", "TRUE" },
 		{ "Category", "TopDownArenaGame" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// The number of bombs remaining\n" },
+#endif
 		{ "ModuleRelativePath", "Private/TopDownArenaAttributeSet.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "The number of bombs remaining" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombsRemaining = { "BombsRemaining", "OnRep_BombsRemaining", (EPropertyFlags)0x0040000100000034, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(UTopDownArenaAttributeSet, BombsRemaining), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombsRemaining_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombsRemaining_MetaData)) }; // 1256614452
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombsRemaining = { "BombsRemaining", "OnRep_BombsRemaining", (EPropertyFlags)0x0040000100000034, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTopDownArenaAttributeSet, BombsRemaining), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombsRemaining_MetaData), Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombsRemaining_MetaData) }; // 2151517668
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombCapacity_MetaData[] = {
 		{ "AllowPrivateAccess", "TRUE" },
 		{ "Category", "TopDownArenaGame" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// The maximum number of bombs that can be placed at once\n" },
+#endif
 		{ "ModuleRelativePath", "Private/TopDownArenaAttributeSet.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "The maximum number of bombs that can be placed at once" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombCapacity = { "BombCapacity", "OnRep_BombCapacity", (EPropertyFlags)0x0040000100000034, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(UTopDownArenaAttributeSet, BombCapacity), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombCapacity_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombCapacity_MetaData)) }; // 1256614452
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombCapacity = { "BombCapacity", "OnRep_BombCapacity", (EPropertyFlags)0x0040000100000034, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTopDownArenaAttributeSet, BombCapacity), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombCapacity_MetaData), Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombCapacity_MetaData) }; // 2151517668
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombRange_MetaData[] = {
 		{ "AllowPrivateAccess", "TRUE" },
 		{ "Category", "TopDownArenaGame" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// The range/radius of bomb blasts\n" },
+#endif
 		{ "ModuleRelativePath", "Private/TopDownArenaAttributeSet.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "The range/radius of bomb blasts" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombRange = { "BombRange", "OnRep_BombRange", (EPropertyFlags)0x0040000100000034, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(UTopDownArenaAttributeSet, BombRange), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombRange_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombRange_MetaData)) }; // 1256614452
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombRange = { "BombRange", "OnRep_BombRange", (EPropertyFlags)0x0040000100000034, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTopDownArenaAttributeSet, BombRange), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombRange_MetaData), Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombRange_MetaData) }; // 2151517668
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_MovementSpeed_MetaData[] = {
 		{ "AllowPrivateAccess", "TRUE" },
 		{ "Category", "TopDownArenaGame" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// The range/radius of bomb blasts\n" },
+#endif
 		{ "ModuleRelativePath", "Private/TopDownArenaAttributeSet.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "The range/radius of bomb blasts" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_MovementSpeed = { "MovementSpeed", "OnRep_MovementSpeed", (EPropertyFlags)0x0040000100000034, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(UTopDownArenaAttributeSet, MovementSpeed), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_MovementSpeed_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_MovementSpeed_MetaData)) }; // 1256614452
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_MovementSpeed = { "MovementSpeed", "OnRep_MovementSpeed", (EPropertyFlags)0x0040000100000034, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTopDownArenaAttributeSet, MovementSpeed), Z_Construct_UScriptStruct_FGameplayAttributeData, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_MovementSpeed_MetaData), Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_MovementSpeed_MetaData) }; // 2151517668
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombsRemaining,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::NewProp_BombCapacity,
@@ -332,8 +362,9 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaAttributeSet() {}
 		UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::PropPointers),
 		0,
 		0x002000A0u,
-		METADATA_PARAMS(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::Class_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::Class_MetaDataParams))
+		METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::Class_MetaDataParams), Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::Class_MetaDataParams)
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaAttributeSet_Statics::PropPointers) < 2048);
 	UClass* Z_Construct_UClass_UTopDownArenaAttributeSet()
 	{
 		if (!Z_Registration_Info_UClass_UTopDownArenaAttributeSet.OuterSingleton)
@@ -364,15 +395,15 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaAttributeSet() {}
 	}
 	DEFINE_VTABLE_PTR_HELPER_CTOR(UTopDownArenaAttributeSet);
 	UTopDownArenaAttributeSet::~UTopDownArenaAttributeSet() {}
-	struct Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaAttributeSet_h_Statics
+	struct Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaAttributeSet_h_Statics
 	{
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
-	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaAttributeSet_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_UTopDownArenaAttributeSet, UTopDownArenaAttributeSet::StaticClass, TEXT("UTopDownArenaAttributeSet"), &Z_Registration_Info_UClass_UTopDownArenaAttributeSet, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTopDownArenaAttributeSet), 1393648986U) },
+	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaAttributeSet_h_Statics::ClassInfo[] = {
+		{ Z_Construct_UClass_UTopDownArenaAttributeSet, UTopDownArenaAttributeSet::StaticClass, TEXT("UTopDownArenaAttributeSet"), &Z_Registration_Info_UClass_UTopDownArenaAttributeSet, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTopDownArenaAttributeSet), 3259025608U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaAttributeSet_h_2060027632(TEXT("/Script/TopDownArenaRuntime"),
-		Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaAttributeSet_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaAttributeSet_h_Statics::ClassInfo),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaAttributeSet_h_3156975840(TEXT("/Script/TopDownArenaRuntime"),
+		Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaAttributeSet_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaAttributeSet_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

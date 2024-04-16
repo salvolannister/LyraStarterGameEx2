@@ -35,9 +35,12 @@ void EmptyLinkFunctionForGeneratedCodeTDM_PlayerSpawningManagmentComponent() {}
 		(UObject* (*)())Z_Construct_UClass_ULyraPlayerSpawningManagerComponent,
 		(UObject* (*)())Z_Construct_UPackage__Script_ShooterCoreRuntime,
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UTDM_PlayerSpawningManagmentComponent_Statics::DependentSingletons) < 16);
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UTDM_PlayerSpawningManagmentComponent_Statics::Class_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * \n */" },
+#endif
 		{ "HideCategories", "Trigger PhysicsVolume" },
 		{ "IncludePath", "TDM_PlayerSpawningManagmentComponent.h" },
 		{ "ModuleRelativePath", "Private/TDM_PlayerSpawningManagmentComponent.h" },
@@ -60,7 +63,7 @@ void EmptyLinkFunctionForGeneratedCodeTDM_PlayerSpawningManagmentComponent() {}
 		0,
 		0,
 		0x00A000A4u,
-		METADATA_PARAMS(Z_Construct_UClass_UTDM_PlayerSpawningManagmentComponent_Statics::Class_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UClass_UTDM_PlayerSpawningManagmentComponent_Statics::Class_MetaDataParams))
+		METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UTDM_PlayerSpawningManagmentComponent_Statics::Class_MetaDataParams), Z_Construct_UClass_UTDM_PlayerSpawningManagmentComponent_Statics::Class_MetaDataParams)
 	};
 	UClass* Z_Construct_UClass_UTDM_PlayerSpawningManagmentComponent()
 	{
@@ -76,15 +79,15 @@ void EmptyLinkFunctionForGeneratedCodeTDM_PlayerSpawningManagmentComponent() {}
 	}
 	DEFINE_VTABLE_PTR_HELPER_CTOR(UTDM_PlayerSpawningManagmentComponent);
 	UTDM_PlayerSpawningManagmentComponent::~UTDM_PlayerSpawningManagmentComponent() {}
-	struct Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Private_TDM_PlayerSpawningManagmentComponent_h_Statics
+	struct Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Private_TDM_PlayerSpawningManagmentComponent_h_Statics
 	{
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
-	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Private_TDM_PlayerSpawningManagmentComponent_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_UTDM_PlayerSpawningManagmentComponent, UTDM_PlayerSpawningManagmentComponent::StaticClass, TEXT("UTDM_PlayerSpawningManagmentComponent"), &Z_Registration_Info_UClass_UTDM_PlayerSpawningManagmentComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTDM_PlayerSpawningManagmentComponent), 327569091U) },
+	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Private_TDM_PlayerSpawningManagmentComponent_h_Statics::ClassInfo[] = {
+		{ Z_Construct_UClass_UTDM_PlayerSpawningManagmentComponent, UTDM_PlayerSpawningManagmentComponent::StaticClass, TEXT("UTDM_PlayerSpawningManagmentComponent"), &Z_Registration_Info_UClass_UTDM_PlayerSpawningManagmentComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTDM_PlayerSpawningManagmentComponent), 385540192U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Private_TDM_PlayerSpawningManagmentComponent_h_607945105(TEXT("/Script/ShooterCoreRuntime"),
-		Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Private_TDM_PlayerSpawningManagmentComponent_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Private_TDM_PlayerSpawningManagmentComponent_h_Statics::ClassInfo),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Private_TDM_PlayerSpawningManagmentComponent_h_2649202422(TEXT("/Script/ShooterCoreRuntime"),
+		Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Private_TDM_PlayerSpawningManagmentComponent_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Private_TDM_PlayerSpawningManagmentComponent_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

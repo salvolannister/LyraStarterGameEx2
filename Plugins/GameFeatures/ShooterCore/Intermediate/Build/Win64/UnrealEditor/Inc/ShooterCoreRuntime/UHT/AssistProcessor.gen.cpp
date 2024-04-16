@@ -46,25 +46,33 @@ template<> SHOOTERCORERUNTIME_API UScriptStruct* StaticStruct<FPlayerAssistDamag
 	};
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::Struct_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// Tracks the damage done to a player by other players\n" },
+#endif
 		{ "ModuleRelativePath", "Public/MessageProcessors/AssistProcessor.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Tracks the damage done to a player by other players" },
+#endif
 	};
 #endif
 	void* Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewStructOps()
 	{
 		return (UScriptStruct::ICppStructOps*)new UScriptStruct::TCppStructOps<FPlayerAssistDamageTracking>();
 	}
-	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewProp_AccumulatedDamageByPlayer_ValueProp = { "AccumulatedDamageByPlayer", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, 1, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewProp_AccumulatedDamageByPlayer_Key_KeyProp = { "AccumulatedDamageByPlayer_Key", nullptr, (EPropertyFlags)0x0004000000000000, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, 0, Z_Construct_UClass_APlayerState_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewProp_AccumulatedDamageByPlayer_ValueProp = { "AccumulatedDamageByPlayer", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, METADATA_PARAMS(0, nullptr) };
+	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewProp_AccumulatedDamageByPlayer_Key_KeyProp = { "AccumulatedDamageByPlayer_Key", nullptr, (EPropertyFlags)0x0004000000000000, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_APlayerState_NoRegister, METADATA_PARAMS(0, nullptr) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewProp_AccumulatedDamageByPlayer_MetaData[] = {
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// Map of damager to damage dealt\n" },
+#endif
 		{ "ModuleRelativePath", "Public/MessageProcessors/AssistProcessor.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Map of damager to damage dealt" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FMapPropertyParams Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewProp_AccumulatedDamageByPlayer = { "AccumulatedDamageByPlayer", nullptr, (EPropertyFlags)0x0010000000002000, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(FPlayerAssistDamageTracking, AccumulatedDamageByPlayer), EMapPropertyFlags::None, METADATA_PARAMS(Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewProp_AccumulatedDamageByPlayer_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewProp_AccumulatedDamageByPlayer_MetaData)) };
+	const UECodeGen_Private::FMapPropertyParams Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewProp_AccumulatedDamageByPlayer = { "AccumulatedDamageByPlayer", nullptr, (EPropertyFlags)0x0010000000002000, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FPlayerAssistDamageTracking, AccumulatedDamageByPlayer), EMapPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewProp_AccumulatedDamageByPlayer_MetaData), Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewProp_AccumulatedDamageByPlayer_MetaData) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewProp_AccumulatedDamageByPlayer_ValueProp,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewProp_AccumulatedDamageByPlayer_Key_KeyProp,
@@ -75,14 +83,15 @@ template<> SHOOTERCORERUNTIME_API UScriptStruct* StaticStruct<FPlayerAssistDamag
 		nullptr,
 		&NewStructOps,
 		"PlayerAssistDamageTracking",
-		sizeof(FPlayerAssistDamageTracking),
-		alignof(FPlayerAssistDamageTracking),
 		Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::PropPointers,
 		UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::PropPointers),
+		sizeof(FPlayerAssistDamageTracking),
+		alignof(FPlayerAssistDamageTracking),
 		RF_Public|RF_Transient|RF_MarkAsNative,
 		EStructFlags(0x00000001),
-		METADATA_PARAMS(Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::Struct_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::Struct_MetaDataParams))
+		METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::Struct_MetaDataParams), Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::Struct_MetaDataParams)
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::PropPointers) < 2048);
 	UScriptStruct* Z_Construct_UScriptStruct_FPlayerAssistDamageTracking()
 	{
 		if (!Z_Registration_Info_UScriptStruct_PlayerAssistDamageTracking.InnerSingleton)
@@ -119,24 +128,33 @@ template<> SHOOTERCORERUNTIME_API UScriptStruct* StaticStruct<FPlayerAssistDamag
 		(UObject* (*)())Z_Construct_UClass_UGameplayMessageProcessor,
 		(UObject* (*)())Z_Construct_UPackage__Script_ShooterCoreRuntime,
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UAssistProcessor_Statics::DependentSingletons) < 16);
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UAssistProcessor_Statics::Class_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// Tracks assists (dealing damage to another player without finishing them)\n" },
+#endif
 		{ "IncludePath", "MessageProcessors/AssistProcessor.h" },
 		{ "ModuleRelativePath", "Public/MessageProcessors/AssistProcessor.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Tracks assists (dealing damage to another player without finishing them)" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UAssistProcessor_Statics::NewProp_DamageHistory_ValueProp = { "DamageHistory", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, 1, Z_Construct_UScriptStruct_FPlayerAssistDamageTracking, METADATA_PARAMS(nullptr, 0) }; // 174709030
-	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_UAssistProcessor_Statics::NewProp_DamageHistory_Key_KeyProp = { "DamageHistory_Key", nullptr, (EPropertyFlags)0x0004000000000000, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, 0, Z_Construct_UClass_APlayerState_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UAssistProcessor_Statics::NewProp_DamageHistory_ValueProp = { "DamageHistory", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, Z_Construct_UScriptStruct_FPlayerAssistDamageTracking, METADATA_PARAMS(0, nullptr) }; // 4227000023
+	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_UAssistProcessor_Statics::NewProp_DamageHistory_Key_KeyProp = { "DamageHistory_Key", nullptr, (EPropertyFlags)0x0004000000000000, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_APlayerState_NoRegister, METADATA_PARAMS(0, nullptr) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UAssistProcessor_Statics::NewProp_DamageHistory_MetaData[] = {
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// Map of player to damage dealt to them\n" },
+#endif
 		{ "ModuleRelativePath", "Public/MessageProcessors/AssistProcessor.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Map of player to damage dealt to them" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FMapPropertyParams Z_Construct_UClass_UAssistProcessor_Statics::NewProp_DamageHistory = { "DamageHistory", nullptr, (EPropertyFlags)0x0040000000002000, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(UAssistProcessor, DamageHistory), EMapPropertyFlags::None, METADATA_PARAMS(Z_Construct_UClass_UAssistProcessor_Statics::NewProp_DamageHistory_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UAssistProcessor_Statics::NewProp_DamageHistory_MetaData)) }; // 174709030
+	const UECodeGen_Private::FMapPropertyParams Z_Construct_UClass_UAssistProcessor_Statics::NewProp_DamageHistory = { "DamageHistory", nullptr, (EPropertyFlags)0x0040000000002000, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UAssistProcessor, DamageHistory), EMapPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UAssistProcessor_Statics::NewProp_DamageHistory_MetaData), Z_Construct_UClass_UAssistProcessor_Statics::NewProp_DamageHistory_MetaData) }; // 4227000023
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UAssistProcessor_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UAssistProcessor_Statics::NewProp_DamageHistory_ValueProp,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UAssistProcessor_Statics::NewProp_DamageHistory_Key_KeyProp,
@@ -158,8 +176,9 @@ template<> SHOOTERCORERUNTIME_API UScriptStruct* StaticStruct<FPlayerAssistDamag
 		UE_ARRAY_COUNT(Z_Construct_UClass_UAssistProcessor_Statics::PropPointers),
 		0,
 		0x00A000A4u,
-		METADATA_PARAMS(Z_Construct_UClass_UAssistProcessor_Statics::Class_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UClass_UAssistProcessor_Statics::Class_MetaDataParams))
+		METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UAssistProcessor_Statics::Class_MetaDataParams), Z_Construct_UClass_UAssistProcessor_Statics::Class_MetaDataParams)
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UAssistProcessor_Statics::PropPointers) < 2048);
 	UClass* Z_Construct_UClass_UAssistProcessor()
 	{
 		if (!Z_Registration_Info_UClass_UAssistProcessor.OuterSingleton)
@@ -175,19 +194,19 @@ template<> SHOOTERCORERUNTIME_API UScriptStruct* StaticStruct<FPlayerAssistDamag
 	UAssistProcessor::UAssistProcessor(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
 	DEFINE_VTABLE_PTR_HELPER_CTOR(UAssistProcessor);
 	UAssistProcessor::~UAssistProcessor() {}
-	struct Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics
+	struct Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics
 	{
 		static const FStructRegisterCompiledInInfo ScriptStructInfo[];
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
-	const FStructRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics::ScriptStructInfo[] = {
-		{ FPlayerAssistDamageTracking::StaticStruct, Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewStructOps, TEXT("PlayerAssistDamageTracking"), &Z_Registration_Info_UScriptStruct_PlayerAssistDamageTracking, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FPlayerAssistDamageTracking), 174709030U) },
+	const FStructRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics::ScriptStructInfo[] = {
+		{ FPlayerAssistDamageTracking::StaticStruct, Z_Construct_UScriptStruct_FPlayerAssistDamageTracking_Statics::NewStructOps, TEXT("PlayerAssistDamageTracking"), &Z_Registration_Info_UScriptStruct_PlayerAssistDamageTracking, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FPlayerAssistDamageTracking), 4227000023U) },
 	};
-	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_UAssistProcessor, UAssistProcessor::StaticClass, TEXT("UAssistProcessor"), &Z_Registration_Info_UClass_UAssistProcessor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAssistProcessor), 1397280060U) },
+	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics::ClassInfo[] = {
+		{ Z_Construct_UClass_UAssistProcessor, UAssistProcessor::StaticClass, TEXT("UAssistProcessor"), &Z_Registration_Info_UClass_UAssistProcessor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAssistProcessor), 84139443U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_3603104752(TEXT("/Script/ShooterCoreRuntime"),
-		Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics::ClassInfo),
-		Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics::ScriptStructInfo),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_951826187(TEXT("/Script/ShooterCoreRuntime"),
+		Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics::ClassInfo),
+		Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_MessageProcessors_AssistProcessor_h_Statics::ScriptStructInfo),
 		nullptr, 0);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

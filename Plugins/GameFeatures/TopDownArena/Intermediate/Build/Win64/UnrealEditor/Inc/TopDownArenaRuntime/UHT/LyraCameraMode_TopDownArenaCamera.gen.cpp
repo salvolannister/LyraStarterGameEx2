@@ -55,14 +55,19 @@ void EmptyLinkFunctionForGeneratedCodeLyraCameraMode_TopDownArenaCamera() {}
 		(UObject* (*)())Z_Construct_UClass_ULyraCameraMode,
 		(UObject* (*)())Z_Construct_UPackage__Script_TopDownArenaRuntime,
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::DependentSingletons) < 16);
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::Class_MetaDataParams[] = {
 		{ "BlueprintType", "true" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * ULyraCameraMode_TopDownArenaCamera\n *\n *\x09""A basic third person camera mode that looks down at a fixed arena.\n */" },
+#endif
 		{ "IncludePath", "LyraCameraMode_TopDownArenaCamera.h" },
 		{ "IsBlueprintBase", "true" },
 		{ "ModuleRelativePath", "Public/LyraCameraMode_TopDownArenaCamera.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "ULyraCameraMode_TopDownArenaCamera\n\n    A basic third person camera mode that looks down at a fixed arena." },
+#endif
 	};
 #endif
 #if WITH_METADATA
@@ -71,28 +76,28 @@ void EmptyLinkFunctionForGeneratedCodeLyraCameraMode_TopDownArenaCamera() {}
 		{ "ModuleRelativePath", "Public/LyraCameraMode_TopDownArenaCamera.h" },
 	};
 #endif
-	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaWidth = { "ArenaWidth", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ULyraCameraMode_TopDownArenaCamera, ArenaWidth), METADATA_PARAMS(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaWidth_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaWidth_MetaData)) };
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaWidth = { "ArenaWidth", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ULyraCameraMode_TopDownArenaCamera, ArenaWidth), METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaWidth_MetaData), Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaWidth_MetaData) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaHeight_MetaData[] = {
 		{ "Category", "Third Person" },
 		{ "ModuleRelativePath", "Public/LyraCameraMode_TopDownArenaCamera.h" },
 	};
 #endif
-	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaHeight = { "ArenaHeight", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ULyraCameraMode_TopDownArenaCamera, ArenaHeight), METADATA_PARAMS(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaHeight_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaHeight_MetaData)) };
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaHeight = { "ArenaHeight", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ULyraCameraMode_TopDownArenaCamera, ArenaHeight), METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaHeight_MetaData), Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaHeight_MetaData) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_DefaultPivotRotation_MetaData[] = {
 		{ "Category", "Third Person" },
 		{ "ModuleRelativePath", "Public/LyraCameraMode_TopDownArenaCamera.h" },
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_DefaultPivotRotation = { "DefaultPivotRotation", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ULyraCameraMode_TopDownArenaCamera, DefaultPivotRotation), Z_Construct_UScriptStruct_FRotator, METADATA_PARAMS(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_DefaultPivotRotation_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_DefaultPivotRotation_MetaData)) };
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_DefaultPivotRotation = { "DefaultPivotRotation", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ULyraCameraMode_TopDownArenaCamera, DefaultPivotRotation), Z_Construct_UScriptStruct_FRotator, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_DefaultPivotRotation_MetaData), Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_DefaultPivotRotation_MetaData) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_BoundsSizeToDistance_MetaData[] = {
 		{ "Category", "Third Person" },
 		{ "ModuleRelativePath", "Public/LyraCameraMode_TopDownArenaCamera.h" },
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_BoundsSizeToDistance = { "BoundsSizeToDistance", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(ULyraCameraMode_TopDownArenaCamera, BoundsSizeToDistance), Z_Construct_UScriptStruct_FRuntimeFloatCurve, METADATA_PARAMS(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_BoundsSizeToDistance_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_BoundsSizeToDistance_MetaData)) }; // 1477693291
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_BoundsSizeToDistance = { "BoundsSizeToDistance", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ULyraCameraMode_TopDownArenaCamera, BoundsSizeToDistance), Z_Construct_UScriptStruct_FRuntimeFloatCurve, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_BoundsSizeToDistance_MetaData), Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_BoundsSizeToDistance_MetaData) }; // 3321759441
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaWidth,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::NewProp_ArenaHeight,
@@ -115,8 +120,9 @@ void EmptyLinkFunctionForGeneratedCodeLyraCameraMode_TopDownArenaCamera() {}
 		UE_ARRAY_COUNT(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::PropPointers),
 		0,
 		0x000000A1u,
-		METADATA_PARAMS(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::Class_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::Class_MetaDataParams))
+		METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::Class_MetaDataParams), Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::Class_MetaDataParams)
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera_Statics::PropPointers) < 2048);
 	UClass* Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera()
 	{
 		if (!Z_Registration_Info_UClass_ULyraCameraMode_TopDownArenaCamera.OuterSingleton)
@@ -131,15 +137,15 @@ void EmptyLinkFunctionForGeneratedCodeLyraCameraMode_TopDownArenaCamera() {}
 	}
 	DEFINE_VTABLE_PTR_HELPER_CTOR(ULyraCameraMode_TopDownArenaCamera);
 	ULyraCameraMode_TopDownArenaCamera::~ULyraCameraMode_TopDownArenaCamera() {}
-	struct Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Public_LyraCameraMode_TopDownArenaCamera_h_Statics
+	struct Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Public_LyraCameraMode_TopDownArenaCamera_h_Statics
 	{
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
-	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Public_LyraCameraMode_TopDownArenaCamera_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera, ULyraCameraMode_TopDownArenaCamera::StaticClass, TEXT("ULyraCameraMode_TopDownArenaCamera"), &Z_Registration_Info_UClass_ULyraCameraMode_TopDownArenaCamera, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ULyraCameraMode_TopDownArenaCamera), 2964755995U) },
+	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Public_LyraCameraMode_TopDownArenaCamera_h_Statics::ClassInfo[] = {
+		{ Z_Construct_UClass_ULyraCameraMode_TopDownArenaCamera, ULyraCameraMode_TopDownArenaCamera::StaticClass, TEXT("ULyraCameraMode_TopDownArenaCamera"), &Z_Registration_Info_UClass_ULyraCameraMode_TopDownArenaCamera, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ULyraCameraMode_TopDownArenaCamera), 3728988552U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Public_LyraCameraMode_TopDownArenaCamera_h_188933135(TEXT("/Script/TopDownArenaRuntime"),
-		Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Public_LyraCameraMode_TopDownArenaCamera_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Public_LyraCameraMode_TopDownArenaCamera_h_Statics::ClassInfo),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Public_LyraCameraMode_TopDownArenaCamera_h_3174857583(TEXT("/Script/TopDownArenaRuntime"),
+		Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Public_LyraCameraMode_TopDownArenaCamera_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Public_LyraCameraMode_TopDownArenaCamera_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

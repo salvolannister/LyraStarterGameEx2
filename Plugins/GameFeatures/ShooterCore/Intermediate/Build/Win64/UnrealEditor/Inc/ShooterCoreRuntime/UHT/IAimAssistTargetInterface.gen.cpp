@@ -61,25 +61,33 @@ template<> SHOOTERCORERUNTIME_API UScriptStruct* StaticStruct<FAimAssistTargetOp
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_AssociatedTags_MetaData[] = {
 		{ "Category", "AimAssistTargetOptions" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Gameplay tags that are associated with this target that can be used to filter it out.\n\x09 *\n\x09 * If the player's aim assist settings have any tags that match these, it will be excluded.\n\x09 */" },
+#endif
 		{ "ModuleRelativePath", "Public/Input/IAimAssistTargetInterface.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Gameplay tags that are associated with this target that can be used to filter it out.\n\nIf the player's aim assist settings have any tags that match these, it will be excluded." },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_AssociatedTags = { "AssociatedTags", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(FAimAssistTargetOptions, AssociatedTags), Z_Construct_UScriptStruct_FGameplayTagContainer, METADATA_PARAMS(Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_AssociatedTags_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_AssociatedTags_MetaData)) }; // 3057219007
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_AssociatedTags = { "AssociatedTags", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FAimAssistTargetOptions, AssociatedTags), Z_Construct_UScriptStruct_FGameplayTagContainer, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_AssociatedTags_MetaData), Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_AssociatedTags_MetaData) }; // 405371792
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_bIsActive_MetaData[] = {
 		{ "Category", "AimAssistTargetOptions" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether or not this target is currently active. If false, it will not be considered for aim assist */" },
+#endif
 		{ "ModuleRelativePath", "Public/Input/IAimAssistTargetInterface.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether or not this target is currently active. If false, it will not be considered for aim assist" },
+#endif
 	};
 #endif
 	void Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_bIsActive_SetBit(void* Obj)
 	{
 		((FAimAssistTargetOptions*)Obj)->bIsActive = 1;
 	}
-	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_bIsActive = { "bIsActive", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Bool , RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, sizeof(uint8), sizeof(FAimAssistTargetOptions), &Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_bIsActive_SetBit, METADATA_PARAMS(Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_bIsActive_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_bIsActive_MetaData)) };
+	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_bIsActive = { "bIsActive", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Bool , RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(uint8), sizeof(FAimAssistTargetOptions), &Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_bIsActive_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_bIsActive_MetaData), Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_bIsActive_MetaData) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_AssociatedTags,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewProp_bIsActive,
@@ -89,14 +97,15 @@ template<> SHOOTERCORERUNTIME_API UScriptStruct* StaticStruct<FAimAssistTargetOp
 		nullptr,
 		&NewStructOps,
 		"AimAssistTargetOptions",
-		sizeof(FAimAssistTargetOptions),
-		alignof(FAimAssistTargetOptions),
 		Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::PropPointers,
 		UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::PropPointers),
+		sizeof(FAimAssistTargetOptions),
+		alignof(FAimAssistTargetOptions),
 		RF_Public|RF_Transient|RF_MarkAsNative,
 		EStructFlags(0x00000001),
-		METADATA_PARAMS(Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::Struct_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::Struct_MetaDataParams))
+		METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::Struct_MetaDataParams), Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::Struct_MetaDataParams)
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::PropPointers) < 2048);
 	UScriptStruct* Z_Construct_UScriptStruct_FAimAssistTargetOptions()
 	{
 		if (!Z_Registration_Info_UScriptStruct_AimAssistTargetOptions.InnerSingleton)
@@ -126,6 +135,7 @@ template<> SHOOTERCORERUNTIME_API UScriptStruct* StaticStruct<FAimAssistTargetOp
 		(UObject* (*)())Z_Construct_UClass_UInterface,
 		(UObject* (*)())Z_Construct_UPackage__Script_ShooterCoreRuntime,
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UAimAssistTaget_Statics::DependentSingletons) < 16);
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UAimAssistTaget_Statics::Class_MetaDataParams[] = {
 		{ "CannotImplementInterfaceInBlueprint", "" },
@@ -148,7 +158,7 @@ template<> SHOOTERCORERUNTIME_API UScriptStruct* StaticStruct<FAimAssistTargetOp
 		0,
 		0,
 		0x000840A1u,
-		METADATA_PARAMS(Z_Construct_UClass_UAimAssistTaget_Statics::Class_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UClass_UAimAssistTaget_Statics::Class_MetaDataParams))
+		METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UAimAssistTaget_Statics::Class_MetaDataParams), Z_Construct_UClass_UAimAssistTaget_Statics::Class_MetaDataParams)
 	};
 	UClass* Z_Construct_UClass_UAimAssistTaget()
 	{
@@ -165,19 +175,19 @@ template<> SHOOTERCORERUNTIME_API UScriptStruct* StaticStruct<FAimAssistTargetOp
 	UAimAssistTaget::UAimAssistTaget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
 	DEFINE_VTABLE_PTR_HELPER_CTOR(UAimAssistTaget);
 	UAimAssistTaget::~UAimAssistTaget() {}
-	struct Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics
+	struct Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics
 	{
 		static const FStructRegisterCompiledInInfo ScriptStructInfo[];
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
-	const FStructRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics::ScriptStructInfo[] = {
-		{ FAimAssistTargetOptions::StaticStruct, Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewStructOps, TEXT("AimAssistTargetOptions"), &Z_Registration_Info_UScriptStruct_AimAssistTargetOptions, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAimAssistTargetOptions), 3832838461U) },
+	const FStructRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics::ScriptStructInfo[] = {
+		{ FAimAssistTargetOptions::StaticStruct, Z_Construct_UScriptStruct_FAimAssistTargetOptions_Statics::NewStructOps, TEXT("AimAssistTargetOptions"), &Z_Registration_Info_UScriptStruct_AimAssistTargetOptions, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAimAssistTargetOptions), 2137094904U) },
 	};
-	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_UAimAssistTaget, UAimAssistTaget::StaticClass, TEXT("UAimAssistTaget"), &Z_Registration_Info_UClass_UAimAssistTaget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAimAssistTaget), 1597416510U) },
+	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics::ClassInfo[] = {
+		{ Z_Construct_UClass_UAimAssistTaget, UAimAssistTaget::StaticClass, TEXT("UAimAssistTaget"), &Z_Registration_Info_UClass_UAimAssistTaget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAimAssistTaget), 692755740U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_3700666649(TEXT("/Script/ShooterCoreRuntime"),
-		Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics::ClassInfo),
-		Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics::ScriptStructInfo),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_2783757247(TEXT("/Script/ShooterCoreRuntime"),
+		Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics::ClassInfo),
+		Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_ShooterCore_Source_ShooterCoreRuntime_Public_Input_IAimAssistTargetInterface_h_Statics::ScriptStructInfo),
 		nullptr, 0);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

@@ -6,6 +6,7 @@
 
 #include "UObject/GeneratedCppIncludes.h"
 #include "TopDownArenaRuntime/Private/TopDownArenaPickupUIData.h"
+#include "GameplayEffect.h"
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeTopDownArenaPickupUIData() {}
 // Cross Module References
@@ -59,62 +60,87 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaPickupUIData() {}
 		(UObject* (*)())Z_Construct_UClass_UGameplayEffectUIData,
 		(UObject* (*)())Z_Construct_UPackage__Script_TopDownArenaRuntime,
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::DependentSingletons) < 16);
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::Class_MetaDataParams[] = {
 		{ "BlueprintType", "true" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// Icon and display name for pickups in the top-down arena game\n" },
+#endif
 		{ "IncludePath", "TopDownArenaPickupUIData.h" },
 		{ "ModuleRelativePath", "Private/TopDownArenaPickupUIData.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Icon and display name for pickups in the top-down arena game" },
+#endif
 	};
 #endif
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_Description_MetaData[] = {
 		{ "Category", "Data" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// The full description of the pickup\n" },
+#endif
 		{ "ModuleRelativePath", "Private/TopDownArenaPickupUIData.h" },
 		{ "MultiLine", "true" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "The full description of the pickup" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FTextPropertyParams Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_Description = { "Description", nullptr, (EPropertyFlags)0x0010000000010015, UECodeGen_Private::EPropertyGenFlags::Text, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(UTopDownArenaPickupUIData, Description), METADATA_PARAMS(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_Description_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_Description_MetaData)) };
+	const UECodeGen_Private::FTextPropertyParams Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_Description = { "Description", nullptr, (EPropertyFlags)0x0010000000010015, UECodeGen_Private::EPropertyGenFlags::Text, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTopDownArenaPickupUIData, Description), METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_Description_MetaData), Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_Description_MetaData) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_ShortDescriptionForToast_MetaData[] = {
 		{ "Category", "Data" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// The short description of the pickup (displayed by the player name when picked up)\n" },
+#endif
 		{ "ModuleRelativePath", "Private/TopDownArenaPickupUIData.h" },
 		{ "MultiLine", "true" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "The short description of the pickup (displayed by the player name when picked up)" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FTextPropertyParams Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_ShortDescriptionForToast = { "ShortDescriptionForToast", nullptr, (EPropertyFlags)0x0010000000010015, UECodeGen_Private::EPropertyGenFlags::Text, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(UTopDownArenaPickupUIData, ShortDescriptionForToast), METADATA_PARAMS(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_ShortDescriptionForToast_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_ShortDescriptionForToast_MetaData)) };
+	const UECodeGen_Private::FTextPropertyParams Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_ShortDescriptionForToast = { "ShortDescriptionForToast", nullptr, (EPropertyFlags)0x0010000000010015, UECodeGen_Private::EPropertyGenFlags::Text, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTopDownArenaPickupUIData, ShortDescriptionForToast), METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_ShortDescriptionForToast_MetaData), Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_ShortDescriptionForToast_MetaData) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_IconTexture_MetaData[] = {
 		{ "Category", "Data" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// The icon material used to show the pickup in the world\n" },
+#endif
 		{ "ModuleRelativePath", "Private/TopDownArenaPickupUIData.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "The icon material used to show the pickup in the world" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_IconTexture = { "IconTexture", nullptr, (EPropertyFlags)0x0014000000010015, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(UTopDownArenaPickupUIData, IconTexture), Z_Construct_UClass_UTexture2D_NoRegister, METADATA_PARAMS(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_IconTexture_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_IconTexture_MetaData)) };
+	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_IconTexture = { "IconTexture", nullptr, (EPropertyFlags)0x0014000000010015, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTopDownArenaPickupUIData, IconTexture), Z_Construct_UClass_UTexture2D_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_IconTexture_MetaData), Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_IconTexture_MetaData) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupVFX_MetaData[] = {
 		{ "Category", "Data" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// The pickup VFX override\n" },
+#endif
 		{ "ModuleRelativePath", "Private/TopDownArenaPickupUIData.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "The pickup VFX override" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupVFX = { "PickupVFX", nullptr, (EPropertyFlags)0x0014000000010015, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(UTopDownArenaPickupUIData, PickupVFX), Z_Construct_UClass_UNiagaraSystem_NoRegister, METADATA_PARAMS(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupVFX_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupVFX_MetaData)) };
+	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupVFX = { "PickupVFX", nullptr, (EPropertyFlags)0x0014000000010015, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTopDownArenaPickupUIData, PickupVFX), Z_Construct_UClass_UNiagaraSystem_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupVFX_MetaData), Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupVFX_MetaData) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupSFX_MetaData[] = {
 		{ "Category", "Data" },
+#if !UE_BUILD_SHIPPING
 		{ "Comment", "// The pickup SFX override (if not set, a default will play)\n" },
+#endif
 		{ "ModuleRelativePath", "Private/TopDownArenaPickupUIData.h" },
+#if !UE_BUILD_SHIPPING
 		{ "ToolTip", "The pickup SFX override (if not set, a default will play)" },
+#endif
 	};
 #endif
-	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupSFX = { "PickupSFX", nullptr, (EPropertyFlags)0x0014000000010015, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, 1, nullptr, nullptr, STRUCT_OFFSET(UTopDownArenaPickupUIData, PickupSFX), Z_Construct_UClass_USoundBase_NoRegister, METADATA_PARAMS(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupSFX_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupSFX_MetaData)) };
+	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupSFX = { "PickupSFX", nullptr, (EPropertyFlags)0x0014000000010015, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UTopDownArenaPickupUIData, PickupSFX), Z_Construct_UClass_USoundBase_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupSFX_MetaData), Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_PickupSFX_MetaData) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_Description,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::NewProp_ShortDescriptionForToast,
@@ -137,9 +163,10 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaPickupUIData() {}
 		0,
 		UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::PropPointers),
 		0,
-		0x000030A0u,
-		METADATA_PARAMS(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::Class_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::Class_MetaDataParams))
+		0x002130A0u,
+		METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::Class_MetaDataParams), Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::Class_MetaDataParams)
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UTopDownArenaPickupUIData_Statics::PropPointers) < 2048);
 	UClass* Z_Construct_UClass_UTopDownArenaPickupUIData()
 	{
 		if (!Z_Registration_Info_UClass_UTopDownArenaPickupUIData.OuterSingleton)
@@ -152,18 +179,18 @@ void EmptyLinkFunctionForGeneratedCodeTopDownArenaPickupUIData() {}
 	{
 		return UTopDownArenaPickupUIData::StaticClass();
 	}
-	UTopDownArenaPickupUIData::UTopDownArenaPickupUIData(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
+	UTopDownArenaPickupUIData::UTopDownArenaPickupUIData() {}
 	DEFINE_VTABLE_PTR_HELPER_CTOR(UTopDownArenaPickupUIData);
 	UTopDownArenaPickupUIData::~UTopDownArenaPickupUIData() {}
-	struct Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaPickupUIData_h_Statics
+	struct Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaPickupUIData_h_Statics
 	{
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
-	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaPickupUIData_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_UTopDownArenaPickupUIData, UTopDownArenaPickupUIData::StaticClass, TEXT("UTopDownArenaPickupUIData"), &Z_Registration_Info_UClass_UTopDownArenaPickupUIData, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTopDownArenaPickupUIData), 2288016240U) },
+	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaPickupUIData_h_Statics::ClassInfo[] = {
+		{ Z_Construct_UClass_UTopDownArenaPickupUIData, UTopDownArenaPickupUIData::StaticClass, TEXT("UTopDownArenaPickupUIData"), &Z_Registration_Info_UClass_UTopDownArenaPickupUIData, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTopDownArenaPickupUIData), 1339049258U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaPickupUIData_h_3612943896(TEXT("/Script/TopDownArenaRuntime"),
-		Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaPickupUIData_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_LyraStarterGameEx1_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaPickupUIData_h_Statics::ClassInfo),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaPickupUIData_h_2698608643(TEXT("/Script/TopDownArenaRuntime"),
+		Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaPickupUIData_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Progetti_LyraStarterGameEx2_Plugins_GameFeatures_TopDownArena_Source_TopDownArenaRuntime_Private_TopDownArenaPickupUIData_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
