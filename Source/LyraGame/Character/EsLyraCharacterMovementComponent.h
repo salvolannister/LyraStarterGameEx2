@@ -142,6 +142,7 @@ public:
 	mutable bool Safe_bWantsToWallRun;
 	bool Safe_bIsRewinding;
 	int32 Safe_RewindingIndex;
+	bool Safe_bWantsToUseJetpack;
 
 	float TeleportStartTime;
 	FTimerHandle TimerHandle_LateJumpCooldown;
@@ -302,9 +303,10 @@ public:
 	enum CompressedFlags
 	{
 		// Remaining bit masks are available for custom flags.
-		FLAG_Teleport		= 0x10, // Teleport pressed
-		FLAG_WallRun		= 0x20, // Wallrun pressed
-		FLAG_RewindTime		= 0x40, // RewindTime pressed
+		FLAG_Teleport = 0x10, // Teleport pressed
+		FLAG_WallRun = 0x20, // Wallrun pressed
+		FLAG_RewindTime = 0x40, // RewindTime pressed
+		FLAG_Jetpack = 0x50, // Jetpack pressed
 		FLAG_Custom			= 0x80,
 	};
 	
@@ -315,7 +317,8 @@ public:
 	uint8 Saved_bWantsToTeleport:1;
 	uint8 Saved_bWantsToWallRun:1;
 	uint8 Saved_bIsRewinding:1;
-	
+	uint8 Saved_bWantsToUseJetpack : 1;
+
 	int32 Saved_RewindingIndex;
 
 	/** <FSavedMove_Es> */

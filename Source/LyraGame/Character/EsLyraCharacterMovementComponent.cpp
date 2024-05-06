@@ -95,6 +95,19 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
 		CollectRewindData(DeltaSeconds);		
 	}
 	
+	if (Safe_bWantsToUseJetpack /*&& CanUseJetpack()*/)
+	{
+		/*if (!bAuthProxy || GetWorld()->GetTimeSeconds() - TeleportStartTime > AuthTeleportCooldownDuration)
+		{
+			PerformTeleport();
+			Safe_bWantsToTeleport = false;
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Error with the client values (Cheating)"));
+		}*/
+	}
+
 	// Wall Run	
 	TryWallRun();
 
@@ -142,6 +155,7 @@ void UEsLyraCharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)
 	Safe_bWantsToTeleport = (Flags & FSavedMove_Es::FLAG_Teleport) != 0;
 	Safe_bWantsToWallRun = (Flags & FSavedMove_Es::FLAG_WallRun) != 0;
 	Safe_bIsRewinding = (Flags & FSavedMove_Es::FLAG_RewindTime) != 0;
+	Safe_bWantsToUseJetpack = (Flags & FSavedMove_Es::FLAG_Jetpack) != 0;
 }
 
 void UEsLyraCharacterMovementComponent::MoveAutonomous(float ClientTimeStamp, float DeltaTime, uint8 CompressedFlags,
@@ -561,6 +575,10 @@ void UEsLyraCharacterMovementComponent::RewindTimePressed()
 void UEsLyraCharacterMovementComponent::JetpackPressed()
 {
 	UE_LOG(LogTemp, Log, TEXT("Jetpack key pressed"));
+
+	// check if it can jetpack
+
+	Safe_bWantsToUseJetpack = true;
 }
 
 float UEsLyraCharacterMovementComponent::GetRewindingTimeHealingMagnitude()
@@ -629,6 +647,7 @@ FSavedMove_Es::FSavedMove_Es()
 	Saved_bWantsToWallRun = 0;
 	Saved_bIsRewinding = 0;
 	Saved_RewindingIndex = 0;
+	Saved_bWantsToUseJetpack = 0;
 }
 
 void FSavedMove_Es::Clear()
@@ -639,6 +658,7 @@ void FSavedMove_Es::Clear()
 	Saved_bWantsToWallRun = 0;
 	Saved_bIsRewinding = 0;
 	Saved_RewindingIndex = 0;
+	Saved_bWantsToUseJetpack = 0;
 }
 
 /**
@@ -655,6 +675,7 @@ void FSavedMove_Es::SetMoveFor(ACharacter* C, float InDeltaTime, FVector const& 
 	Saved_bWantsToTeleport = CharacterMovement->Safe_bWantsToTeleport;
 	Saved_bIsRewinding = CharacterMovement->Safe_bIsRewinding;
 	Saved_RewindingIndex = CharacterMovement->Safe_RewindingIndex;
+	Saved_bWantsToUseJetpack = CharacterMovement->Safe_bWantsToUseJetpack;
 }
 
 /**
@@ -684,6 +705,11 @@ bool FSavedMove_Es::CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* InC
 		return false;
 	}
 
+	if (Saved_bWantsToUseJetpack != NewEsMove->Saved_bWantsToUseJetpack)
+	{
+		return false;
+	}
+
 	return Super::CanCombineWith(NewMove, InCharacter, MaxDelta);
 }
 
@@ -702,6 +728,7 @@ void FSavedMove_Es::PrepMoveFor(ACharacter* C)
 
 	CharacterMovement->Safe_bIsRewinding = Saved_bIsRewinding;
 	CharacterMovement->Safe_RewindingIndex = Saved_RewindingIndex;	
+	CharacterMovement->Safe_bWantsToUseJetpack = Saved_bWantsToUseJetpack;
 }
 
 /**
@@ -725,6 +752,12 @@ uint8 FSavedMove_Es::GetCompressedFlags() const
 	{
 		Result |= FLAG_RewindTime;
 	}
+
+	if (Saved_bWantsToUseJetpack)
+	{
+		Result |= FLAG_Jetpack;
+	}
+
 	
 	return Result;
 }
