@@ -240,6 +240,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void TeleportPressed();
+
+	/* Function called  by GA_Hero_Jetpack when the keymap for the jetpack is pressed */
+	UFUNCTION(BlueprintCallable)
+	void JetpackPressed();
 		
 	UFUNCTION(BlueprintCallable)
 	void SetJumpEnd();

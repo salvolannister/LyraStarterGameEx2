@@ -226,6 +226,8 @@ bool UEsLyraCharacterMovementComponent::DoJump(bool bReplayingMoves)
 	return false;
 }
 
+
+
 /**
  *  Called on Jump Released, activates WallJump if in WallRun
  ****************************************************************************************/
@@ -551,6 +553,14 @@ void UEsLyraCharacterMovementComponent::RewindTimePressed()
 		}	
 #endif		
 	}
+}
+
+/**
+ *  Called on Jetpack pressed, activates Jetpack if the jetpack cooldown is over
+ ****************************************************************************************/
+void UEsLyraCharacterMovementComponent::JetpackPressed()
+{
+	UE_LOG(LogTemp, Log, TEXT("Jetpack key pressed"));
 }
 
 float UEsLyraCharacterMovementComponent::GetRewindingTimeHealingMagnitude()
