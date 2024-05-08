@@ -41,6 +41,7 @@ enum ECustomMovementMode
 {
 	CMOVE_None			UMETA(Hidden),
 	CMOVE_WallRun		UMETA(DisplayName = "Wall Run"),
+	CMOVE_Jetpacking    UMETA(DisplayName = "Jetpacking"),
 	CMOVE_MAX			UMETA(Hidden),
 };
 
@@ -65,7 +66,7 @@ UCLASS()
 class LYRAGAME_API UEsLyraCharacterMovementComponent : public ULyraCharacterMovementComponent
 {
 	GENERATED_BODY()
-	
+
 public:
 	UEsLyraCharacterMovementComponent(const FObjectInitializer& ObjectInitializer);
 
@@ -134,10 +135,27 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float AuthRewindTimeCooldownDuration = 11.f;
 	
+
+	//Jetpacking
+
+	/* Maximum hold time for the jetpack */
+	UPROPERTY(BlueprintReadWrite, Category="Custom|Jetpack")
+		float MaxJetpackResourceInSeconds;
+
+	/* When defining the force for jetpacking consider the player mass */
+	UPROPERTY(EditDefaultsOnly, Category = "Custom|Jetpack")
+		float JetpackForce;
+
+	/* Time needed to regenerate jetpack fuel */
+	UPROPERTY(EditDefaultsOnly, Category = "Custom|Jetpack")
+		float JetpackFullRechargeInSeconds;
+
+	virtual bool IsFalling() const override;
+
 	/*
 	 *  Flags (Transient)
 	 */
-	
+
 	bool Safe_bWantsToTeleport;
 	mutable bool Safe_bWantsToWallRun;
 	bool Safe_bIsRewinding;
@@ -158,24 +176,25 @@ public:
 	/*
 	 *  Delegates
 	 */
-	
+
 protected:
-	
+
 	// Movement Pipeline
 	/** <UCharacterMovementComponent> */
 	virtual void BeginPlay() override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
 	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
 	/** </UCharacterMovementComponent> */
-	
+
 private:
 
 	FEsNetworkMoveDataContainer EsNetworkMoveDataContainer;
-	
+
 	/*
 	 *  Teleport
 	 */
-	
+
 	void PerformTeleport();
 
 	/*
@@ -216,6 +235,15 @@ private:
 
 	bool bStartRewinding = false;
 	
+	/*
+	* Jetpacking
+	*/
+
+	/* Amount of remaming time for using the jetpack */
+	float JetpackResourceInSeconds;
+
+	void PhysJetpacking(float deltaTime, int32 Iterations);
+
 protected:
 	/*
 	 *  Network
@@ -245,6 +273,10 @@ public:
 	/* Function called  by GA_Hero_Jetpack when the keymap for the jetpack is pressed */
 	UFUNCTION(BlueprintCallable)
 	void JetpackPressed();
+
+	/* Function called when the keymap for jetpack is released */
+	UFUNCTION(BlueprintCallable)
+	void JetpackUnpressed();
 		
 	UFUNCTION(BlueprintCallable)
 	void SetJumpEnd();

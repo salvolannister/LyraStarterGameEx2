@@ -30,6 +30,8 @@ FNetworkPredictionData_Client* UEsLyraCharacterMovementComponent::GetPredictionD
 	return ClientPredictionData;
 }
 
+
+
 UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
 {
@@ -40,6 +42,8 @@ UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObje
 	Safe_RewindingIndex = 0;
 	TeleportStartTime = 0.f;
 	RewindTimeEndTime = 0.f;
+	MaxJetpackResourceInSeconds = 50.f; // settin it here since the value from blueprint is not being read
+	JetpackResourceInSeconds = MaxJetpackResourceInSeconds;
 }
 
 void UEsLyraCharacterMovementComponent::InitializeComponent()
@@ -56,6 +60,18 @@ void UEsLyraCharacterMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	BufferSampleMaxSize = RewindTimeWindowDuration / RewindTimeSampleFrequencyTime;
+}
+
+
+void UEsLyraCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (!IsCustomMovementMode(ECustomMovementMode::CMOVE_Jetpacking))
+	{
+		JetpackResourceInSeconds = FMath::Clamp<float>(JetpackResourceInSeconds + (DeltaTime / JetpackFullRechargeInSeconds), 0, 1);
+	}
+
 }
 
 /**
@@ -97,15 +113,15 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
 	
 	if (Safe_bWantsToUseJetpack /*&& CanUseJetpack()*/)
 	{
-		/*if (!bAuthProxy || GetWorld()->GetTimeSeconds() - TeleportStartTime > AuthTeleportCooldownDuration)
+		if (!bAuthProxy)
 		{
-			PerformTeleport();
-			Safe_bWantsToTeleport = false;
+			SetMovementMode(EMovementMode::MOVE_Custom, ECustomMovementMode::CMOVE_Jetpacking);
+		
 		}
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Error with the client values (Cheating)"));
-		}*/
+		}
 	}
 
 	// Wall Run	
@@ -119,16 +135,49 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
  **********************************************************************************************************/
 void UEsLyraCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterations)
 {
-	Super::PhysCustom(deltaTime, Iterations);
 
 	switch (CustomMovementMode)
 	{	
-	case CMOVE_WallRun:
-		PhysWallRun(deltaTime, Iterations);
-		break;
-	default:
-		UE_LOG(LogTemp, Fatal, TEXT("Invalid Movement Mode"));
+		case CMOVE_WallRun:
+			PhysWallRun(deltaTime, Iterations);
+			break;
+		case CMOVE_Jetpacking:
+			PhysJetpacking(deltaTime, Iterations);
+		default:
+			UE_LOG(LogTemp,Warning, TEXT("Invalid Movement Mode"));
 	}
+
+	Super::PhysCustom(deltaTime, Iterations);
+}
+
+bool UEsLyraCharacterMovementComponent::IsFalling() const
+{
+	/* is generating me problems because movement mode is set to 0*/
+	return Super::IsFalling() || IsCustomMovementMode(ECustomMovementMode::CMOVE_Jetpacking);
+}
+
+void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 Iterations)
+{	
+	/* Amount of resource in seconds needed to use the jetpack for this round */
+	float fResourceNeededForJetpacking = deltaTime / MaxJetpackResourceInSeconds;
+	if (!Safe_bWantsToUseJetpack || JetpackResourceInSeconds <= (fResourceNeededForJetpacking))
+	{
+		Safe_bWantsToUseJetpack = false;
+		SetMovementMode(EMovementMode::MOVE_Falling);
+		StartNewPhysics(deltaTime, Iterations);
+		return;
+	}
+
+	float resultingAccel = JetpackForce / Mass;
+	float jetpackSurplusAccel = FMath::Max<float>(0, resultingAccel + GetGravityZ());
+	float desiredTotalJetpackAccel = (GetGravityZ() * -1) + jetpackSurplusAccel;
+
+	Velocity.Z += desiredTotalJetpackAccel * deltaTime;
+
+	JetpackResourceInSeconds = FMath::Clamp<float>(JetpackResourceInSeconds - (deltaTime / MaxJetpackResourceInSeconds), 0, MaxJetpackResourceInSeconds);
+	// change character movement to something else
+	SetMovementMode(EMovementMode::MOVE_Falling);
+	PhysFalling(deltaTime, Iterations);
 }
 
 /**
@@ -226,6 +275,7 @@ bool UEsLyraCharacterMovementComponent::CanAttemptJump() const
 /**
  *  Overwrite DoJump excluding the wallJump and including LateJump
  ****************************************************************************************/
+
 bool UEsLyraCharacterMovementComponent::DoJump(bool bReplayingMoves)
 {	
 	if(CanWallJump())
@@ -576,9 +626,23 @@ void UEsLyraCharacterMovementComponent::JetpackPressed()
 {
 	UE_LOG(LogTemp, Log, TEXT("Jetpack key pressed"));
 
-	// check if it can jetpack
+	// If we are the client and we have control we send the speed to the server 
+	/*const bool bIsClient= CharacterOwner->GetLocalRole() == ENetRole::ROLE_AutonomousProxy;*/
+	/*if (IsClient())
+		Server_SetJetpackVelocity(Velocity.Z);*/
 
 	Safe_bWantsToUseJetpack = true;
+}
+
+void UEsLyraCharacterMovementComponent::JetpackUnpressed()
+{
+	UE_LOG(LogTemp, Log, TEXT("Jetpack key released"));
+	/* no need to check if the client is local, this is done in blueprint Jetpack*/
+	/*const bool bIsClient= CharacterOwner->GetLocalRole() == ENetRole::ROLE_AutonomousProxy;*/
+	//if (IsClient())
+	//	Server_SetJetpackVelocity(Velocity.Z);
+
+	Safe_bWantsToUseJetpack = false;
 }
 
 float UEsLyraCharacterMovementComponent::GetRewindingTimeHealingMagnitude()
