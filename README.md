@@ -11,7 +11,7 @@ These have been implemented as special moves inside the CharacterMovementCompone
 ## How to contribute
 
 Fork the project, create a new branch from main, open the Editor, go to Edit > EditorPreferences, then on the left, click "LyraDeveloperSettings".
-On your right go to Experience Override and set a default Lyra experience to avoid the editor crushing after play.
+On your right, go to Experience Override and set a default Lyra experience to avoid the editor crushing after play.
 Once you are done open a pull request in the main project.
 
 To test multiplayer: //TODO write something here since I still don't know how to do it :')
