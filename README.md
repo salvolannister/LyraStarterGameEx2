@@ -10,11 +10,11 @@ These have been implemented as special moves inside the CharacterMovementCompone
 
 ## How to contribute
 
-Fork the project, create a new branch from main, open the Editor, go to Edit > EditorPreferences, then on the left, click "LyraDeveloperSettings".
-On your right, go to Experience Override and set a default Lyra experience to avoid the editor crushing after play.
+Fork the project, create a new branch from main, open the Editor, go to Edit > EditorPreferences, then on the left, click "Lyra Developer Settings".
+On your right, go to Allow player bots to Attack and untick it to avoid being shot while testing.
 Once you are done open a pull request in the main project.
 
-To test multiplayer: //TODO write something here since I still don't know how to do it :')
+To test multiplayer: On the editor on the left select from "Common Maps" the "L_ShooterGym" level and set the net mode to "Play As Listen Server"
 
 ## General procedure
 
