@@ -113,7 +113,7 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
 	
 	if (Safe_bWantsToUseJetpack && CanUseJetpack())
 	{
-		if (!bAuthProxy)
+		if (!bAuthProxy || JetpackResourceInSeconds > 0.f)
 		{
 			SetMovementMode(EMovementMode::MOVE_Custom, ECustomMovementMode::CMOVE_Jetpacking);
 		
@@ -649,7 +649,7 @@ void UEsLyraCharacterMovementComponent::JetpackPressed()
 {
 	UE_LOG(LogTemp, Log, TEXT("Jetpack key pressed"));
 
-	const bool bIsClient = CharacterOwner->GetLocalRole() == ENetRole::ROLE_AutonomousProxy;
+	const bool bIsClient = !CharacterOwner->HasAuthority() && CharacterOwner->IsLocallyControlled();
 	if (bIsClient)
 		Server_SetJetpackVelocity(Velocity.Z);
 
@@ -659,9 +659,9 @@ void UEsLyraCharacterMovementComponent::JetpackPressed()
 void UEsLyraCharacterMovementComponent::JetpackUnpressed()
 {
 	UE_LOG(LogTemp, Log, TEXT("Jetpack key released"));
-	const bool bIsClient = CharacterOwner->GetLocalRole() == ENetRole::ROLE_AutonomousProxy;
+	const bool bIsClient = !CharacterOwner->HasAuthority() && CharacterOwner->IsLocallyControlled();
 	if (bIsClient)
-		Server_SetJetpackVelocity(Velocity.Z);
+		Server_SetJetpackVelocity(0.0f);
 
 	Safe_bWantsToUseJetpack = false;
 }
