@@ -150,6 +150,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Custom|Jetpack")
 		float JetpackFullRechargeInSeconds;
 
+	//UPROPERTY(BlueprintCallable)
+	bool CanUseJetpack() const;
+	
+
+
 	virtual bool IsFalling() const override;
 
 	/*
@@ -243,6 +248,13 @@ private:
 	float JetpackResourceInSeconds;
 
 	void PhysJetpacking(float deltaTime, int32 Iterations);
+
+	/** RPC that will execute on the server, sending the velocity with which the character will fly.
+	 *   Probably this will be moved inside the relative GA 
+	 */
+	UFUNCTION(Reliable, Server, WithValidation)
+	void Server_SetJetpackVelocity(float JetpackVelocity);
+
 
 protected:
 	/*

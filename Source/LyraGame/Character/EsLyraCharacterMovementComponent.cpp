@@ -111,7 +111,7 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
 		CollectRewindData(DeltaSeconds);		
 	}
 	
-	if (Safe_bWantsToUseJetpack /*&& CanUseJetpack()*/)
+	if (Safe_bWantsToUseJetpack && CanUseJetpack())
 	{
 		if (!bAuthProxy)
 		{
@@ -150,6 +150,17 @@ void UEsLyraCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterat
 	Super::PhysCustom(deltaTime, Iterations);
 }
 
+bool UEsLyraCharacterMovementComponent::CanUseJetpack() const
+{
+	if (JetpackResourceInSeconds <= 0.f)
+	{
+		return false;
+	}
+
+	return true;
+
+}
+
 bool UEsLyraCharacterMovementComponent::IsFalling() const
 {
 	/* is generating me problems because movement mode is set to 0*/
@@ -179,6 +190,18 @@ void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 It
 	SetMovementMode(EMovementMode::MOVE_Falling);
 	PhysFalling(deltaTime, Iterations);
 }
+
+bool UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Validate(float JetpackVelocity)
+{
+	return true;
+}
+
+void UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Implementation(float JetpackVelocity)
+{
+	Velocity.Z += JetpackVelocity;
+}
+
+
 
 /**
  *  Event notification when client receives correction data from the server, before applying the data
@@ -626,10 +649,9 @@ void UEsLyraCharacterMovementComponent::JetpackPressed()
 {
 	UE_LOG(LogTemp, Log, TEXT("Jetpack key pressed"));
 
-	// If we are the client and we have control we send the speed to the server 
-	/*const bool bIsClient= CharacterOwner->GetLocalRole() == ENetRole::ROLE_AutonomousProxy;*/
-	/*if (IsClient())
-		Server_SetJetpackVelocity(Velocity.Z);*/
+	const bool bIsClient = CharacterOwner->GetLocalRole() == ENetRole::ROLE_AutonomousProxy;
+	if (bIsClient)
+		Server_SetJetpackVelocity(Velocity.Z);
 
 	Safe_bWantsToUseJetpack = true;
 }
@@ -637,10 +659,9 @@ void UEsLyraCharacterMovementComponent::JetpackPressed()
 void UEsLyraCharacterMovementComponent::JetpackUnpressed()
 {
 	UE_LOG(LogTemp, Log, TEXT("Jetpack key released"));
-	/* no need to check if the client is local, this is done in blueprint Jetpack*/
-	/*const bool bIsClient= CharacterOwner->GetLocalRole() == ENetRole::ROLE_AutonomousProxy;*/
-	//if (IsClient())
-	//	Server_SetJetpackVelocity(Velocity.Z);
+	const bool bIsClient = CharacterOwner->GetLocalRole() == ENetRole::ROLE_AutonomousProxy;
+	if (bIsClient)
+		Server_SetJetpackVelocity(Velocity.Z);
 
 	Safe_bWantsToUseJetpack = false;
 }
