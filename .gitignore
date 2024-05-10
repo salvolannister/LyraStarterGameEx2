@@ -307,3 +307,9 @@ CppProperties.json
 compileData.scor
 compileData.scor.*
 
+Plugins/GameFeatures/ShooterCore/Intermediate/Build/Win64/UnrealEditor/Inc/ShooterCoreRuntime/UHT/Timestamp
+*.res
+Plugins/GameFeatures/ShooterCore/Intermediate/Build/Win64/x64/UnrealEditor/Development/ShooterCoreRuntime/LiveCodingInfo.json
+Plugins/GameFeatures/ShooterCore/Intermediate
+Plugins/GameFeatures/ShooterTests/Binaries
+Plugins/GameFeatures/ShooterTests/Intermediate
