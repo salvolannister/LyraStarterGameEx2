@@ -42,7 +42,7 @@ UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObje
 	Safe_RewindingIndex = 0;
 	TeleportStartTime = 0.f;
 	RewindTimeEndTime = 0.f;
-	MaxJetpackResourceInSeconds = 50.f; // settin it here since the value from blueprint is not being read
+	MaxJetpackResourceInSeconds = 50.f; // setting it here since the value from blueprint is not being read
 	JetpackResourceInSeconds = MaxJetpackResourceInSeconds;
 }
 
@@ -184,9 +184,6 @@ void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 It
 	{
 		GetCharacterOwner()->LaunchCharacter(FVector(0.0f, 0.0f, JetpackVelocity), false,true); 
 		JetpackResourceInSeconds = FMath::Clamp<float>(JetpackResourceInSeconds - (deltaTime / MaxJetpackResourceInSeconds), 0, MaxJetpackResourceInSeconds);
-		// Launch Character set movement mode to falling, so it should not be needed anymore
-		// SetMovementMode(EMovementMode::MOVE_Falling);
-		// PhysFalling(deltaTime, Iterations);
 	}
 	
 	
@@ -201,10 +198,7 @@ bool UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Validate(float
 
 void UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Implementation(float InJetpackVelocity)
 {
-	if(ACharacter* Character = GetCharacterOwner())
-	{
-		GetCharacterOwner()->LaunchCharacter(FVector(0.0f, 0.0f, InJetpackVelocity), false,true); 
-	}
+	Velocity.Z = InJetpackVelocity;
 }
 
 
