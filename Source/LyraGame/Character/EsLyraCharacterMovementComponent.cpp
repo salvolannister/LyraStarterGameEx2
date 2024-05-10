@@ -170,35 +170,41 @@ bool UEsLyraCharacterMovementComponent::IsFalling() const
 void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 Iterations)
 {	
 	/* Amount of resource in seconds needed to use the jetpack for this round */
-	float fResourceNeededForJetpacking = deltaTime / MaxJetpackResourceInSeconds;
-	if (!Safe_bWantsToUseJetpack || JetpackResourceInSeconds <= (fResourceNeededForJetpacking))
+	const float ResourceNeededForJetpacking = deltaTime / MaxJetpackResourceInSeconds;
+	if (!Safe_bWantsToUseJetpack || JetpackResourceInSeconds <= (ResourceNeededForJetpacking))
 	{
 		Safe_bWantsToUseJetpack = false;
 		SetMovementMode(EMovementMode::MOVE_Falling);
 		StartNewPhysics(deltaTime, Iterations);
 		return;
 	}
+	
 
-	float resultingAccel = JetpackForce / Mass;
-	float jetpackSurplusAccel = FMath::Max<float>(0, resultingAccel + GetGravityZ());
-	float desiredTotalJetpackAccel = (GetGravityZ() * -1) + jetpackSurplusAccel;
+	if(ACharacter* Character = GetCharacterOwner())
+	{
+		GetCharacterOwner()->LaunchCharacter(FVector(0.0f, 0.0f, JetpackVelocity), false,true); 
+		JetpackResourceInSeconds = FMath::Clamp<float>(JetpackResourceInSeconds - (deltaTime / MaxJetpackResourceInSeconds), 0, MaxJetpackResourceInSeconds);
+		// Launch Character set movement mode to falling, so it should not be needed anymore
+		// SetMovementMode(EMovementMode::MOVE_Falling);
+		// PhysFalling(deltaTime, Iterations);
+	}
+	
+	
 
-	Velocity.Z += desiredTotalJetpackAccel * deltaTime;
-
-	JetpackResourceInSeconds = FMath::Clamp<float>(JetpackResourceInSeconds - (deltaTime / MaxJetpackResourceInSeconds), 0, MaxJetpackResourceInSeconds);
-	// change character movement to something else
-	SetMovementMode(EMovementMode::MOVE_Falling);
-	PhysFalling(deltaTime, Iterations);
+	
 }
 
-bool UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Validate(float JetpackVelocity)
+bool UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Validate(float InJetpackVelocity)
 {
 	return true;
 }
 
-void UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Implementation(float JetpackVelocity)
+void UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Implementation(float InJetpackVelocity)
 {
-	Velocity.Z += JetpackVelocity;
+	if(ACharacter* Character = GetCharacterOwner())
+	{
+		GetCharacterOwner()->LaunchCharacter(FVector(0.0f, 0.0f, InJetpackVelocity), false,true); 
+	}
 }
 
 

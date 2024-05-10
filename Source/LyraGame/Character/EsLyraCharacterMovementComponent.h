@@ -142,9 +142,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category="Custom|Jetpack")
 		float MaxJetpackResourceInSeconds;
 
-	/* When defining the force for jetpacking consider the player mass */
+	/* When defining the velocity for jetpacking on z axes */
 	UPROPERTY(EditDefaultsOnly, Category = "Custom|Jetpack")
-		float JetpackForce;
+		float JetpackVelocity;
 
 	/* Time needed to regenerate jetpack fuel */
 	UPROPERTY(EditDefaultsOnly, Category = "Custom|Jetpack")
@@ -253,7 +253,7 @@ private:
 	 *   Probably this will be moved inside the relative GA 
 	 */
 	UFUNCTION(Reliable, Server, WithValidation)
-	void Server_SetJetpackVelocity(float JetpackVelocity);
+	void Server_SetJetpackVelocity(float InJetpackVelocity);
 
 
 protected:
