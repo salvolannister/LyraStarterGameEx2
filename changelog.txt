@@ -1,0 +1,5 @@
+# Changelog
+
+## June 2024
+- fixed "logwarning LogConsoleManager: Warning: Console variable 'FX.AllowGPUSorting' used in the render thread. Rendering artifacts could happen. Use ECVF_RenderThreadSafe or don't use in render thread."
+
