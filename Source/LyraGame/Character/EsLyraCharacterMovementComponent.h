@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Character/LyraCharacterMovementComponent.h"
+#include "UObject/ObjectRename.h"
 #include "EsLyraCharacterMovementComponent.generated.h"
 
+class UNiagaraComponent;
 class ULyraHealthComponent;
 class ALyraCharacter;
 
@@ -153,7 +155,8 @@ public:
 	//UPROPERTY(BlueprintCallable)
 	bool CanUseJetpack() const;
 	
-
+    UPROPERTY(EditDefaultsOnly, Transient, Category ="Custom|Jetpack")
+	TObjectPtr<UNiagaraComponent> JetpackNiagaraComponent;
 
 	virtual bool IsFalling() const override;
 

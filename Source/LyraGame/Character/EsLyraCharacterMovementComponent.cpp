@@ -10,7 +10,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "WorldCollision.h"
-
+#include "NiagaraComponent.h"
 
 /**
  *  Get prediction data for a client game
@@ -44,6 +44,8 @@ UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObje
 	RewindTimeEndTime = 0.f;
 	MaxJetpackResourceInSeconds = 50.f; // setting it here since the value from blueprint is not being read
 	JetpackResourceInSeconds = MaxJetpackResourceInSeconds;
+
+	
 }
 
 void UEsLyraCharacterMovementComponent::InitializeComponent()
@@ -54,6 +56,10 @@ void UEsLyraCharacterMovementComponent::InitializeComponent()
 	
 	LyraHealthComponent = ESCharacterOwner->GetLyraHealthComponent();
 	check(LyraHealthComponent);
+
+	auto MeshComponent = ESCharacterOwner->GetMesh();
+	auto JetpackComponent = MeshComponent->GetChildComponent(0);
+	JetpackNiagaraComponent = dynamic_cast<UNiagaraComponent*>(JetpackComponent->GetChildComponent(0));
 }
 
 void UEsLyraCharacterMovementComponent::BeginPlay()
@@ -196,9 +202,22 @@ bool UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Validate(float
 	return true;
 }
 
-void UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Implementation(float InJetpackVelocity)
+void UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Implementation(const float InJetpackVelocity)
 {
 	Velocity.Z = InJetpackVelocity;
+
+	if(JetpackNiagaraComponent)
+	{
+		if(InJetpackVelocity != 0.0f)
+		{
+			JetpackNiagaraComponent->Activate();
+			
+		}
+		else
+		{
+			JetpackNiagaraComponent->Deactivate();	
+		}
+	}
 }
 
 
