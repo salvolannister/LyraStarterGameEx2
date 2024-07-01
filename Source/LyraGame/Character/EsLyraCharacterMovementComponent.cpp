@@ -206,7 +206,7 @@ void UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Implementation
 {
 	Velocity.Z = InJetpackVelocity;
 
-	NetMulticast_SetJetpackEffect_Implementation(InJetpackVelocity != 0);
+	NetMulticast_SetJetpackEffect(InJetpackVelocity != 0);
 }
 
 
