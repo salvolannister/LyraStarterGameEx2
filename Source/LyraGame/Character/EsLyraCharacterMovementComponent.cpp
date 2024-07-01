@@ -206,21 +206,25 @@ void UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Implementation
 {
 	Velocity.Z = InJetpackVelocity;
 
-	if(JetpackNiagaraComponent)
-	{
-		if(InJetpackVelocity != 0.0f)
-		{
-			JetpackNiagaraComponent->Activate();
-			
-		}
-		else
-		{
-			JetpackNiagaraComponent->Deactivate();	
-		}
-	}
+	NetMulticast_SetJetpackEffect_Implementation(InJetpackVelocity != 0);
 }
 
 
+void UEsLyraCharacterMovementComponent::NetMulticast_SetJetpackEffect_Implementation(const bool bActivate)
+{
+	if(!JetpackNiagaraComponent)
+		return;
+	
+	if(bActivate)
+	{
+		JetpackNiagaraComponent->Activate();
+			
+	}
+	else
+	{
+		JetpackNiagaraComponent->Deactivate();	
+	}
+}
 
 /**
  *  Event notification when client receives correction data from the server, before applying the data
@@ -668,9 +672,14 @@ void UEsLyraCharacterMovementComponent::JetpackPressed()
 {
 	UE_LOG(LogTemp, Log, TEXT("Jetpack key pressed"));
 
-	const bool bIsClient = !CharacterOwner->HasAuthority() && CharacterOwner->IsLocallyControlled();
-	if (bIsClient)
+	if (const bool bIsClient = !CharacterOwner->HasAuthority() && CharacterOwner->IsLocallyControlled())
+	{
 		Server_SetJetpackVelocity(Velocity.Z);
+	}
+	else if(CharacterOwner->HasAuthority())
+	{
+		NetMulticast_SetJetpackEffect( true);
+	}
 
 	Safe_bWantsToUseJetpack = true;
 }
@@ -678,9 +687,14 @@ void UEsLyraCharacterMovementComponent::JetpackPressed()
 void UEsLyraCharacterMovementComponent::JetpackUnpressed()
 {
 	UE_LOG(LogTemp, Log, TEXT("Jetpack key released"));
-	const bool bIsClient = !CharacterOwner->HasAuthority() && CharacterOwner->IsLocallyControlled();
-	if (bIsClient)
+	if (const bool bIsClient = !CharacterOwner->HasAuthority() && CharacterOwner->IsLocallyControlled())
+	{
 		Server_SetJetpackVelocity(0.0f);
+	}
+	else if(CharacterOwner->HasAuthority())
+	{
+		NetMulticast_SetJetpackEffect(false);
+	}
 
 	Safe_bWantsToUseJetpack = false;
 }

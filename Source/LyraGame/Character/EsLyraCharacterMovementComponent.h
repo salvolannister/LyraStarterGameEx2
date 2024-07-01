@@ -247,7 +247,7 @@ private:
 	* Jetpacking
 	*/
 
-	/* Amount of remaming time for using the jetpack */
+	/* Amount of remaining time for using the jetpack */
 	float JetpackResourceInSeconds;
 
 	void PhysJetpacking(float deltaTime, int32 Iterations);
@@ -258,6 +258,12 @@ private:
 	UFUNCTION(Reliable, Server, WithValidation)
 	void Server_SetJetpackVelocity(float InJetpackVelocity);
 
+	/** RPC executed by the server and sent to all the clients to activate Jetpack effect
+	 *
+	 *
+	 */
+	UFUNCTION(Unreliable, NetMulticast)
+	void NetMulticast_SetJetpackEffect(const bool bActivate);
 
 protected:
 	/*
