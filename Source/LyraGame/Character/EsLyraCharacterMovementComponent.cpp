@@ -280,18 +280,16 @@ void UEsLyraCharacterMovementComponent::PerformTeleport()
 	TeleportStartTime = GetWorld()->GetTimeSeconds();	
 
 	const FVector ForwardVector = UpdatedComponent->GetForwardVector();
-	FHitResult Hit;
-	FVector ActorCenterLocation = GetActorLocation();
-	
-	const FLyraCharacterGroundInfo GroundInfo = GetGroundInfo();
-	if (GroundInfo.GroundDistance == 0.f)
+	if (const FLyraCharacterGroundInfo GroundInfo = GetGroundInfo(); GroundInfo.GroundDistance == 0.f)
 	{
-		float groundAngleInDegrees = FMath::Acos(FVector::DotProduct(GroundInfo.GroundHitResult.Normal, FVector::UpVector)) * 180.0f / PI;
+		FHitResult Hit;
 		//If the angle is greater than zero it means the player is on a slope and sweep will prevent teleport from happening
-		if (groundAngleInDegrees > 0.f)
+		if (float GroundAngleInDegrees = FMath::Acos(
+				FVector::DotProduct(GroundInfo.GroundHitResult.Normal, FVector::UpVector)) * 180.0f / PI;
+			GroundAngleInDegrees > 0.f)
 		{
 			// Projecting the forward vector will adjust the teleport location to a direction parallel to the slope
-			FVector AdjustedTeleportLocation = FVector::VectorPlaneProject(ForwardVector, GroundInfo.GroundHitResult.Normal);
+			const FVector AdjustedTeleportLocation = FVector::VectorPlaneProject(ForwardVector, GroundInfo.GroundHitResult.Normal);
 
 			SafeMoveUpdatedComponent(AdjustedTeleportLocation * TeleportImpulse, UpdatedComponent->GetComponentRotation(), false, Hit, ETeleportType::None);
 		}
