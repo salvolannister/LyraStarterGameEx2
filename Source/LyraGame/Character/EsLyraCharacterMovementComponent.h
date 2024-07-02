@@ -8,8 +8,11 @@
 #include "EsLyraCharacterMovementComponent.generated.h"
 
 class UNiagaraComponent;
+class UAudioComponent;
 class ULyraHealthComponent;
 class ALyraCharacter;
+
+
 
 /* Encapsulates a client move that is sent to the server for CMC networking */
 struct FEsNetworkMoveData : public FCharacterNetworkMoveData
@@ -155,9 +158,17 @@ public:
 	//UPROPERTY(BlueprintCallable)
 	bool CanUseJetpack() const;
 	
-    UPROPERTY(EditDefaultsOnly, Transient, Category ="Custom|Jetpack")
+    UPROPERTY(EditDefaultsOnly, Category ="Custom|Jetpack")
 	TObjectPtr<UNiagaraComponent> JetpackNiagaraComponent;
 
+	UPROPERTY(EditDefaultsOnly, Category ="Custom|Jetpack")
+	TObjectPtr<UAudioComponent> JetpackSFX;
+
+	UFUNCTION(BlueprintCallable)
+	UAudioComponent* GetJetpackAudioEffect() const;
+
+	void SetJetpackEffects(const bool bActive) const;
+	
 	virtual bool IsFalling() const override;
 
 	/*
@@ -247,6 +258,7 @@ private:
 	* Jetpacking
 	*/
 
+	// static const FName JetpackAudioComponentName(TEXT("JetpackSFX"));	
 	/* Amount of remaining time for using the jetpack */
 	float JetpackResourceInSeconds;
 
@@ -258,9 +270,8 @@ private:
 	UFUNCTION(Reliable, Server, WithValidation)
 	void Server_SetJetpackVelocity(float InJetpackVelocity);
 
-	/** RPC executed by the server and sent to all the clients to activate Jetpack effect
-	 *
-	 *
+	/** RPC executed by the server and sent to all the clients to activate Jetpack particle and sound effects
+	 *  
 	 */
 	UFUNCTION(Unreliable, NetMulticast)
 	void NetMulticast_SetJetpackEffect(const bool bActivate);
