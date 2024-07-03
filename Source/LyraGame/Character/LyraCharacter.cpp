@@ -10,6 +10,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "LyraCharacterMovementComponent.h"
 #include "EsLyraCharacterMovementComponent.h"
+#include "JetpackComponent.h"
 #include "LyraGameplayTags.h"
 #include "LyraLogChannels.h"
 #include "Net/UnrealNetwork.h"
@@ -73,6 +74,9 @@ ALyraCharacter::ALyraCharacter(const FObjectInitializer& ObjectInitializer)
 	CameraComponent = CreateDefaultSubobject<ULyraCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetRelativeLocation(FVector(-300.0f, 0.0f, 75.0f));
 
+	/*custom component */
+	JetpackComponent = CreateDefaultSubobject<UJetpackComponent>(TEXT("JetpackComponent"));
+	
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationRoll = false;
@@ -213,12 +217,16 @@ void ALyraCharacter::OnAbilitySystemInitialized()
 
 	HealthComponent->InitializeWithAbilitySystem(LyraASC);
 
+	JetpackComponent->InitializeWithAbilitySystem(LyraASC);
+	
 	InitializeGameplayTags();
 }
 
 void ALyraCharacter::OnAbilitySystemUninitialized()
 {
 	HealthComponent->UninitializeFromAbilitySystem();
+	JetpackComponent->UninitializeFromAbilitySystem();
+
 }
 
 void ALyraCharacter::PossessedBy(AController* NewController)

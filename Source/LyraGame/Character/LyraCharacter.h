@@ -10,6 +10,7 @@
 
 #include "LyraCharacter.generated.h"
 
+class UJetpackComponent;
 class UEsLyraCharacterMovementComponent;
 class AActor;
 class AController;
@@ -205,6 +206,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lyra|Character", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ULyraCameraComponent> CameraComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lyra|Character", Meta = (AllowPrivateAccess = "true"))
+	UJetpackComponent* JetpackComponent;
+	
 	UPROPERTY(Transient, ReplicatedUsing = OnRep_ReplicatedAcceleration)
 	FLyraReplicatedAcceleration ReplicatedAcceleration;
 
