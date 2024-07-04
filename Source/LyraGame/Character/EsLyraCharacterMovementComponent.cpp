@@ -727,11 +727,12 @@ void UEsLyraCharacterMovementComponent::JetpackPressed()
 	{
 			return;
 	}
+
+	SetJetpackEffects(true);
 	
 	if (const bool bIsClient = !CharacterOwner->HasAuthority() && CharacterOwner->IsLocallyControlled())
 	{
 		Server_SetJetpackVelocity(Velocity.Z);
-		SetJetpackEffects(true);
 	}
 	else if(CharacterOwner->HasAuthority())
 	{
@@ -745,10 +746,10 @@ void UEsLyraCharacterMovementComponent::JetpackPressed()
 void UEsLyraCharacterMovementComponent::JetpackUnpressed()
 {
 	UE_LOG(LogTemp, Log, TEXT("Jetpack key released"));
+	SetJetpackEffects(false);
 	if (const bool bIsClient = !CharacterOwner->HasAuthority() && CharacterOwner->IsLocallyControlled())
 	{
 		Server_SetJetpackVelocity(0.0f);
-		SetJetpackEffects(false);
 	}
 	else if(CharacterOwner->HasAuthority())
 	{
