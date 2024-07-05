@@ -13,6 +13,7 @@
 #include "NiagaraComponent.h"
 #include "Components/AudioComponent.h"
 #include "AudioParameterControllerInterface.h"
+#include "JetpackComponent.h"
 /**
  *  Get prediction data for a client game
  ****************************************************************************************/
@@ -43,9 +44,6 @@ UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObje
 	Safe_RewindingIndex = 0;
 	TeleportStartTime = 0.f;
 	RewindTimeEndTime = 0.f;
-	MaxJetpackResourceInSeconds = 50.f; // setting it here since the value from blueprint is not being read
-	JetpackResourceInSeconds = MaxJetpackResourceInSeconds;
-
 	
 }
 
@@ -61,8 +59,8 @@ void UEsLyraCharacterMovementComponent::InitializeComponent()
 	/* Gets Niagara Jetpack Component  */
 	if(const auto MeshComponent = ESCharacterOwner->GetMesh())
 	{
-		const auto JetpackComponent = MeshComponent->GetChildComponent(0);
-		JetpackNiagaraComponent = dynamic_cast<UNiagaraComponent*>(JetpackComponent->GetChildComponent(0));
+		const auto JetpackRootMesh = MeshComponent->GetChildComponent(0);
+		JetpackNiagaraComponent = dynamic_cast<UNiagaraComponent*>(JetpackRootMesh->GetChildComponent(0));
 	}
 
 	
@@ -78,11 +76,14 @@ void UEsLyraCharacterMovementComponent::InitializeComponent()
 					
 					UE_LOG(LogTemp, Warning, TEXT("Found AudioComponent: %s"), *AudioComponent->GetName());
 					JetpackSFX = AudioComponent;
-					return; 
+					break; 
 				}
 			}
 		}
 	}
+
+	JetpackComponent = ESCharacterOwner->GetJetpackComponent();
+	check(JetpackComponent);
 }
 
 void UEsLyraCharacterMovementComponent::BeginPlay()
@@ -95,12 +96,7 @@ void UEsLyraCharacterMovementComponent::BeginPlay()
 void UEsLyraCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	if (!IsCustomMovementMode(ECustomMovementMode::CMOVE_Jetpacking))
-	{
-		JetpackResourceInSeconds = FMath::Clamp<float>(JetpackResourceInSeconds + (DeltaTime / JetpackFullRechargeInSeconds), 0, 1);
-	}
-
+	
 }
 
 /**
@@ -140,12 +136,11 @@ void UEsLyraCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float
 		CollectRewindData(DeltaSeconds);		
 	}
 	
-	if (Safe_bWantsToUseJetpack && CanUseJetpack())
+	if (Safe_bWantsToUseJetpack)
 	{
-		if (!bAuthProxy || JetpackResourceInSeconds > 0.f)
+		if (!bAuthProxy || CanUseJetpack())
 		{
 			SetMovementMode(EMovementMode::MOVE_Custom, ECustomMovementMode::CMOVE_Jetpacking);
-		
 		}
 		else
 		{
@@ -179,9 +174,16 @@ void UEsLyraCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterat
 	Super::PhysCustom(deltaTime, Iterations);
 }
 
-bool UEsLyraCharacterMovementComponent::CanUseJetpack() const
+bool UEsLyraCharacterMovementComponent::CanUseJetpack() const 
 {
-	if (JetpackResourceInSeconds <= 0.f)
+	if (!IsValid(JetpackComponent))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Jetpack component is null"));
+		return false;
+	}
+		
+	
+	if(JetpackComponent->GetJetpackResource() <= 0.f)
 	{
 		return false;
 	}
@@ -234,10 +236,17 @@ bool UEsLyraCharacterMovementComponent::IsFalling() const
 }
 
 void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 Iterations)
-{	
+{
 	/* Amount of resource in seconds needed to use the jetpack for this round */
-	const float ResourceNeededForJetpacking = deltaTime / MaxJetpackResourceInSeconds;
-	if (!Safe_bWantsToUseJetpack || JetpackResourceInSeconds <= (ResourceNeededForJetpacking))
+	bool bIsJetpackResourceEnough = false;
+	if(IsValid(JetpackComponent))
+	{
+		const float MaxJetpackResource = JetpackComponent->GetMaxJetpackResource();
+		const float ResourceNeededForJetpacking = deltaTime / MaxJetpackResource;
+		bIsJetpackResourceEnough  = ResourceNeededForJetpacking >= JetpackComponent->GetJetpackResource();
+	}
+	
+	if (!Safe_bWantsToUseJetpack  || bIsJetpackResourceEnough )
 	{
 		Safe_bWantsToUseJetpack = false;
 		SetMovementMode(EMovementMode::MOVE_Falling);
@@ -249,11 +258,8 @@ void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 It
 	if(ACharacter* Character = GetCharacterOwner())
 	{
 		GetCharacterOwner()->LaunchCharacter(FVector(0.0f, 0.0f, JetpackVelocity), false,true); 
-		JetpackResourceInSeconds = FMath::Clamp<float>(JetpackResourceInSeconds - (deltaTime / MaxJetpackResourceInSeconds), 0, MaxJetpackResourceInSeconds);
 	}
 	
-	
-
 	
 }
 
@@ -326,7 +332,7 @@ bool UEsLyraCharacterMovementComponent::CanTeleport() const
 }
 
 /**
- *  Teleport the character by TeleportImpulse. Use velocity if want to avoid sweep
+ *  Teleport the character by TeleportImpulse. Use velocity if you want to avoid sweep
  **********************************************************************************************************/
 void UEsLyraCharacterMovementComponent::PerformTeleport()
 {	
@@ -1004,4 +1010,4 @@ void FEsNetworkMoveData::ClientFillNetworkMoveData(const FSavedMove_Character& C
 	Saved_RewindingIndex = CustomMove->Saved_RewindingIndex;
 }
 
-#pragma region Custom Move Data
+#pragma endregion Custom Move Data

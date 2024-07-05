@@ -210,6 +210,11 @@ ULyraHealthComponent* ALyraCharacter::GetLyraHealthComponent() const
 	return HealthComponent;
 }
 
+UJetpackComponent* ALyraCharacter::GetJetpackComponent() const
+{
+	return JetpackComponent;
+}
+
 void ALyraCharacter::OnAbilitySystemInitialized()
 {
 	ULyraAbilitySystemComponent* LyraASC = GetLyraAbilitySystemComponent();

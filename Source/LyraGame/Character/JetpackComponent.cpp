@@ -25,21 +25,21 @@ void UJetpackComponent::InitializeWithAbilitySystem(ULyraAbilitySystemComponent*
 
 	if (AbilitySystemComponent)
 	{
-		UE_LOG(LogLyra, Error, TEXT("LyraJetpackComponent: Mana component for owner [%s] has already been initialized with an ability system."), *GetNameSafe(Owner));
+		UE_LOG(LogLyra, Error, TEXT("LyraJetpackComponent: JetpackResource component for owner [%s] has already been initialized with an ability system."), *GetNameSafe(Owner));
 		return;
 	}
 
 	AbilitySystemComponent = InASC;
 	if (!AbilitySystemComponent)
 	{
-		UE_LOG(LogLyra, Error, TEXT("LyraJetpackComponent: Cannot initialize Mana component for owner [%s] with NULL ability system."), *GetNameSafe(Owner));
+		UE_LOG(LogLyra, Error, TEXT("LyraJetpackComponent: Cannot initialize JetpackResource component for owner [%s] with NULL ability system."), *GetNameSafe(Owner));
 		return;
 	}
 
 	CombatSet = AbilitySystemComponent->GetSet<ULyraCombatSet>();
 	if (!CombatSet)
 	{
-		UE_LOG(LogLyra, Error, TEXT("LyraJetpackComponent: Cannot initialize Mana component for owner [%s] with NULL Mana set on the ability system."), *GetNameSafe(Owner));
+		UE_LOG(LogLyra, Error, TEXT("LyraJetpackComponent: Cannot initialize Jetpack Resource component for owner [%s] with NULL Jetpack Resource set on the ability system."), *GetNameSafe(Owner));
 		return;
 	}
 
@@ -68,10 +68,10 @@ float UJetpackComponent::GetJetpackResourceNormalized() const
 {
 	if (CombatSet)
 	{
-		const float Mana = CombatSet->GetJetpackResource();
-		const float MaxMana = CombatSet->GetMaxJetpackResource();
+		const float JetpackResource = CombatSet->GetJetpackResource();
+		const float MaxJetpackResource = CombatSet->GetMaxJetpackResource();
 
-		return ((MaxMana > 0.0f) ? (Mana / MaxMana) : 0.0f);
+		return ((MaxJetpackResource > 0.0f) ? (JetpackResource / MaxJetpackResource) : 0.0f);
 	}
 
 	return 0.0f;
@@ -93,3 +93,4 @@ void UJetpackComponent::HandleMaxJetpackResourceChanged(const FOnAttributeChange
 {
 	OnMaxJetpackResourceChanged.Broadcast(this, ChangeData.OldValue, ChangeData.NewValue);
 }
+

@@ -7,6 +7,7 @@
 #include "UObject/ObjectRename.h"
 #include "EsLyraCharacterMovementComponent.generated.h"
 
+class UJetpackComponent;
 class UNiagaraComponent;
 class UAudioComponent;
 class ULyraHealthComponent;
@@ -142,21 +143,11 @@ public:
 	
 
 	//Jetpacking
-
-	/* Maximum hold time for the jetpack */
-	UPROPERTY(BlueprintReadWrite, Category="Custom|Jetpack")
-		float MaxJetpackResourceInSeconds;
-
+	TObjectPtr<UJetpackComponent> JetpackComponent;
+	
 	/* When defining the velocity for jetpacking on z axes */
 	UPROPERTY(EditDefaultsOnly, Category = "Custom|Jetpack")
-		float JetpackVelocity;
-
-	/* Time needed to regenerate jetpack fuel */
-	UPROPERTY(EditDefaultsOnly, Category = "Custom|Jetpack")
-		float JetpackFullRechargeInSeconds;
-
-	//UPROPERTY(BlueprintCallable)
-	bool CanUseJetpack() const;
+	float JetpackVelocity;
 	
     UPROPERTY(EditDefaultsOnly, Category ="Custom|Jetpack")
 	TObjectPtr<UNiagaraComponent> JetpackNiagaraComponent;
@@ -167,6 +158,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UAudioComponent* GetJetpackAudioEffect() const;
 
+	UFUNCTION(BlueprintCallable)
+	bool CanUseJetpack() const;
+	
 	void SetJetpackEffects(const bool bActive) const;
 	
 	virtual bool IsFalling() const override;

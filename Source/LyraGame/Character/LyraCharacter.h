@@ -115,6 +115,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
 	ULyraHealthComponent* GetLyraHealthComponent() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
+	UJetpackComponent* GetJetpackComponent() const;
 	
 	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
 	virtual bool HasMatchingGameplayTag(FGameplayTag TagToCheck) const override;
