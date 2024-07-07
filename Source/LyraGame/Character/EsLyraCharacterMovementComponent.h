@@ -155,6 +155,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category ="Custom|Jetpack")
 	TObjectPtr<UAudioComponent> JetpackSFX;
 
+	UPROPERTY(EditAnywhere, Category ="Custom|Jetpack")
+	FGameplayTagContainer JetpackGameplayActionTag;
+	
 	UFUNCTION(BlueprintCallable)
 	UAudioComponent* GetJetpackAudioEffect() const;
 
@@ -164,6 +167,8 @@ public:
 	void SetJetpackEffects(const bool bActive) const;
 	
 	virtual bool IsFalling() const override;
+	
+	
 
 	/*
 	 *  Flags (Transient)
@@ -251,11 +256,12 @@ private:
 	/*
 	* Jetpacking
 	*/
-
-	// static const FName JetpackAudioComponentName(TEXT("JetpackSFX"));	
-	/* Amount of remaining time for using the jetpack */
-	float JetpackResourceInSeconds;
-
+	
+    /** Cancel jetpack ability using the tag specified in the blueprint through the parameter JetpackGameplayActionTag.
+     * returns true if the ability was canceled false otherwise
+     */
+	bool CancelJetpackGameplayAbility() const;
+	
 	void PhysJetpacking(float deltaTime, int32 Iterations);
 
 	/** RPC that will execute on the server, sending the velocity with which the character will fly.

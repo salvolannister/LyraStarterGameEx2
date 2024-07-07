@@ -3,6 +3,8 @@
 
 #include "Character/EsLyraCharacterMovementComponent.h"
 
+#include "AbilitySystemComponent.h"
+#include "AudioDevice.h"
 #include "LyraCharacter.h"
 #include "LyraHealthComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -14,6 +16,7 @@
 #include "Components/AudioComponent.h"
 #include "AudioParameterControllerInterface.h"
 #include "JetpackComponent.h"
+#include "AbilitySystem/LyraAbilitySystemComponent.h"
 /**
  *  Get prediction data for a client game
  ****************************************************************************************/
@@ -235,6 +238,41 @@ bool UEsLyraCharacterMovementComponent::IsFalling() const
 	return Super::IsFalling() || IsCustomMovementMode(ECustomMovementMode::CMOVE_Jetpacking);
 }
 
+bool UEsLyraCharacterMovementComponent::CancelJetpackGameplayAbility() const
+{
+	bool isCanceled = false;
+	const ALyraCharacter* LyraCharacter = UECasts_Private::DynamicCast<ALyraCharacter*>(CharacterOwner.Get());
+
+	if(!LyraCharacter)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Lyra Character is null while trying to cancel jetpacking ability"));
+		return isCanceled;
+	}
+	
+	TArray<FGameplayAbilitySpec*> ActiveAbilitiesWithSpecifiedTag;
+	ULyraAbilitySystemComponent* LyraAsc = LyraCharacter->GetLyraAbilitySystemComponent();
+
+	if(!LyraAsc)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Could not retrieve game ability system component while trying to cancel jetpack ability"));
+		return isCanceled;
+	}
+	
+	LyraAsc->GetActivatableGameplayAbilitySpecsByAllMatchingTags(JetpackGameplayActionTag, ActiveAbilitiesWithSpecifiedTag, true);
+	for (const auto AbilityWithSpecifiedTag : ActiveAbilitiesWithSpecifiedTag)
+	{
+		if(AbilityWithSpecifiedTag->IsActive())
+		{
+			LyraAsc->CancelAbility(AbilityWithSpecifiedTag->Ability);
+			isCanceled = true;
+			// it should be just one so we exit the loop
+			break;
+		}
+	}
+
+	return isCanceled;
+}
+
 void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 Iterations)
 {
 	/* Amount of resource in seconds needed to use the jetpack for this round */
@@ -251,13 +289,19 @@ void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 It
 		Safe_bWantsToUseJetpack = false;
 		SetMovementMode(EMovementMode::MOVE_Falling);
 		StartNewPhysics(deltaTime, Iterations);
+		if(!CancelJetpackGameplayAbility())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Jetpack ability wasn't canceled"));
+		}
+		
 		return;
 	}
 	
 
 	if(ACharacter* Character = GetCharacterOwner())
 	{
-		GetCharacterOwner()->LaunchCharacter(FVector(0.0f, 0.0f, JetpackVelocity), false,true); 
+		GetCharacterOwner()->LaunchCharacter(FVector(0.0f, 0.0f, JetpackVelocity), false,true);
+		
 	}
 	
 	
