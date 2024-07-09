@@ -314,9 +314,10 @@ bool UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Validate(float
 
 void UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Implementation(const float InJetpackVelocity)
 {
+	
 	Velocity.Z = InJetpackVelocity;
 
-	NetMulticast_SetJetpackEffect(InJetpackVelocity != 0);
+	NetMulticast_SetJetpackEffect(Safe_bWantsToUseJetpack);
 }
 
 
