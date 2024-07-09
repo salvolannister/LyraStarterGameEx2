@@ -44,6 +44,7 @@ UEsLyraCharacterMovementComponent::UEsLyraCharacterMovementComponent(const FObje
 	Safe_bWantsToTeleport = false;
 	Safe_bWantsToWallRun = false;
 	Safe_bIsRewinding = false;
+	Safe_bWantsToUseJetpack = false;
 	Safe_RewindingIndex = 0;
 	TeleportStartTime = 0.f;
 	RewindTimeEndTime = 0.f;
@@ -220,7 +221,8 @@ void UEsLyraCharacterMovementComponent::SetJetpackEffects(const bool bActive) co
 		{
 			JetpackSFX->Play();
 		}
-		JetpackNiagaraComponent->Activate();
+		if(!JetpackNiagaraComponent->IsActive())
+			JetpackNiagaraComponent->Activate(true);
 	}
 	else
 	{
@@ -354,7 +356,9 @@ void UEsLyraCharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)
 	Safe_bWantsToTeleport = (Flags & FSavedMove_Es::FLAG_Teleport) != 0;
 	Safe_bWantsToWallRun = (Flags & FSavedMove_Es::FLAG_WallRun) != 0;
 	Safe_bIsRewinding = (Flags & FSavedMove_Es::FLAG_RewindTime) != 0;
-	Safe_bWantsToUseJetpack = (Flags & FSavedMove_Es::FLAG_Jetpack) != 0;
+	Safe_bWantsToUseJetpack = (Flags == FSavedMove_Es::FLAG_Jetpack);
+	
+
 }
 
 void UEsLyraCharacterMovementComponent::MoveAutonomous(float ClientTimeStamp, float DeltaTime, uint8 CompressedFlags,
