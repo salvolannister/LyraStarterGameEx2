@@ -283,11 +283,12 @@ void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 It
 	{
 		const float MaxJetpackResource = JetpackComponent->GetMaxJetpackResource();
 		const float ResourceNeededForJetpacking = deltaTime / MaxJetpackResource;
-		bIsJetpackResourceEnough  = ResourceNeededForJetpacking >= JetpackComponent->GetJetpackResource();
+		bIsJetpackResourceEnough  = JetpackComponent->GetJetpackResource() >= ResourceNeededForJetpacking  ;
 	}
 	
-	if (!Safe_bWantsToUseJetpack  || bIsJetpackResourceEnough )
+	if (!Safe_bWantsToUseJetpack  || !bIsJetpackResourceEnough )
 	{
+    	UE_LOG(LogTemp, Warning, TEXT("Trying to cancel jetpack ability"));
 		Safe_bWantsToUseJetpack = false;
 		SetMovementMode(EMovementMode::MOVE_Falling);
 		StartNewPhysics(deltaTime, Iterations);
@@ -804,7 +805,7 @@ void UEsLyraCharacterMovementComponent::JetpackUnpressed()
 	SetJetpackEffects(false);
 	if (const bool bIsClient = !CharacterOwner->HasAuthority() && CharacterOwner->IsLocallyControlled())
 	{
-		Server_SetJetpackVelocity(0.0f);
+		Server_SetJetpackVelocity(Velocity.Z);
 	}
 	else if(CharacterOwner->HasAuthority())
 	{
