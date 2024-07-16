@@ -30,8 +30,9 @@ static FName NAME_LyraCharacterCollisionProfile_Capsule(TEXT("LyraPawnCapsule"))
 static FName NAME_LyraCharacterCollisionProfile_Mesh(TEXT("LyraPawnMesh"));
 
 ALyraCharacter::ALyraCharacter(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer.SetDefaultSubobjectClass<ULyraCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UEsLyraCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
+	ESCharacterMovement = Cast<UEsLyraCharacterMovementComponent>(GetCharacterMovement());
 	// Avoid ticking characters if possible.
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
