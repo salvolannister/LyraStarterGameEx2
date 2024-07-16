@@ -356,7 +356,7 @@ void UEsLyraCharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)
 	Safe_bWantsToTeleport = (Flags & FSavedMove_Es::FLAG_Teleport) != 0;
 	Safe_bWantsToWallRun = (Flags & FSavedMove_Es::FLAG_WallRun) != 0;
 	Safe_bIsRewinding = (Flags & FSavedMove_Es::FLAG_RewindTime) != 0;
-	Safe_bWantsToUseJetpack = (Flags == FSavedMove_Es::FLAG_Jetpack);
+	Safe_bWantsToUseJetpack = (Flags & FSavedMove_Es::FLAG_Jetpack) != 0;
 	
 
 }

@@ -370,8 +370,7 @@ public:
 		FLAG_Teleport = 0x10, // Teleport pressed
 		FLAG_WallRun = 0x20, // Wallrun pressed
 		FLAG_RewindTime = 0x40, // RewindTime pressed
-		FLAG_Jetpack = 0x64, // Jetpack pressed
-		FLAG_Custom			= 0x80,
+		FLAG_Jetpack = 0x80, // Jetpack pressed
 	};
 	
 	/*
