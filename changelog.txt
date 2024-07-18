@@ -6,3 +6,4 @@
 ## July
 - added UI for jetpack resource
 - added jetpack resource regeneration and cost effect
+- set as default EsLyraCharacterMovementComponent for the CharacterMovementComponent in the LyraCharacter.cpp constructor
