@@ -277,6 +277,11 @@ bool UEsLyraCharacterMovementComponent::CancelJetpackGameplayAbility() const
 
 void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 Iterations)
 {
+	if (deltaTime < MIN_TICK_TIME)
+	{
+		return;
+	}
+	
 	/* Amount of resource in seconds needed to use the jetpack for this round */
 	bool bIsJetpackResourceEnough = false;
 	if(IsValid(JetpackComponent))
@@ -299,14 +304,22 @@ void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 It
 		
 		return;
 	}
-	
 
+	// Velocity += JetpackVelocity * deltaTime * FVector::UpVector;
+	Iterations++;
+	bJustTeleported = false;
+
+	// perform move
 	if(ACharacter* Character = GetCharacterOwner())
 	{
-		GetCharacterOwner()->LaunchCharacter(FVector(0.0f, 0.0f, JetpackVelocity), false,true);
-		
+		Character->LaunchCharacter( FVector(0,0, JetpackVelocity), false , true);
+		auto CurrentRotation = Character->GetActorRotation().Quaternion();
+		FHitResult Hit(1.f);
+		FVector Adjusted = Velocity * deltaTime;
+		SafeMoveUpdatedComponent(Adjusted, CurrentRotation, true, Hit);
 	}
-	
+
+
 	
 }
 
@@ -318,7 +331,7 @@ bool UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Validate(float
 void UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Implementation(const float InJetpackVelocity)
 {
 	
-	Velocity.Z = InJetpackVelocity;
+	// Velocity.Z = InJetpackVelocity;
 
 	NetMulticast_SetJetpackEffect(Safe_bWantsToUseJetpack);
 }
