@@ -291,16 +291,16 @@ void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 It
 		bIsJetpackResourceEnough  = JetpackComponent->GetJetpackResource() >= ResourceNeededForJetpacking  ;
 	}
 	
-	if (!Safe_bWantsToUseJetpack  || !bIsJetpackResourceEnough )
+	if ((!Safe_bWantsToUseJetpack  || !bIsJetpackResourceEnough ) && CharacterOwner->GetLocalRole() != ROLE_SimulatedProxy)
 	{
     	UE_LOG(LogTemp, Warning, TEXT("Trying to cancel jetpack ability"));
 		Safe_bWantsToUseJetpack = false;
-		SetMovementMode(EMovementMode::MOVE_Falling);
-		StartNewPhysics(deltaTime, Iterations);
 		if(!CancelJetpackGameplayAbility())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Jetpack ability wasn't canceled"));
 		}
+		SetMovementMode(EMovementMode::MOVE_Falling);
+		StartNewPhysics(deltaTime, Iterations);
 		
 		return;
 	}
