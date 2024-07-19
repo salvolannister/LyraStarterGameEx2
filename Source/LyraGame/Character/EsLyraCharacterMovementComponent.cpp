@@ -305,19 +305,14 @@ void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 It
 		return;
 	}
 
-	// Velocity += JetpackVelocity * deltaTime * FVector::UpVector;
 	Iterations++;
 	bJustTeleported = false;
-
-	// perform move
-	if(ACharacter* Character = GetCharacterOwner())
-	{
-		Character->LaunchCharacter( FVector(0,0, JetpackVelocity), false , true);
-		auto CurrentRotation = Character->GetActorRotation().Quaternion();
-		FHitResult Hit(1.f);
-		FVector Adjusted = Velocity * deltaTime;
-		SafeMoveUpdatedComponent(Adjusted, CurrentRotation, true, Hit);
-	}
+	
+	CharacterOwner->LaunchCharacter( FVector(0,0, JetpackVelocity), false , true);
+	auto CurrentRotation = CharacterOwner->GetActorRotation().Quaternion();
+	FHitResult Hit(1.f);
+	FVector Adjusted = Velocity * deltaTime;
+	SafeMoveUpdatedComponent(Adjusted, CurrentRotation, true, Hit);
 
 
 	
