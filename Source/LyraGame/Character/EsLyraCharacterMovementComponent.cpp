@@ -171,6 +171,7 @@ void UEsLyraCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterat
 			break;
 		case CMOVE_Jetpacking:
 			PhysJetpacking(deltaTime, Iterations);
+			break;
 		default:
 			UE_LOG(LogTemp,Warning, TEXT("Invalid Movement Mode"));
 	}
