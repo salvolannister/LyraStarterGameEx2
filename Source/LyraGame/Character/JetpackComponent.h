@@ -6,6 +6,7 @@
 #include "Components/GameFrameworkComponent.h"
 #include "JetpackComponent.generated.h"
 
+class UNiagaraComponent;
 struct FOnAttributeChangeData;
 class ULyraCombatSet;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FJetpackResource_AttributeChanged, UJetpackComponent*, JetpackComponent, float,
@@ -47,6 +48,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Jetpack")
 	float GetJetpackResourceNormalized() const;
 
+	UFUNCTION(BlueprintCallable)
+	void SetJetpackEffects(const bool bActive) const;
 public:
 
 	// Delegate fired when the Jetpack value has changed.
@@ -56,7 +59,14 @@ public:
 	// Delegate fired when the max Jetpack value has changed.
 	UPROPERTY(BlueprintAssignable)
 	FJetpackResource_AttributeChanged OnMaxJetpackResourceChanged;
+		
+	UPROPERTY(EditDefaultsOnly, Category ="Custom|Jetpack")
+	TObjectPtr<UNiagaraComponent> JetpackNiagaraComponent;
 
+	UPROPERTY(EditDefaultsOnly, Category ="Custom|Jetpack")
+	TObjectPtr<UAudioComponent> JetpackSFX;
+	// UPROPERTY(BlueprintAssignable)
+	// UGameplayEffectClass ResourceRegenerationGameplayEffectClass;
 protected:
 	virtual void OnUnregister() override;
 	

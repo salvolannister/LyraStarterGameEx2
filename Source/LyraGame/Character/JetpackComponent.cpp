@@ -3,9 +3,13 @@
 
 #include <Character/JetpackComponent.h>
 
+#include "LyraCharacter.h"
 #include "LyraLogChannels.h"
+#include "NiagaraComponent.h"
 #include "AbilitySystem/LyraAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/LyraCombatSet.h"
+#include "Components/AudioComponent.h"
+#include "Components/CapsuleComponent.h"
 
 UJetpackComponent::UJetpackComponent(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -16,6 +20,8 @@ UJetpackComponent::UJetpackComponent(const FObjectInitializer& ObjectInitializer
 
 	AbilitySystemComponent = nullptr;
 	CombatSet = nullptr;
+
+	
 }
 
 void UJetpackComponent::InitializeWithAbilitySystem(ULyraAbilitySystemComponent* InASC)
@@ -46,6 +52,33 @@ void UJetpackComponent::InitializeWithAbilitySystem(ULyraAbilitySystemComponent*
 	// Register to listen for attribute changes.
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ULyraCombatSet::GetJetpackResourceAttribute()).AddUObject(this, &ThisClass::HandleJetpackResourceChanged);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ULyraCombatSet::GetMaxJetpackResourceAttribute()).AddUObject(this, &ThisClass::HandleMaxJetpackResourceChanged);
+
+	/* Gets Niagara Jetpack Component  */
+	ALyraCharacter* ESCharacterOwner = Cast<ALyraCharacter>(Owner);
+	if(const auto MeshComponent = ESCharacterOwner->GetMesh())
+	{
+		const auto JetpackRootMesh = MeshComponent->GetChildComponent(0);
+		JetpackNiagaraComponent = dynamic_cast<UNiagaraComponent*>(JetpackRootMesh->GetChildComponent(0));
+	}
+	check(JetpackNiagaraComponent);
+	
+	if (const auto CapsuleComponent = ESCharacterOwner->GetCapsuleComponent())
+	{
+		const TArray<USceneComponent*>& ChildComponents = CapsuleComponent->GetAttachChildren();
+		for (USceneComponent* ChildComponent : ChildComponents)
+		{
+			if (ChildComponent && ChildComponent->GetName() == FName("JetpackSFX"))
+			{
+				if (UAudioComponent* AudioComponent = Cast<UAudioComponent>(ChildComponent))
+				{
+					
+					JetpackSFX = AudioComponent;
+					break; 
+				}
+			}
+		}
+	}
+	check(JetpackSFX);
 }
 
 void UJetpackComponent::UninitializeFromAbilitySystem()
@@ -75,6 +108,39 @@ float UJetpackComponent::GetJetpackResourceNormalized() const
 	}
 
 	return 0.0f;
+}
+
+void UJetpackComponent::SetJetpackEffects(const bool bActive) const
+{
+	if(!JetpackSFX)
+	{
+		UE_LOG(LogTemp,Warning, TEXT("Invalid Jetpack sound effect"));
+		return;
+	}
+
+	if(!JetpackNiagaraComponent)
+	{
+		UE_LOG(LogTemp,Warning, TEXT("Invalid Jetpack Niagara component"));
+		return;
+	}
+
+	if(bActive)
+	{
+		if(!JetpackSFX->IsPlaying())
+		{
+			JetpackSFX->Play();
+		}
+		if(!JetpackNiagaraComponent->IsActive())
+			JetpackNiagaraComponent->Activate(true);
+	}
+	else
+	{
+		if(JetpackSFX->IsPlaying())
+		{
+			JetpackSFX->SetTriggerParameter(FName("JetpackOff"));
+		}
+		JetpackNiagaraComponent->Deactivate();
+	}
 }
 
 void UJetpackComponent::OnUnregister()

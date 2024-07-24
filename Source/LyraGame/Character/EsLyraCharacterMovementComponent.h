@@ -149,27 +149,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Custom|Jetpack")
 	float JetpackVelocity;
 	
-    UPROPERTY(EditDefaultsOnly, Category ="Custom|Jetpack")
-	TObjectPtr<UNiagaraComponent> JetpackNiagaraComponent;
-
-	UPROPERTY(EditDefaultsOnly, Category ="Custom|Jetpack")
-	TObjectPtr<UAudioComponent> JetpackSFX;
-
 	UPROPERTY(EditAnywhere, Category ="Custom|Jetpack")
 	FGameplayTagContainer JetpackGameplayActionTag;
 	
-	UFUNCTION(BlueprintCallable)
-	UAudioComponent* GetJetpackAudioEffect() const;
 
 	UFUNCTION(BlueprintCallable)
 	bool CanUseJetpack() const;
 	
-	void SetJetpackEffects(const bool bActive) const;
-	
 	virtual bool IsFalling() const override;
 	
-	
-
 	/*
 	 *  Flags (Transient)
 	 */

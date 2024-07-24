@@ -4,7 +4,6 @@
 #include "Character/EsLyraCharacterMovementComponent.h"
 
 #include "AbilitySystemComponent.h"
-#include "AudioDevice.h"
 #include "LyraCharacter.h"
 #include "LyraHealthComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -12,8 +11,6 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "WorldCollision.h"
-#include "NiagaraComponent.h"
-#include "Components/AudioComponent.h"
 #include "AudioParameterControllerInterface.h"
 #include "JetpackComponent.h"
 #include "AbilitySystem/LyraAbilitySystemComponent.h"
@@ -59,33 +56,7 @@ void UEsLyraCharacterMovementComponent::InitializeComponent()
 	
 	LyraHealthComponent = ESCharacterOwner->GetLyraHealthComponent();
 	check(LyraHealthComponent);
-
-	/* Gets Niagara Jetpack Component  */
-	if(const auto MeshComponent = ESCharacterOwner->GetMesh())
-	{
-		const auto JetpackRootMesh = MeshComponent->GetChildComponent(0);
-		JetpackNiagaraComponent = dynamic_cast<UNiagaraComponent*>(JetpackRootMesh->GetChildComponent(0));
-	}
-
 	
-	if (const auto CapsuleComponent = ESCharacterOwner->GetCapsuleComponent())
-	{
-		const TArray<USceneComponent*>& ChildComponents = CapsuleComponent->GetAttachChildren();
-		for (USceneComponent* ChildComponent : ChildComponents)
-		{
-			if (ChildComponent && ChildComponent->GetName() == FName("JetpackSFX"))
-			{
-				if (UAudioComponent* AudioComponent = Cast<UAudioComponent>(ChildComponent))
-				{
-					
-					UE_LOG(LogTemp, Warning, TEXT("Found AudioComponent: %s"), *AudioComponent->GetName());
-					JetpackSFX = AudioComponent;
-					break; 
-				}
-			}
-		}
-	}
-
 	JetpackComponent = ESCharacterOwner->GetJetpackComponent();
 	check(JetpackComponent);
 }
@@ -197,43 +168,6 @@ bool UEsLyraCharacterMovementComponent::CanUseJetpack() const
 
 }
 
-UAudioComponent* UEsLyraCharacterMovementComponent::GetJetpackAudioEffect() const
-{
-	return JetpackSFX.Get();
-}
-
-void UEsLyraCharacterMovementComponent::SetJetpackEffects(const bool bActive) const
-{
-	if(!JetpackSFX)
-	{
-		UE_LOG(LogTemp,Warning, TEXT("Invalid Jetpack sound effect"));
-		return;
-	}
-
-	if(!JetpackNiagaraComponent)
-	{
-		UE_LOG(LogTemp,Warning, TEXT("Invalid Jetpack Niagara component"));
-		return;
-	}
-
-	if(bActive)
-	{
-		if(!JetpackSFX->IsPlaying())
-		{
-			JetpackSFX->Play();
-		}
-		if(!JetpackNiagaraComponent->IsActive())
-			JetpackNiagaraComponent->Activate(true);
-	}
-	else
-	{
-		if(JetpackSFX->IsPlaying())
-		{
-			JetpackSFX->SetTriggerParameter(FName("JetpackOff"));
-		}
-		JetpackNiagaraComponent->Deactivate();
-	}
-}
 
 bool UEsLyraCharacterMovementComponent::IsFalling() const
 {
@@ -327,8 +261,7 @@ bool UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Validate(float
 void UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Implementation(const float InJetpackVelocity)
 {
 	
-	// Velocity.Z = InJetpackVelocity;
-
+	Velocity.Z = InJetpackVelocity;
 	NetMulticast_SetJetpackEffect(Safe_bWantsToUseJetpack);
 }
 
@@ -336,9 +269,9 @@ void UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Implementation
 void UEsLyraCharacterMovementComponent::NetMulticast_SetJetpackEffect_Implementation(const bool bActivate)
 {
 	/* Locally controlled character will be already playing the effects */
-	if(!CharacterOwner->IsLocallyControlled())
+	if(!CharacterOwner->IsLocallyControlled() && JetpackComponent)
 	{
-		SetJetpackEffects(bActivate);
+		JetpackComponent->SetJetpackEffects(bActivate);
 	}
 }
 
@@ -793,13 +726,16 @@ void UEsLyraCharacterMovementComponent::JetpackPressed()
 			return;
 	}
 
-	SetJetpackEffects(true);
+	if(JetpackComponent)
+	{
+		JetpackComponent->SetJetpackEffects(true);
+	}
 	
 	if (const bool bIsClient = !CharacterOwner->HasAuthority() && CharacterOwner->IsLocallyControlled())
 	{
 		Server_SetJetpackVelocity(Velocity.Z);
 	}
-	else if(CharacterOwner->HasAuthority())
+	else if(CharacterOwner->HasAuthority() && !CharacterOwner->IsLocallyControlled())
 	{
 		NetMulticast_SetJetpackEffect( true);
 	}
@@ -811,12 +747,17 @@ void UEsLyraCharacterMovementComponent::JetpackPressed()
 void UEsLyraCharacterMovementComponent::JetpackUnpressed()
 {
 	UE_LOG(LogTemp, Log, TEXT("Jetpack key released"));
-	SetJetpackEffects(false);
+
+	if(JetpackComponent)
+	{
+		JetpackComponent->SetJetpackEffects(false);
+	}
+
 	if (const bool bIsClient = !CharacterOwner->HasAuthority() && CharacterOwner->IsLocallyControlled())
 	{
 		Server_SetJetpackVelocity(Velocity.Z);
 	}
-	else if(CharacterOwner->HasAuthority())
+	else if(CharacterOwner->HasAuthority() && !CharacterOwner->IsLocallyControlled())
 	{
 		NetMulticast_SetJetpackEffect(false);
 	}
