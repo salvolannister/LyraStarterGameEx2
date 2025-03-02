@@ -177,13 +177,13 @@ bool UEsLyraCharacterMovementComponent::IsFalling() const
 
 bool UEsLyraCharacterMovementComponent::CancelJetpackGameplayAbility() const
 {
-	bool isCanceled = false;
+	bool bIsCanceled = false;
 	const ALyraCharacter* LyraCharacter = UECasts_Private::DynamicCast<ALyraCharacter*>(CharacterOwner.Get());
 
 	if(!LyraCharacter)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Lyra Character is null while trying to cancel jetpacking ability"));
-		return isCanceled;
+		return bIsCanceled;
 	}
 	
 	TArray<FGameplayAbilitySpec*> ActiveAbilitiesWithSpecifiedTag;
@@ -192,7 +192,7 @@ bool UEsLyraCharacterMovementComponent::CancelJetpackGameplayAbility() const
 	if(!LyraAsc)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Could not retrieve game ability system component while trying to cancel jetpack ability"));
-		return isCanceled;
+		return bIsCanceled;
 	}
 	
 	LyraAsc->GetActivatableGameplayAbilitySpecsByAllMatchingTags(JetpackGameplayActionTag, ActiveAbilitiesWithSpecifiedTag, true);
@@ -201,14 +201,15 @@ bool UEsLyraCharacterMovementComponent::CancelJetpackGameplayAbility() const
 		if(AbilityWithSpecifiedTag->IsActive())
 		{
 			LyraAsc->CancelAbility(AbilityWithSpecifiedTag->Ability);
-			isCanceled = true;
+			bIsCanceled = true;
 			// it should be just one so we exit the loop
 			break;
 		}
 	}
 
-	return isCanceled;
+	return bIsCanceled;
 }
+
 
 void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 Iterations)
 {
@@ -253,26 +254,70 @@ void UEsLyraCharacterMovementComponent::PhysJetpacking(float deltaTime, int32 It
 	
 }
 
-bool UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Validate(float InJetpackVelocity)
+void UEsLyraCharacterMovementComponent::Server_ChangeJetpackStatus_Implementation(bool bIsJetpackON)
+{
+	Safe_bWantsToUseJetpack = bIsJetpackON;
+}
+
+bool UEsLyraCharacterMovementComponent::Server_ChangeJetpackStatus_Validate(bool bIsJetpackON)
 {
 	return true;
 }
 
-void UEsLyraCharacterMovementComponent::Server_SetJetpackVelocity_Implementation(const float InJetpackVelocity)
+void UEsLyraCharacterMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode,
+	uint8 PreviousCustomMode)
 {
 	
-	Velocity.Z = InJetpackVelocity;
-	NetMulticast_SetJetpackEffect(Safe_bWantsToUseJetpack);
-}
+	
+	/*
+	 * current mode 3 falling
+	 * current mode 1 standing
+	 * current mode 6 flying/jetpacking ?
+	 * custom movement mode nothing 0
+	 * custom movement mode jetpacking 2
+	 **/
 
 
-void UEsLyraCharacterMovementComponent::NetMulticast_SetJetpackEffect_Implementation(const bool bActivate)
-{
-	/* Locally controlled character will be already playing the effects */
-	if(!CharacterOwner->IsLocallyControlled() && JetpackComponent)
+	
+	FString netPrefix = GetWorld()->IsNetMode(NM_Client) ? "[CLIENT]" : "[SERVER]";
+
+	
+	// if(GEngine)
+	// {
+
+	// FString DebugMessage = FString::Printf(TEXT("Current Custom Movement Mode: %u Previous Movement Mode %u \n"), CustomMovementMode,  PreviousCustomMode);
+	// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, DebugMessage);
+	UE_LOG(LogTemp, Warning, TEXT("SVS %s - Current Custom Movement Mode: %u Previous Movement Mode %u \n"), *netPrefix, CustomMovementMode,  PreviousCustomMode);
+	UE_LOG(LogTemp, Warning, TEXT("SVS %s - Current Mode: %d , Previous %u \n"), *netPrefix, MovementMode.GetValue(),  PreviousMovementMode);
+	// }
+
+	if(JetpackComponent)
 	{
-		JetpackComponent->SetJetpackEffects(bActivate);
+		// if(!JetpackComponent->IsSpecialEffectOn() &&
+		// 	PrevPrevCustomMovementMode != 1 &&
+		// 	PreviousCustomMode != CMOVE_Jetpacking && CustomMovementMode == CMOVE_Jetpacking)
+		if(!JetpackComponent->IsSpecialEffectOn() &&
+			PrevPrevCustomMovementMode == 0 &&
+			PreviousCustomMode == 0 &&
+			CustomMovementMode == CMOVE_Jetpacking
+			)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("SVS - Effect active \n"));
+
+			JetpackComponent->SetJetpackEffects(true);
+		}  /*  This is a small hack that makes the effect disappear even though sometimes the information about the "wants to use jetpack" variable update is lost.
+		   /* While we cannot rely on the stable change of the isJetpacking since
+		   /* we switch back and forward between Falling and Jetpacking movement mode */
+		else if( JetpackComponent->IsSpecialEffectOn() &&
+			     ((PreviousCustomMode != CMOVE_Jetpacking && CustomMovementMode != CMOVE_Jetpacking) &&
+					!Safe_bWantsToUseJetpack))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Effect off - Current Custom Movement Mode: %u Previous Movement Mode %u \n"), CustomMovementMode,  PreviousCustomMode);
+			JetpackComponent->SetJetpackEffects(false);	
+		}
 	}
+	PrevPrevCustomMovementMode = PreviousCustomMode;
+	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
 }
 
 /**
@@ -726,18 +771,11 @@ void UEsLyraCharacterMovementComponent::JetpackPressed()
 			return;
 	}
 
-	if(JetpackComponent)
-	{
-		JetpackComponent->SetJetpackEffects(true);
-	}
+	
 	
 	if (const bool bIsClient = !CharacterOwner->HasAuthority() && CharacterOwner->IsLocallyControlled())
 	{
-		Server_SetJetpackVelocity(Velocity.Z);
-	}
-	else if(CharacterOwner->HasAuthority() && !CharacterOwner->IsLocallyControlled())
-	{
-		NetMulticast_SetJetpackEffect( true);
+		Server_ChangeJetpackStatus_Implementation(true);
 	}
 
 	Safe_bWantsToUseJetpack = true;
@@ -747,19 +785,12 @@ void UEsLyraCharacterMovementComponent::JetpackPressed()
 void UEsLyraCharacterMovementComponent::JetpackUnpressed()
 {
 	UE_LOG(LogTemp, Log, TEXT("Jetpack key released"));
-
-	if(JetpackComponent)
 	{
-		JetpackComponent->SetJetpackEffects(false);
 	}
 
 	if (const bool bIsClient = !CharacterOwner->HasAuthority() && CharacterOwner->IsLocallyControlled())
 	{
-		Server_SetJetpackVelocity(Velocity.Z);
-	}
-	else if(CharacterOwner->HasAuthority() && !CharacterOwner->IsLocallyControlled())
-	{
-		NetMulticast_SetJetpackEffect(false);
+		Server_ChangeJetpackStatus_Implementation(false);
 	}
 
 	Safe_bWantsToUseJetpack = false;

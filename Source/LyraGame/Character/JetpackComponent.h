@@ -50,6 +50,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetJetpackEffects(const bool bActive) const;
+	// Return true if the special effect for the jetpack component is on and playing 
+	UFUNCTION(BlueprintCallable, Category = "Lyra|Jetpack")
+	bool IsSpecialEffectOn();
 public:
 
 	// Delegate fired when the Jetpack value has changed.

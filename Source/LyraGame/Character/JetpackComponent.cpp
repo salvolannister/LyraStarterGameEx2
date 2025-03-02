@@ -143,6 +143,14 @@ void UJetpackComponent::SetJetpackEffects(const bool bActive) const
 	}
 }
 
+bool UJetpackComponent::IsSpecialEffectOn()
+{
+	if(!JetpackNiagaraComponent)
+		return false;
+	
+	return JetpackNiagaraComponent->IsActive();
+}
+
 void UJetpackComponent::OnUnregister()
 {
 	UninitializeFromAbilitySystem();

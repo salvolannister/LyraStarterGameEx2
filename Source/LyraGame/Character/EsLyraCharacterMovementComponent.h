@@ -251,20 +251,14 @@ private:
 	bool CancelJetpackGameplayAbility() const;
 	
 	void PhysJetpacking(float deltaTime, int32 Iterations);
-
-	/** RPC that will execute on the server, sending the velocity with which the character will fly.
-	 *   Probably this will be moved inside the relative GA 
-	 */
+	
 	UFUNCTION(Reliable, Server, WithValidation)
-	void Server_SetJetpackVelocity(float InJetpackVelocity);
+	void Server_ChangeJetpackStatus(bool bIsJetpackON);
 
-	/** RPC executed by the server and sent to all the clients to activate Jetpack particle and sound effects
-	 *  
-	 */
-	UFUNCTION(Unreliable, NetMulticast)
-	void NetMulticast_SetJetpackEffect(const bool bActivate);
+
 
 protected:
+	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 	/*
 	 *  Network
 	 */
@@ -336,7 +330,7 @@ private:
 	/*
 	 *  Getter/Setters
 	 */
-
+	uint8 PrevPrevCustomMovementMode = 0;
 	float CapsuleR() const;
 	float CapsuleRScaled() const;
 	float CapsuleHH() const;
